@@ -1,0 +1,51 @@
+<script src="https://unpkg.com/@hotwired/turbo@7.0.0-beta.1/dist/turbo.es5-umd.js"></script>
+<script src="https://unpkg.com/reconnecting-websocket@4.4.0/dist/reconnecting-websocket-cjs.js"></script>
+<script>
+const socket = new ReconnectingWebSocket("ws://localhost:8000/ws/")
+
+class TurboChannelsStreamSource extends HTMLElement {
+    static counter = 0;
+    request_id
+
+    constructor() {
+      super();
+      this.request_id = TurboChannelsStreamSource.counter++
+    }
+
+    async connectedCallback() {
+      Turbo.connectStreamSource(this)
+
+      socket.addEventListener("open", e => {
+        socket.send(JSON.stringify({request_id: this.request_id, ...this.subscription}))
+      })
+
+      socket.addEventListener("message", e => {
+        const broadcast = JSON.parse(e.data)
+        if (broadcast.request_id === this.request_id) {
+          this.dispatchMessageEvent(broadcast.data)
+        }
+      })
+    }
+
+    disconnectedCallback() {
+      Turbo.disconnectStreamSource(this)
+    }
+
+    dispatchMessageEvent(data) {
+        const event = new MessageEvent("message", { data })
+        return this.dispatchEvent(event)
+    }
+
+    get subscription() {
+      const model = this.getAttribute("model")
+      const stream = this.getAttribute("stream")
+      const value = this.getAttribute("value")
+      const list_target = this.getAttribute("list-target")
+      const element_prefix = this.getAttribute("element-prefix")
+
+      return { model, stream, value, list_target, element_prefix }
+    }
+}
+
+customElements.define("turbo-channels-stream-source", TurboChannelsStreamSource)
+</script>

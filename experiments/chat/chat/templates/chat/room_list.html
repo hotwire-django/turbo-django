@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Rooms</title>
+</head>
+<body>
+{% if rooms %}
+    <ul>
+    {% for room in rooms %}
+        <li><a href="{% url 'detail' room.id %}">{{ room.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No rooms available.</p>
+{% endif %}
+</body>
+</html>
