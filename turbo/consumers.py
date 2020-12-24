@@ -54,7 +54,8 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
                     model_name.lower(): instance,
                     "action": stream_action,
                     "dom_target": target,
-                    "model_template": f"{app}/{model_name}.html"
+                    "model_template": f"{app}/{model_name}.html",
+                    "turbo__is_websocket": True,
                 })
             })
 

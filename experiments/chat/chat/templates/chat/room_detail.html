@@ -13,16 +13,15 @@
 </head>
 <body>
 <h1>{{ room.name }}</h1>
-<turbo-channels-stream-source model="chat.Message" stream="room_id" value="{{ room.id }}">
-</turbo-channels-stream-source>
-<turbo-frame id="messages-frame">
-     <ul id="messages">
-        {% for message in room.messages.all %}
-            {% include "chat/message.html" with message=message only %}
-        {% endfor %}
-    </ul>
-</turbo-frame>
-<turbo-frame id="send-message" src="{% url 'send' room.id %}">
-</turbo-frame>
+<turbo-channels-stream-source model="chat.Message" stream="room_id" value="{{ room.id }}" />
+
+<ul id="messages">
+  {% for message in room.messages.all %}
+      {% include "chat/message.html" with message=message only %}
+  {% endfor %}
+</ul>
+
+{% include "chat/message_form_frame.html" %}
+
 </body>
 </html>
