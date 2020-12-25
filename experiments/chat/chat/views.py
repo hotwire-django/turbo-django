@@ -3,8 +3,8 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 from django.shortcuts import get_object_or_404
 from turbo.shortcuts import render_turbo
-from chat.models import Room, Message
-from chat.forms import MessageForm
+from .models import Room, Message
+from .forms import MessageForm
 
 
 
