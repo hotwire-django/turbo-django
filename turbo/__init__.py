@@ -1,5 +1,11 @@
+from django.db.models import Model
+
 default_app_config = 'turbo.apps.TurboDjangoConfig'
 
 
-def get_broadcast_channel(model, stream, value):
-    return f"BROADCAST-{model}-{stream}-{value}"
+def make_channel_name(model_label, pk):
+    return f"BROADCAST-{model_label}-{pk}".lower()
+
+
+def channel_name_for_instance(instance: Model):
+    return make_channel_name(instance._meta.label, instance.pk)

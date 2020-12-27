@@ -7,6 +7,9 @@ class Room(models.Model):
 
 
 class Message(BroadcastableMixin, models.Model):
+    broadcast_to = ["room"]
+    broadcast_self = False
+
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

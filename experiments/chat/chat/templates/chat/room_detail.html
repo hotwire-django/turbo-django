@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>{{ room.name }}</h1>
-<turbo-channels-stream-source model="chat.Message" stream="room_id" value="{{ room.id }}">
+<turbo-channels-stream-source model="chat.Room" pk="{{ room.pk }}">
 </turbo-channels-stream-source>
 <turbo-frame id="messages-frame">
      <ul id="messages">

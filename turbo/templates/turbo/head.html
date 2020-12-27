@@ -5,7 +5,7 @@ const socket = new ReconnectingWebSocket("ws://localhost:8000/ws/")
 
 class TurboChannelsStreamSource extends HTMLElement {
     static counter = 0;
-    request_id
+    request_id;
 
     constructor() {
       super();
@@ -38,12 +38,11 @@ class TurboChannelsStreamSource extends HTMLElement {
 
     get subscription() {
       const model = this.getAttribute("model")
-      const stream = this.getAttribute("stream")
-      const value = this.getAttribute("value")
+      const pk = this.getAttribute("pk")
       const list_target = this.getAttribute("list-target")
       const element_prefix = this.getAttribute("element-prefix")
 
-      return { model, stream, value, list_target, element_prefix }
+      return { model, pk, list_target, element_prefix }
     }
 }
 
