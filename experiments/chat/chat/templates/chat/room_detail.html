@@ -12,7 +12,10 @@
     {% include "turbo/head.html" %}
 </head>
 <body>
-<h1>{{ room.name }}</h1>
+<turbo-frame id="update-room">
+    {% include 'chat/room.html' %}
+    <a href="{% url 'update' room.pk %}">Edit</a>
+</turbo-frame>
 <turbo-channels-stream-source model="chat.Room" pk="{{ room.pk }}">
 </turbo-channels-stream-source>
 <turbo-frame id="messages-frame">
