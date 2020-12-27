@@ -1,8 +1,11 @@
-<turbo-frame id="send-message">
-     <form method="post" action="{% url 'send' view.kwargs.pk %}" data-turbo-frame="messages">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Send">
-    </form>
-</turbo-frame>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Send a message</title>
+</head>
+<body>
+  <h1>Send a message</h1>
+  {% include "chat/message_form_frame.html" %}
+</body>
+</html>

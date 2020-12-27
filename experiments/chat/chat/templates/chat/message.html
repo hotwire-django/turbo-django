@@ -1,1 +1,8 @@
-<li id="message_{{ message.pk }}">{{ message.text }}</li>
+<li id="message_{{ message.pk }}">
+  {{ message.text }}
+  {% if turbo__is_http %}
+    (from HTTP)
+  {% elif turbo__is_websocket %}
+    (from WS)
+  {% endif %}
+</li>

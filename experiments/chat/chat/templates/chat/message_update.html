@@ -1,5 +1,5 @@
-{#<turbo-stream action="append" target="message-list">#}
-{#  <template>#}
-{#    {% include 'chat/message.html' with message=message only %}#}
-{#  </template>#}
-{#</turbo-stream>#}
+<turbo-stream action="append" target="messages">
+  <template>
+    {% include 'chat/message.html' with message=message turbo__is_http=turbo__is_http turbo__is_websocket=turbo__is_websocket only %}
+  </template>
+</turbo-stream>
