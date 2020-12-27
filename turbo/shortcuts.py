@@ -13,7 +13,7 @@ def render_turbo(request, template_name, location, context=None, content_type="t
 
         # Notify the turbo client that we are sending a turbo-stream message
         # so the frontend does not try to redirect the user
-        content_type = '%s; turbo-stream;' % content_type
+        content_type = f'{content_type}; turbo-stream;'
 
         return render(request=request, template_name=template_name, context=context, content_type=content_type, status=status, using=using)
 
