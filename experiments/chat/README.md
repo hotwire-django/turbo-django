@@ -5,10 +5,17 @@ This repository contains a demonstration of [Hotwire](https://hotwire.dev), spec
 of Django Channels for websocket support.
 
 To run this demo, after cloning the repository:
-1. `pipenv install`
-2. `pipenv shell`
-3. `./manage.py migrate`
-4. `./manage.py createsuperuser`
-5. `./manage.py runserver`
-6. Log into `localhost:8000/admin` and create a `Room`
-7. Go to `localhost:8000`, select your room, and start chatting! Open as many windows as you'd like.
+
+```bash
+cd experiments/chat
+virtualenv -p python 3 ve
+souce ve/bin/activate
+pip install -e ../../
+
+./manage.py migrate
+./manage.py createsuperuser
+./manage.py runserver
+```
+
+Log into `http://localhost:8000/admin` and create a `Room`
+Go to `http://localhost:8000`, select your room, and start chatting! Open as many windows as you'd like.

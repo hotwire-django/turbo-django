@@ -3,3 +3,4 @@
 *.pyc
 __pycache__/
 .DS_Store
+turbo_django.egg-info/
