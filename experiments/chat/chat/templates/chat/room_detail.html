@@ -1,3 +1,4 @@
+{% load turbo_streams_helpers %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +17,7 @@
     {% include 'chat/room.html' %}
     <a href="{% url 'update' room.pk %}">Edit</a>
 </turbo-frame>
-<turbo-channels-stream-source model="chat.Room" pk="{{ room.pk }}">
-</turbo-channels-stream-source>
+{% turbo_stream_from room %}
 <turbo-frame id="messages-frame">
      <ul id="messages">
         {% for message in room.messages.all %}
