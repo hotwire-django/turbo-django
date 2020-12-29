@@ -46,7 +46,6 @@ class Room(models.Model):
 class Message(models.Model):
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
     text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
 ```
 
 `turbo-django` provides a `BroadcastableMixin` that enables CRUD operations from a given model
@@ -68,16 +67,17 @@ class Message(BroadcastableMixin, models.Model):
 anticipate listening in to updates on a single message, only on the associated `Room`. This is all the set-up on the
 model side of things that we'll need!
 
-## Template Layer
+### Template Layer
 
-### Subscribing to a stream
-Next, we can declare that a given page should subscribe to broadcasts for a given model instance.
+#### Subscribing to a stream
+Next, we can declare that a given page should subscribe to broadcasts for a given model instance. Make sure to
+`{% load turbo_streams_helpers %}` to get access to the template tag in your template.
 
-Make sure to pass the room instance (here, it's passed as `room`) into the template context. Somewhere in the `<body>`,
-we need to add the template tag `{% turbo_stream_from room %}`. That's all we need to do to connect this tempalte, when
-rendered on the front-end, to the stream of updates for a given room instance!
+Make sure to pass the model instance (here, it's passed as `room`) into the template context. Somewhere in the `<body>`,
+we need to add the template tag `{% turbo_stream_from room %}`. That's all we need to do to connect this template, when
+rendered on the front-end, to the stream of updates for a given model instance!
 
-### Rendering Streams
+#### Rendering Streams
 Streams need to render HTML of updates on the backend using template partials to send over to the frontend over the wire.
 `turbo-django` at the moment relies on some conventional names for templates and IDs:
 
