@@ -84,11 +84,11 @@ Streams need to render HTML of updates on the backend using template partials to
 
 - `app_name/model_name.html` should contain the template partial for rendering the model. The context passed in will
   have the labels `object` as well as `model_name` refer to the instance being rendered. Streams mandates that there's
-  one, top-level element wrapping the HTML. This element should have an ID of the form `<model_name>_<pk>`, where `pk`
-  is the primary key of the instance. The element's ID is necessary to ensure that the Streams update operation, titled
+  one, top-level element wrapping the HTML. You can make sure the element's ID is set properly by using the templatetag
+  `{% stream_id object %}` A consistent element ID is necessary to ensure that the Streams CRUD operations, titled
   `replace`, can predictably find elements on the page.
   * For our example with the `Message` model, we should create a template called `chat/message.html`, where the top-level
-    HTML element should have the ID `id={{ message.pk }}`. `object.pk` would work equally well.
+    HTML element should have the ID `id={% stream_id message %}`.
     
 - The page template (the one that contains the `turbo_stream_from` tag) should put the related instances into some
   sort of list, where the `id` of the list is the lower-cased plural name of the model. This is necessary for Streams's
