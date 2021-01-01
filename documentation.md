@@ -3,37 +3,39 @@
 This repository aims to provide utilities for working with [Turbo](https://turbo.hotwire.dev)
 with the Django web framework. 
 
+## Setup
+The first step for setup is to include Turbo in the `<head>` for your templates. Simply put `{% include 'turbo/head.html' %}` somewhere in your head,
+which will include the Turbo libraries we need in order to use Turbo Drive, Frames and Streams in our app.
+
 ## Turbo Streams
 Currently, the repository contains utilities for working with
 [Turbo Streams](https://turbo.hotwire.dev/handbook/streams) over Websockets, the one part of
 Turbo which requires a specific integration with the backend framework to function. In Django's
-case, this means taking advantage of [Django Channels](https://github.com/django/channels).
+case, this means taking advantage of [Django Channels](https://github.com/django/channels) and ASGI support.
 
 The Django Streams integration is heavily inspired by the helpers and mixins found in
 [turbo-rails](https://github.com/hotwired/turbo-rails). There are a few steps required to get
 the integration working.
 
-### Initial Setup
-#### Django Channels
+### Django Channels Setup
 After setting up Channels according to the [documentation](https://channels.readthedocs.io/en/stable/installation.html),
 make sure to modify the top-level `ProtocolTypeRouter` to include the `TurboStreamsConsumer`:
 
 ```python
+from channels.routing import ProtocolTypeRouter
 from turbo.consumers import TurboStreamsConsumer
+
 application = ProtocolTypeRouter({
   "http": AsgiHandler(),
   "websocket": TurboStreamsConsumer.as_asgi()  # Leave off .as_asgi() if using Channels 2.x
 })
 ```
 
-#### Including JavaScript
-In our `<head>` for all our templates, we need to `{% include 'turbo/head.html' %}`, which will include the Turbo libraries we need
-in order to use Turbo Drive, Frames and Streams in our app.
-
 ### Model Layer
 
 Throughout these docs we'll be using these two basic models for a chat app, similar to the
-[Hotwire demo video](https://www.youtube.com/watch?v=eKY-QES1XQQ):
+[Hotwire demo video](https://www.youtube.com/watch?v=eKY-QES1XQQ) and the
+[Rails demo app](https://github.com/hotwired/hotwire-rails-demo-chat):
 
 ```python
 # chat/models.py
@@ -51,7 +53,7 @@ class Message(models.Model):
 `turbo-django` provides a `BroadcastableMixin` that enables CRUD operations from a given model
 to be broadcast over websockets. To enable messages to be broadcast over websocket to users
 listening in on a particular room, we add the `BroadcastableMixin` and tell `turbo-django`
-that actions on messages should be broadcast to the related `Room` as well:
+that actions on messages should be broadcast to the related `Room`:
 
 ```python
 class Message(BroadcastableMixin, models.Model):
@@ -60,7 +62,6 @@ class Message(BroadcastableMixin, models.Model):
 
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
     text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
 ```
 
 `broadcast_to` can contain any foreign key field on the model. We set `broadcast_self` to `False` since we don't
@@ -71,7 +72,7 @@ model side of things that we'll need!
 
 #### Subscribing to a stream
 Next, we can declare that a given page should subscribe to broadcasts for a given model instance. Make sure to
-`{% load turbo_streams_helpers %}` to get access to the template tag in your template.
+`{% load turbo_streams %}` to get access to the template tag in your template.
 
 Make sure to pass the model instance (here, it's passed as `room`) into the template context. Somewhere in the `<body>`,
 we need to add the template tag `{% turbo_stream_from room %}`. That's all we need to do to connect this template, when

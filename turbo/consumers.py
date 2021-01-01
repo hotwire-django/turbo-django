@@ -4,7 +4,9 @@ from django.apps import apps
 from django.template.loader import render_to_string
 from django.core.signing import Signer, BadSignature
 
-from turbo import make_channel_name
+
+class TurboStreamException(BaseException):
+    pass
 
 
 class TurboStreamsConsumer(JsonWebsocketConsumer):
@@ -13,6 +15,8 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         self.accept()
 
     def notify(self, event, *args, **kwargs):
+        template = event["template"]
+        context = event["context"]
         model_label = event["model"]
         model = apps.get_model(model_label)
 
@@ -35,20 +39,22 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
                     model_name.lower(): instance,
                     "action": action,
                     "dom_target": dom_target,
-                    "model_template": f"{app}/{model_name}.html"
+                    "model_template": template,
+                    **context,
                 })
             })
 
     def receive_json(self, content, **kwargs):
         signer = Signer()
         request_id = content.get("request_id")
+        if request_id is None:
+            raise TurboStreamException("No request_id in subscription request.")
         message_type = content.get("type")
         if message_type == "subscribe":
             try:
                 channel_name = signer.unsign(content.get("signed_channel_name", ""))
             except BadSignature:
-                print("Signature has been tampered with!")
-                return
+                raise TurboStreamException("Signature has been tampered with on the client!")
 
             self.requests.setdefault(channel_name, []).append(request_id)
             self.groups.append(channel_name)
@@ -57,7 +63,7 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
             try:
                 channel_name = [channel_name for channel_name, requests in self.requests.items() if request_id in requests][0]
             except IndexError:
-                return  # No subscription for a given request ID exists.
+                raise TurboStreamException("No subscription for a given request ID exists to unsubscribe.")
             self.groups.remove(channel_name)
             if channel_name not in self.groups:
                 async_to_sync(self.channel_layer.group_discard)(channel_name, self.channel_name)
