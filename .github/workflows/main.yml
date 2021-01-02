@@ -15,11 +15,14 @@ jobs:
       # You can test your matrix by printing the current Python version
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    # - name: Run formatter
-    #   run: black --target-version=py38 --check turbo
-    - name: Run unit tests
-      run: pytest tests
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install .
+      - name: Run linter
+        run: flake8 turbo
+      # - name: Run formatter
+      #   run: black --target-version=py38 --check turbo
+      - name: Run unit tests
+        run: pytest tests

@@ -6,3 +6,4 @@ __pycache__/
 turbo_django.egg-info/
 ve
 venv
+.vscode
