@@ -1,7 +1,6 @@
 from asgiref.sync import async_to_sync
 
 from channels.layers import get_channel_layer
-from django.db.models import Model
 
 from turbo import (
     channel_name_for_instance,

@@ -4,7 +4,7 @@ from django.apps import apps
 from django.template.loader import render_to_string
 from django.core.signing import Signer, BadSignature
 
-from turbo import APPEND, PREPEND, REMOVE
+from turbo import REMOVE
 
 
 class TurboStreamException(Exception):
@@ -80,4 +80,3 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
             self.groups.remove(channel_name)
             if channel_name not in self.groups:
                 async_to_sync(self.channel_layer.group_discard)(channel_name, self.channel_name)
-
