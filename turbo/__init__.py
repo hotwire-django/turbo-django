@@ -9,3 +9,15 @@ def make_channel_name(model_label, pk):
 
 def channel_name_for_instance(instance: Model):
     return make_channel_name(instance._meta.label, instance.pk)
+
+
+# Model actions
+CREATED = "CREATED"
+UPDATED = "UPDATED"
+DELETED = "DELETED"
+
+# Turbo Streams CRUD operations
+APPEND = "append"
+PREPEND = "prepend"
+REPLACE = "replace"
+REMOVE = "remove"

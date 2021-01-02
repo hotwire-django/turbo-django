@@ -20,7 +20,7 @@
 
       socket.addEventListener("open", (e) => {
         socket.send(
-          JSON.stringify({ request_id: this.request_id, ...this.subscription })
+          JSON.stringify({ request_id: this.request_id, type: "subscribe", ...this.subscription })
         );
       });
 
@@ -33,6 +33,7 @@
     }
 
     disconnectedCallback() {
+      socket.send(JSON.stringify({ request_id: this.request_id, type: "unsubscribe" }))
       Turbo.disconnectStreamSource(this);
     }
 
@@ -42,12 +43,8 @@
     }
 
     get subscription() {
-      const model = this.getAttribute("model");
-      const pk = this.getAttribute("pk");
-      const list_target = this.getAttribute("list-target");
-      const element_prefix = this.getAttribute("element-prefix");
-
-      return { model, pk, list_target, element_prefix };
+      const signed_channel_name = this.getAttribute("signed-channel-name")
+      return { signed_channel_name };
     }
   }
 
