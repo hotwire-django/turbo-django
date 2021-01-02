@@ -5,11 +5,10 @@ from turbo import channel_name_for_instance
 
 register = template.Library()
 
-# https://docs.djangoproject.com/en/3.1/topics/signing/
-
 
 @register.inclusion_tag('turbo/turbo_stream_source.html')
 def turbo_stream_from(model_instance):
+    # https://docs.djangoproject.com/en/3.1/topics/signing/
     signer = Signer()
     channel_name = channel_name_for_instance(model_instance)
     signed_channel_name = signer.sign(channel_name)

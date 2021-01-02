@@ -4,8 +4,10 @@ from django.apps import apps
 from django.template.loader import render_to_string
 from django.core.signing import Signer, BadSignature
 
+from turbo import APPEND, PREPEND, REMOVE
 
-class TurboStreamException(BaseException):
+
+class TurboStreamException(Exception):
     pass
 
 
@@ -16,33 +18,44 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
 
     def notify(self, event, *args, **kwargs):
         template = event["template"]
-        context = event["context"]
+        extra_context = event["context"]
         model_label = event["model"]
         model = apps.get_model(model_label)
 
         pk = event["pk"]
         action = event["action"]
+        to_list = event["to_list"]
 
-        if action == "append" or action == "prepend":
+        if to_list:
             dom_target = model._meta.verbose_name_plural.lower()
         else:
-            dom_target = f'{model._meta.verbose_name.lower()}_{pk}'
+            dom_target = f"{model._meta.verbose_name.lower()}_{pk}"
 
         for request_id in self.requests[event["channel_name"]]:
             instance = model.objects.get(pk=pk)
             app, model_name = model_label.lower().split(".")
+            template_context = {
+                "action": action,
+                "dom_target": dom_target,
+            }
+            # Remove actions don't have contents, so only add context for model
+            # template if it's not a remove action.
+            if action != REMOVE:
+                template_context.update(
+                    {
+                        "object": instance,
+                        model_name.lower(): instance,
+                        "model_template": template,
+                        **extra_context,
+                    }
+                )
 
-            self.send_json({
-                "request_id": request_id,
-                "data": render_to_string('turbo/stream.html', {
-                    "object": instance,
-                    model_name.lower(): instance,
-                    "action": action,
-                    "dom_target": dom_target,
-                    "model_template": template,
-                    **context,
-                })
-            })
+            self.send_json(
+                {
+                    "request_id": request_id,
+                    "data": render_to_string("turbo/stream.html", template_context),
+                }
+            )
 
     def receive_json(self, content, **kwargs):
         signer = Signer()
