@@ -32,4 +32,3 @@ class BroadcastableMixin(object):
         for field_name in self.broadcast_to:
             if hasattr(self, field_name):
                 self._broadcast_to_instance(getattr(self, field_name), action)
-

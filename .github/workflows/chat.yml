@@ -1,0 +1,28 @@
+name: Test chat app
+
+on: [push]
+defaults:
+  run:
+    working-directory: ./experiments/chat
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ../../
+      - name: Setup app
+        run: |
+          ./manage.py migrate
+          ./manage.py runserver &
+      - name: Run unit tests
+        run: pytest
+      - name: Run integration tests
+        run: curl http://localhost:8000/
