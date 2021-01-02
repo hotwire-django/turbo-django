@@ -7,7 +7,9 @@ from turbo import channel_name_for_instance
 
 class BroadcastableMixin(object):
     broadcast_to = []  # Foreign Key fieldnames to broadcast updates for.
-    broadcast_self = True  # Whether or not to broadcast updates on this model's own stream.
+    broadcast_self = (
+        True  # Whether or not to broadcast updates on this model's own stream.
+    )
     inserts_by = "append"  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
 
     def _broadcast_to_instance(self, instance, action):
@@ -21,7 +23,8 @@ class BroadcastableMixin(object):
                 "pk": self.pk,
                 "action": action,
                 "channel_name": channel_name,
-            })
+            },
+        )
 
     def save(self, *args, **kwargs):
         action = self.inserts_by if self._state.adding else "replace"

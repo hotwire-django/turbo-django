@@ -1,6 +1,6 @@
 from django.db.models import Model
 
-default_app_config = 'turbo.apps.TurboDjangoConfig'
+default_app_config = "turbo.apps.TurboDjangoConfig"
 
 
 def make_channel_name(model_label, pk):

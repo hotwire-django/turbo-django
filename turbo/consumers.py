@@ -25,7 +25,9 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         for request_id in self.requests[event["channel_name"]]:
             subscription = self.subscriptions[request_id]
             list_target = subscription.get("list_target") or plural_name
-            element_target = f'{subscription.get("element_prefix") or f"{singular_name}_"}{pk}'
+            element_target = (
+                f'{subscription.get("element_prefix") or f"{singular_name}_"}{pk}'
+            )
 
             if action == "append" or action == "prepend":
                 dom_target = list_target
@@ -35,16 +37,21 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
             instance = model.objects.get(pk=pk)
             app, model_name = model_label.lower().split(".")
 
-            self.send_json({
-                "request_id": request_id,
-                "data": render_to_string('turbo/stream.html', {
-                    "object": instance,
-                    model_name.lower(): instance,
-                    "action": action,
-                    "dom_target": dom_target,
-                    "model_template": f"{app}/{model_name}.html"
-                })
-            })
+            self.send_json(
+                {
+                    "request_id": request_id,
+                    "data": render_to_string(
+                        "turbo/stream.html",
+                        {
+                            "object": instance,
+                            model_name.lower(): instance,
+                            "action": action,
+                            "dom_target": dom_target,
+                            "model_template": f"{app}/{model_name}.html",
+                        },
+                    ),
+                }
+            )
 
     def receive_json(self, content, **kwargs):
         model_label = content.get("model")
@@ -55,7 +62,7 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
 
         self.subscriptions[request_id] = {
             "list_target": content.get("list_target"),
-            "element_prefix": content.get("element_prefix")
+            "element_prefix": content.get("element_prefix"),
         }
         self.requests.setdefault(channel_name, []).append(request_id)
         self.groups.append(channel_name)
