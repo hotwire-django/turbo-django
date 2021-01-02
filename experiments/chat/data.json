@@ -1,0 +1,12 @@
+[
+  { "model": "chat.room", "pk": 1, "fields": { "name": "Demo Room" } },
+  {
+    "model": "chat.message",
+    "pk": 1,
+    "fields": {
+      "room": 1,
+      "text": "demo message",
+      "created_at": "2021-01-01T01:33:57.374Z"
+    }
+  }
+]

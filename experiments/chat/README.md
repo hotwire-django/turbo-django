@@ -8,12 +8,14 @@ To run this demo, after cloning the repository:
 
 ```bash
 cd experiments/chat
-virtualenv -p python 3 ve
+python3 -m venv ve
 souce ve/bin/activate
 pip install -e ../../
+pip install -r requirements.txt
 
 ./manage.py migrate
 ./manage.py createsuperuser
+./manage.py loaddata data.json
 ./manage.py runserver
 ```
 
