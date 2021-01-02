@@ -14,7 +14,7 @@ from turbo import (
 )
 
 
-class BroadcastableMixin(Model):
+class BroadcastableMixin(object):
     broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
     broadcast_self = True  # Whether or not to broadcast updates on this model's own stream.
     inserts_by = APPEND  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
