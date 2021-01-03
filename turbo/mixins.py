@@ -1,17 +1,13 @@
-import turbo
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 from django.db.models import Model
 
+import turbo
 from turbo import (
-    get_channel_name,
     CREATED,
     UPDATED,
     DELETED,
     REPLACE,
     REMOVE,
-    APPEND, send_broadcast,
-)
+    APPEND, )
 
 
 class BroadcastableMixin(object):
