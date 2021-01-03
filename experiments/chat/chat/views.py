@@ -1,7 +1,8 @@
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
-from django.shortcuts import render, get_object_or_404
+
 from .models import Room, Message
 
 
@@ -25,15 +26,10 @@ class MessageCreate(CreateView):
     fields = ["text"]
 
     def get_success_url(self):
-        return reverse("detail", kwargs={"pk": self.kwargs["pk"]})
+        # Redirect to the empty form
+        return reverse("send", kwargs={"pk": self.kwargs["pk"]})
 
     def form_valid(self, form):
         room = get_object_or_404(Room, pk=self.kwargs["pk"])
         form.instance.room = room
-        super().form_valid(form)
-        return render(
-            self.request,
-            "chat/message_update.html",
-            {"message": form.instance},
-            content_type="text/html; turbo-stream;",
-        )
+        return super().form_valid(form)

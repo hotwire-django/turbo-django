@@ -1,3 +1,4 @@
+{% load turbo_streams %}
 <div>
-    <h1 id="room_{{ room.pk }}">{{ room.name }}</h1>
+    <h1 id="{% stream_id room %}">{{ room.name }}</h1>
 </div>

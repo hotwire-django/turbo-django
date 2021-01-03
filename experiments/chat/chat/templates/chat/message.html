@@ -1,1 +1,2 @@
-<li id="message_{{ message.pk }}">{{ message.text }}</li>
+{% load turbo_streams %}
+<li id="{% stream_id message %}">{{ message.text }}</li>

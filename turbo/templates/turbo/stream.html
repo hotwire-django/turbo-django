@@ -1,5 +1,7 @@
 <turbo-stream action="{{ action }}" target="{{ dom_target }}">
   <template>
-    {% include model_template %}
+      {% if model_template %}
+          {% include model_template %}
+      {% endif %}
   </template>
 </turbo-stream>
