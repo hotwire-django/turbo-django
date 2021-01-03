@@ -1,3 +1,4 @@
+import turbo
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -64,5 +65,12 @@ class TriggerBroadcast(BroadcastableMixin, View):
     def get(self, request):
         self.send_broadcast('broadcasts', action=APPEND)
         return HttpResponse('Sent a Broadcast')
+
+
+def second_broadcast_view(request):
+    context = {"broadcast": "This is a broadcast and NO MESSAGE"}
+    turbo.send_broadcast("broadcasts", "messages", APPEND, 'chat/broadcast.html', context)
+
+    return HttpResponse('Sent a Broadcast')
 
 

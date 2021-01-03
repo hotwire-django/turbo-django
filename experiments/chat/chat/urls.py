@@ -9,4 +9,5 @@ urlpatterns = [
     path("<slug:pk>/send", views.MessageCreate.as_view(), name="send"),
     path("wiretap", views.wiretap, name="wiretap"),
     path("broadcast", views.TriggerBroadcast.as_view(), name="broadcast"),
+    path("broadcast2", views.second_broadcast_view, name="broadcast2"),
 ]

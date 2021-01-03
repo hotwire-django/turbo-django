@@ -25,6 +25,10 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
                 "action": action,
                 "dom_target": dom_target,
             }
+
+            if event.get('template') is not None:
+                template_context.update({"model_template": event.get('template')})
+
             # Remove actions don't have contents, so only add context for model
             # template if it's not a remove action.
             if action != REMOVE:

@@ -1,3 +1,4 @@
+import turbo
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.db.models import Model
@@ -9,55 +10,35 @@ from turbo import (
     DELETED,
     REPLACE,
     REMOVE,
-    APPEND,
+    APPEND, send_broadcast,
 )
 
 
 class BroadcastableMixin(object):
     default_stream_action = APPEND
-    broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
     turbo_streams_template = None
 
     def get_turbo_streams_template(self, target):
         raise NotImplementedError
+
+    def get_dom_target(self, target):
+        raise NotImplementedError
+
+    def append_context(self, target):
+        return {}
 
     def _get_context(self, target):
         context = {"model_template": self.get_turbo_streams_template(target)}
         context.update(self.append_context(target))
         return context
 
-    def append_context(self, target):
-        return {}
-
-    def send_broadcast(self, target, action, partial=None):
-        if partial is None:
-            partial = self.get_turbo_streams_template(target)
-
-        channel_layer = get_channel_layer()
-        channel_name = get_channel_name(target)
-        async_to_sync(channel_layer.group_send)(
-            channel_name,
-            {
-                "type": "notify",
-                "action": action,
-                "channel_name": channel_name,
-                "template": partial,
-                "context": self._get_context(target),
-                "dom_target": self.get_dom_target(target),
-            },
-        )
-
-    def broadcast(self, stream_action=None):
-        if stream_action is None:
-            stream_action = self.default_stream_action
-        for channel_name in self.broadcasts_to:
-            self.send_broadcast(channel_name, stream_action)
-
-    def get_dom_target(self, target):
-        return None
+    def send_broadcast(self, target, action):
+        turbo.send_broadcast(target, self.get_dom_target(target), action,
+                             self.get_turbo_streams_template(target), self._get_context(target))
 
 
 class BroadcastableModelMixin(BroadcastableMixin):
+    broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
     broadcast_self = True  # Whether or not to broadcast updates on this model's own stream.
     inserts_by = APPEND  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
 
@@ -68,7 +49,6 @@ class BroadcastableModelMixin(BroadcastableMixin):
         return f"{app_name}/{model_name}.html"
 
     def append_context(self, target):
-
         # Add Custom context
         app_name, model_name = self._meta.label.lower().split(".")
         return {
