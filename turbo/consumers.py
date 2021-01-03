@@ -67,16 +67,26 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
             try:
                 channel_name = signer.unsign(content.get("signed_channel_name", ""))
             except BadSignature:
-                raise TurboStreamException("Signature has been tampered with on the client!")
+                raise TurboStreamException(
+                    "Signature has been tampered with on the client!"
+                )
 
             self.requests.setdefault(channel_name, []).append(request_id)
             self.groups.append(channel_name)
             async_to_sync(self.channel_layer.group_add)(channel_name, self.channel_name)
         elif message_type == "unsubscribe":
             try:
-                channel_name = [channel_name for channel_name, requests in self.requests.items() if request_id in requests][0]
+                channel_name = [
+                    channel_name
+                    for channel_name, requests in self.requests.items()
+                    if request_id in requests
+                ][0]
             except IndexError:
-                raise TurboStreamException("No subscription for a given request ID exists to unsubscribe.")
+                raise TurboStreamException(
+                    "No subscription for a given request ID exists to unsubscribe."
+                )
             self.groups.remove(channel_name)
             if channel_name not in self.groups:
-                async_to_sync(self.channel_layer.group_discard)(channel_name, self.channel_name)
+                async_to_sync(self.channel_layer.group_discard)(
+                    channel_name, self.channel_name
+                )

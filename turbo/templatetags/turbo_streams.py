@@ -6,7 +6,7 @@ from turbo import channel_name_for_instance
 register = template.Library()
 
 
-@register.inclusion_tag('turbo/turbo_stream_source.html')
+@register.inclusion_tag("turbo/turbo_stream_source.html")
 def turbo_stream_from(model_instance):
     # https://docs.djangoproject.com/en/3.1/topics/signing/
     signer = Signer()
@@ -15,7 +15,7 @@ def turbo_stream_from(model_instance):
     return {"signed_channel_name": signed_channel_name}
 
 
-@register.inclusion_tag('turbo/turbo_stream_id.html')
+@register.inclusion_tag("turbo/turbo_stream_id.html")
 def stream_id(model_instance):
     model_name = model_instance._meta.verbose_name.lower()
     pk = model_instance.pk
