@@ -1,0 +1,7 @@
+<form method="post"
+      action="."
+      id="{{ view.turbo_stream_target }}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button>Save</button>
+</form>

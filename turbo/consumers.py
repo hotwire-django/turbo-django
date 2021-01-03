@@ -15,8 +15,8 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         self.requests = dict()
         self.accept()
 
-    def notify(self, event,):
-        extra_context = event["context"]
+    def notify(self, event):
+        # TODO refactor that a bit nicer?
         action = event["action"]
         dom_target = event["dom_target"]
 
@@ -26,18 +26,25 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
                 "dom_target": dom_target,
             }
 
-            if event.get('template') is not None:
-                template_context.update({"model_template": event.get('template')})
+            if event.get('data') is not None:
+                data = event['data']
+            else:
+                extra_context = event.get("context")
+                if event.get('template') is not None:
+                    template_context.update({"model_template": event.get('template')})
 
-            # Remove actions don't have contents, so only add context for model
-            # template if it's not a remove action.
-            if action != REMOVE:
-                template_context.update(extra_context)
+                # Remove actions don't have contents, so only add context for model
+                # template if it's not a remove action.
+                if action != REMOVE:
+                    if extra_context is not None:
+                        template_context.update(extra_context)
+
+                data = render_to_string("turbo/stream.html", template_context)
 
             self.send_json(
                 {
                     "request_id": request_id,
-                    "data": render_to_string("turbo/stream.html", template_context),
+                    "data": data,
                 }
             )
 
@@ -58,7 +65,8 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
             async_to_sync(self.channel_layer.group_add)(channel_name, self.channel_name)
         elif message_type == "unsubscribe":
             try:
-                channel_name = [channel_name for channel_name, requests in self.requests.items() if request_id in requests][0]
+                channel_name = \
+                [channel_name for channel_name, requests in self.requests.items() if request_id in requests][0]
             except IndexError:
                 raise TurboStreamException("No subscription for a given request ID exists to unsubscribe.")
             self.groups.remove(channel_name)

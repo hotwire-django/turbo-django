@@ -6,8 +6,8 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
-from turbo import APPEND
 from turbo.mixins import BroadcastableMixin
+from turbo.response import TurboStreamTemplateResponse, Action, TurboStreamResponse
 from .models import Room, Message
 
 
@@ -63,13 +63,17 @@ class TriggerBroadcast(BroadcastableMixin, View):
         return f'messages'
 
     def get(self, request):
-        self.send_broadcast('broadcasts', action=APPEND)
+        self.send_broadcast('broadcasts', action=turbo.APPEND)
         return HttpResponse('Sent a Broadcast')
 
 
 def second_broadcast_view(request):
     context = {"broadcast": "This is a broadcast and NO MESSAGE"}
-    turbo.send_broadcast("broadcasts", "messages", APPEND, 'chat/broadcast.html', context)
+    turbo.send_broadcast("broadcasts", "messages", turbo.APPEND, 'chat/broadcast.html', context)
+    TurboStreamTemplateResponse(request, 'chat/broadcast.html', {"broadcast": "Hello from Template.broadcast" }, action=Action.APPEND, target="messages")\
+        .broadcast("broadcasts")
+    TurboStreamResponse(content='Hallo from Stream.broadcast', action=Action.APPEND, target="messages")\
+        .broadcast("broadcasts")
 
     return HttpResponse('Sent a Broadcast')
 

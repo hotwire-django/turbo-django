@@ -11,6 +11,9 @@ from turbo import (
 
 
 class BroadcastableMixin(object):
+    """
+    TODO Do we need this or should this be merged into the ModelMixin?
+    """
     default_stream_action = APPEND
     turbo_streams_template = None
 
@@ -94,3 +97,12 @@ class BroadcastableModelMixin(BroadcastableMixin):
     def delete(self, *args, **kwargs):
         self.broadcast(DELETED)
         super().delete(*args, **kwargs)
+
+
+class Broadcastable(object):
+    """
+    Generic class to allow classes to directly Broadcast themselves
+    """
+
+    def broadcast(self, target):
+        ...
