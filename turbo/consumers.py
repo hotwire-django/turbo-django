@@ -16,24 +16,12 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         self.requests = dict()
         self.accept()
 
-    def notify(self, event, *args, **kwargs):
-        template = event["template"]
+    def notify(self, event):
         extra_context = event["context"]
-        model_label = event["model"]
-        model = apps.get_model(model_label)
-
-        pk = event["pk"]
         action = event["action"]
-        to_list = event["to_list"]
-
-        if to_list:
-            dom_target = model._meta.verbose_name_plural.lower()
-        else:
-            dom_target = f"{model._meta.verbose_name.lower()}_{pk}"
+        dom_target = event["dom_target"]
 
         for request_id in self.requests[event["channel_name"]]:
-            instance = model.objects.get(pk=pk)
-            app, model_name = model_label.lower().split(".")
             template_context = {
                 "action": action,
                 "dom_target": dom_target,
@@ -41,14 +29,7 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
             # Remove actions don't have contents, so only add context for model
             # template if it's not a remove action.
             if action != REMOVE:
-                template_context.update(
-                    {
-                        "object": instance,
-                        model_name.lower(): instance,
-                        "model_template": template,
-                        **extra_context,
-                    }
-                )
+                template_context.update(extra_context)
 
             self.send_json(
                 {

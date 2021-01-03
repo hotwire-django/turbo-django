@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -34,4 +34,7 @@ class MessageCreate(CreateView):
         form.instance.room = room
         return super().form_valid(form)
 
+
+def wiretap(request):
+    return render(request, 'chat/wiretap.html', {})
 
