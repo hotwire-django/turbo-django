@@ -1,24 +1,20 @@
-from asgiref.sync import async_to_sync
+from django.db.models import Model
 
-from channels.layers import get_channel_layer
-
+import turbo
 from turbo import (
-    channel_name_for_instance,
     CREATED,
     UPDATED,
     DELETED,
     REPLACE,
     REMOVE,
-    APPEND,
-)
+    APPEND, )
 
 
-class BroadcastableMixin(object):
+class BroadcastableModelMixin(object):
     broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
-    broadcast_self = (
-        True  # Whether or not to broadcast updates on this model's own stream.
-    )
+    broadcast_self = True  # Whether or not to broadcast updates on this model's own stream.
     inserts_by = APPEND  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
+    default_stream_action = APPEND
     turbo_streams_template = None
 
     def get_turbo_streams_template(self):
@@ -27,31 +23,7 @@ class BroadcastableMixin(object):
         app_name, model_name = self._meta.label.lower().split(".")
         return f"{app_name}/{model_name}.html"
 
-    def broadcast_to_instance(
-        self, instance, action, to_list, partial=None, context=None
-    ):
-        if context is None:
-            context = dict()
-        if partial is None:
-            partial = self.get_turbo_streams_template()
-
-        channel_layer = get_channel_layer()
-        channel_name = channel_name_for_instance(instance)
-        async_to_sync(channel_layer.group_send)(
-            channel_name,
-            {
-                "type": "notify",
-                "model": self._meta.label,
-                "pk": self.pk,
-                "action": action,
-                "channel_name": channel_name,
-                "template": partial,
-                "context": context,
-                "to_list": to_list,
-            },
-        )
-
-    def broadcast(self, model_action):
+    def get_action(self, model_action):
         if model_action == CREATED:
             streams_action = self.inserts_by
         elif model_action == UPDATED:
@@ -60,15 +32,44 @@ class BroadcastableMixin(object):
             streams_action = REMOVE
         else:  # TODO: What should the default be?
             streams_action = REPLACE
+        return streams_action
+
+    def broadcast(self, model_action):
+        streams_action = self.get_action(model_action)
 
         if self.broadcast_self:
-            self.broadcast_to_instance(self, streams_action, to_list=False)
+            self.send_broadcast(self, streams_action)
 
         for field_name in self.broadcasts_to:
             if hasattr(self, field_name):
-                self.broadcast_to_instance(
-                    getattr(self, field_name), streams_action, to_list=True
-                )
+                self.send_broadcast(
+                    getattr(self, field_name), streams_action)
+            else:
+                self.send_broadcast(field_name, streams_action)
+
+    def _get_context(self):
+        app_name, model_name = self._meta.label.lower().split(".")
+        return {
+            "model_template": self.get_turbo_streams_template(),
+            "object": self,
+            model_name: self
+        }
+
+    def send_broadcast(self, target, action):
+        turbo.send_broadcast(target, self.get_dom_target(target), action,
+                             self.get_turbo_streams_template(), self._get_context())
+
+    def get_dom_target(self, target):
+        if isinstance(target, Model):
+            model: Model = target
+            if self._meta.model != model:
+                # Broadcast to self
+                return self._meta.verbose_name_plural.lower()
+            else:
+                return f"{self._meta.verbose_name.lower()}_{self.pk}"
+        else:
+            return f'{target.lower(
+                )}'
 
     def save(self, *args, **kwargs):
         creating = self._state.adding

@@ -1,7 +1,8 @@
 from django import template
 from django.core.signing import Signer
+from django.db.models import Model
 
-from turbo import channel_name_for_instance
+from turbo import get_channel_name
 
 register = template.Library()
 
@@ -10,7 +11,7 @@ register = template.Library()
 def turbo_stream_from(model_instance):
     # https://docs.djangoproject.com/en/3.1/topics/signing/
     signer = Signer()
-    channel_name = channel_name_for_instance(model_instance)
+    channel_name = get_channel_name(model_instance)
     signed_channel_name = signer.sign(channel_name)
     return {"signed_channel_name": signed_channel_name}
 

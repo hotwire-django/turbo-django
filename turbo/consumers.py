@@ -1,8 +1,7 @@
-from channels.generic.websocket import JsonWebsocketConsumer
 from asgiref.sync import async_to_sync
-from django.apps import apps
-from django.template.loader import render_to_string
+from channels.generic.websocket import JsonWebsocketConsumer
 from django.core.signing import Signer, BadSignature
+from django.template.loader import render_to_string
 
 from turbo import REMOVE
 
@@ -17,32 +16,25 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
     def connect(self):
         self.accept()
 
-    def notify(self, event, *args, **kwargs):
-        template = event["template"]
+    def notify(self, event,):
         extra_context = event["context"]
-        model_label = event["model"]
-        model = apps.get_model(model_label)
-
-        pk = event["pk"]
         action = event["action"]
-        to_list = event["to_list"]
-
-        if to_list:
-            dom_target = model._meta.verbose_name_plural.lower()
-        else:
-            dom_target = f"{model._meta.verbose_name.lower()}_{pk}"
+        dom_target = event["dom_target"]
 
         instance = model.objects.get(pk=pk)
         app, model_name = model_label.lower().split(".")
-        template_context = {
-            "action": action,
-            "dom_target": dom_target,
-        }
-        # Remove actions don't have contents, so only add context for model
-        # template if it's not a remove action.
-        if action != REMOVE:
-            template_context.update(
-                {
+            template_context = {
+                "action": action,
+                "dom_target": dom_target,
+            }
+
+            if event.get('template') is not None:
+                template_context.update({"model_template": event.get('template')})
+
+            # Remove actions don't have contents, so only add context for model
+            # template if it's not a remove action.
+            if action != REMOVE:
+                template_context.update({
                     "object": instance,
                     model_name.lower(): instance,
                     "model_template": template,
