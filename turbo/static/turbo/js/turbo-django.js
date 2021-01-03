@@ -13,6 +13,7 @@
     constructor() {
       super();
       this.request_id = TurboChannelsStreamSource.counter++;
+      socket.reconnect();
     }
 
     async connectedCallback() {
