@@ -17,8 +17,6 @@ As we discover this new magic, you can expect to see a few repositories with exp
 
 We expect to gain knowledge and experience with Hotwire over time and will try to extract useful code from the demos and package it in self contained "pip-installable" packages: [turbo-django](https://github.com/hotwire-django/turbo-django) and [stimulus-django](https://github.com/hotwire-django/stimulus-django).
 
-As we are several to experiment on the integration, I suggest we all dump our code in a sub-directory of `experiments/` so we can all benefit from the ideas of others. Improvements and utilities can then be generalized out into the `turbo` package at the top-level.
-
 ## Structure
 The `turbo` directory contains the package with helpers, templatetags and utilities for integrating Turbo tightly into Django. Currently, it contains a `Broadcastable` mixin and a Django Channels websocket consumer to allow for realtime updates with Turbo Streams.
 
