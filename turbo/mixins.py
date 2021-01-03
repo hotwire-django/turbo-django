@@ -10,47 +10,18 @@ from turbo import (
     APPEND, )
 
 
-class BroadcastableMixin(object):
-    default_stream_action = APPEND
-    turbo_streams_template = None
-
-    def get_turbo_streams_template(self, target):
-        raise NotImplementedError
-
-    def get_dom_target(self, target):
-        raise NotImplementedError
-
-    def append_context(self, target):
-        return {}
-
-    def _get_context(self, target):
-        context = {"model_template": self.get_turbo_streams_template(target)}
-        context.update(self.append_context(target))
-        return context
-
-    def send_broadcast(self, target, action):
-        turbo.send_broadcast(target, self.get_dom_target(target), action,
-                             self.get_turbo_streams_template(target), self._get_context(target))
-
-
-class BroadcastableModelMixin(BroadcastableMixin):
+class BroadcastableModelMixin(object):
     broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
     broadcast_self = True  # Whether or not to broadcast updates on this model's own stream.
     inserts_by = APPEND  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
+    default_stream_action = APPEND
+    turbo_streams_template = None
 
-    def get_turbo_streams_template(self, target):
+    def get_turbo_streams_template(self):
         if self.turbo_streams_template is not None:
             return self.turbo_streams_template
         app_name, model_name = self._meta.label.lower().split(".")
         return f"{app_name}/{model_name}.html"
-
-    def append_context(self, target):
-        # Add Custom context
-        app_name, model_name = self._meta.label.lower().split(".")
-        return {
-            "object": self,
-            model_name: self
-        }
 
     def get_action(self, model_action):
         if model_action == CREATED:
@@ -74,6 +45,18 @@ class BroadcastableModelMixin(BroadcastableMixin):
                 self.send_broadcast(getattr(self, field_name), streams_action)
             else:
                 self.send_broadcast(field_name, streams_action)
+
+    def _get_context(self):
+        app_name, model_name = self._meta.label.lower().split(".")
+        return {
+            "model_template": self.get_turbo_streams_template(),
+            "object": self,
+            model_name: self
+        }
+
+    def send_broadcast(self, target, action):
+        turbo.send_broadcast(target, self.get_dom_target(target), action,
+                             self.get_turbo_streams_template(), self._get_context())
 
     def get_dom_target(self, target):
         if isinstance(target, Model):

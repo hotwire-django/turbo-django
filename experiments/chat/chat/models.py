@@ -17,12 +17,6 @@ class Message(BroadcastableModelMixin, models.Model):
     broadcasts_to = ["room", "all-rooms"]
     broadcast_self = False
 
-    def get_turbo_streams_template(self, target):
-        if isinstance(target, Room):
-            return 'chat/message.html'
-        else:
-            return 'chat/message_with_room.html'
-
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
