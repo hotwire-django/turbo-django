@@ -8,12 +8,12 @@ from .models import Room, Message
 
 class RoomList(ListView):
     model = Room
-    context_object_name = 'rooms'
+    context_object_name = "rooms"
 
 
 class RoomDetail(DetailView):
     model = Room
-    context_object_name = 'room'
+    context_object_name = "room"
 
 
 class RoomUpdate(UpdateView):
@@ -33,5 +33,3 @@ class MessageCreate(CreateView):
         room = get_object_or_404(Room, pk=self.kwargs["pk"])
         form.instance.room = room
         return super().form_valid(form)
-
-
