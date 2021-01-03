@@ -1,7 +1,4 @@
-from abc import ABC, abstractmethod
-
 from asgiref.sync import async_to_sync
-
 from channels.layers import get_channel_layer
 from django.db.models import Model
 
