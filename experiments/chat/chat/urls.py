@@ -8,4 +8,5 @@ urlpatterns = [
     path("<slug:pk>/edit", views.RoomUpdate.as_view(), name="update"),
     path("<slug:pk>/send", views.MessageCreate.as_view(), name="send"),
     path("wiretap", views.wiretap, name="wiretap"),
+    path("broadcast", views.TriggerBroadcast.as_view(), name="broadcast"),
 ]

@@ -15,7 +15,7 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         self.requests = dict()
         self.accept()
 
-    def notify(self, event):
+    def notify(self, event,):
         extra_context = event["context"]
         action = event["action"]
         dom_target = event["dom_target"]
