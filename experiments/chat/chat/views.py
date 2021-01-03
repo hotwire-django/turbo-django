@@ -53,18 +53,16 @@ class TriggerBroadcast(BroadcastableMixin, View):
     """
 
     def get_turbo_streams_template(self, target):
-        return 'chat/message.html'
+        return 'chat/broadcast.html'
 
     def append_context(self, target):
-        return {"message": Message(text="This is a broadcast that will not be stored as Message!")}
+        return {"broadcast": "This is a broadcast and NO MESSAGE"}
 
     def get_dom_target(self, target):
         return f'messages'
 
     def get(self, request):
-        rooms = Room.objects.all()
-        for room in rooms:
-            self.send_broadcast(room, action=APPEND)
+        self.send_broadcast('broadcasts', action=APPEND)
         return HttpResponse('Sent a Broadcast')
 
 

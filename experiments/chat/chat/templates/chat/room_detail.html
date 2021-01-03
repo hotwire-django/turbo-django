@@ -18,6 +18,7 @@
     <a href="{% url 'update' room.pk %}">Edit</a>
 </turbo-frame>
 {% turbo_stream_from room %}
+{% turbo_stream_from 'broadcasts' %}
 <turbo-frame id="messages-frame">
      <ul id="messages">
         {% for message in room.messages.all %}

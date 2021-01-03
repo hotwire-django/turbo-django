@@ -19,7 +19,7 @@ class BroadcastableMixin(object):
     turbo_streams_template = None
 
     def get_turbo_streams_template(self, target):
-        raise Exception('No Template known!')
+        raise NotImplementedError
 
     def _get_context(self, target):
         context = {"model_template": self.get_turbo_streams_template(target)}
