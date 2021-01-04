@@ -13,7 +13,6 @@
     constructor() {
       super();
       this.request_id = TurboChannelsStreamSource.counter++;
-      socket.reconnect();
     }
 
     async connectedCallback() {
@@ -24,6 +23,13 @@
           JSON.stringify({ request_id: this.request_id, type: "subscribe", ...this.subscription })
         );
       });
+
+      // If connection is already open, just send the subscription
+      if (socket.readyState == ReconnectingWebSocket.OPEN) {
+        socket.send(
+            JSON.stringify({ request_id: this.request_id, type: "subscribe", ...this.subscription })
+        );
+      }
 
       socket.addEventListener("message", (e) => {
         const broadcast = JSON.parse(e.data);
