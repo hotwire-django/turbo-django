@@ -14,6 +14,7 @@ class Room(BroadcastableMixin, models.Model):
 class Message(BroadcastableMixin, models.Model):
     def hi(self):
         self._meta.model_name
+
     broadcasts_to = ["room"]
     broadcast_self = False
 

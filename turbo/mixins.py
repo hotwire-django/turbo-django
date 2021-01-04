@@ -15,7 +15,9 @@ from turbo import (
 
 class BroadcastableMixin(object):
     broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
-    broadcast_self = True  # Whether or not to broadcast updates on this model's own stream.
+    broadcast_self = (
+        True  # Whether or not to broadcast updates on this model's own stream.
+    )
     inserts_by = APPEND  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
     turbo_streams_template = None
 
@@ -25,7 +27,9 @@ class BroadcastableMixin(object):
         app_name, model_name = self._meta.label.lower().split(".")
         return f"{app_name}/{model_name}.html"
 
-    def broadcast_to_instance(self, instance, action, to_list, partial=None, context=None):
+    def broadcast_to_instance(
+        self, instance, action, to_list, partial=None, context=None
+    ):
         if context is None:
             context = dict()
         if partial is None:
@@ -62,7 +66,9 @@ class BroadcastableMixin(object):
 
         for field_name in self.broadcasts_to:
             if hasattr(self, field_name):
-                self.broadcast_to_instance(getattr(self, field_name), streams_action, to_list=True)
+                self.broadcast_to_instance(
+                    getattr(self, field_name), streams_action, to_list=True
+                )
 
     def save(self, *args, **kwargs):
         creating = self._state.adding
