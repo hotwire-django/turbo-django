@@ -7,34 +7,33 @@
   );
 
   class TurboChannelsStreamSource extends HTMLElement {
-    static counter = 0;
-    request_id;
-
     constructor() {
       super();
-      this.request_id = TurboChannelsStreamSource.counter++;
     }
 
     async connectedCallback() {
       Turbo.connectStreamSource(this);
-
-      socket.addEventListener("open", (e) => {
-        socket.send(
-          JSON.stringify({ request_id: this.request_id, type: "subscribe", ...this.subscription })
-        );
-      });
+      if (socket.readyState !== WebSocket.OPEN) {
+        socket.addEventListener("open", (e) => {
+          this.subscribe();
+        });
+      } else {
+        this.subscribe();
+      }
 
       socket.addEventListener("message", (e) => {
         const broadcast = JSON.parse(e.data);
-        if (broadcast.request_id === this.request_id) {
+        if (broadcast.signed_channel_name === this.channelName) {
           this.dispatchMessageEvent(broadcast.data);
         }
       });
     }
 
     disconnectedCallback() {
-      socket.send(JSON.stringify({ request_id: this.request_id, type: "unsubscribe" }))
       Turbo.disconnectStreamSource(this);
+      socket.send(
+        JSON.stringify({ ...this.subscription, type: "unsubscribe" })
+      );
     }
 
     dispatchMessageEvent(data) {
@@ -42,9 +41,16 @@
       return this.dispatchEvent(event);
     }
 
+    get channelName() {
+      return this.getAttribute("signed-channel-name");
+    }
+
     get subscription() {
-      const signed_channel_name = this.getAttribute("signed-channel-name")
-      return { signed_channel_name };
+      return { signed_channel_name: this.channelName };
+    }
+
+    subscribe() {
+      socket.send(JSON.stringify({ type: "subscribe", ...this.subscription }));
     }
   }
 

@@ -13,6 +13,7 @@
     {% include "turbo/head.html" %}
 </head>
 <body>
+<a href="/">Home</a>
 <turbo-frame id="update-room">
     {% include 'chat/room.html' %}
     <a href="{% url 'update' room.pk %}">Edit</a>

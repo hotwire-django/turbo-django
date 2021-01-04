@@ -15,8 +15,8 @@ def turbo_stream_from(model_instance):
     return {"signed_channel_name": signed_channel_name}
 
 
-@register.inclusion_tag("turbo/turbo_stream_id.html")
+@register.simple_tag
 def stream_id(model_instance):
     model_name = model_instance._meta.verbose_name.lower()
     pk = model_instance.pk
-    return {"dom_id": f"{model_name}_{pk}"}
+    return f"{model_name}_{pk}"
