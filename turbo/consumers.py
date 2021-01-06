@@ -2,11 +2,15 @@ from channels.generic.websocket import JsonWebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.apps import apps
 from django.template.loader import render_to_string
-from django.core.signing import Signer
+from django.core.signing import Signer, BadSignature
 
 from turbo import REMOVE
 
 signer = Signer()
+
+
+class TurboStreamException(Exception):
+    pass
 
 
 class TurboStreamsConsumer(JsonWebsocketConsumer):
@@ -54,7 +58,12 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         )
 
     def receive_json(self, content, **kwargs):
-        channel_name = signer.unsign(content["signed_channel_name"])
+        try:
+            channel_name = signer.unsign(content["signed_channel_name"])
+        except (BadSignature, KeyError):
+            raise TurboStreamException(
+                "Signature is invalid or not present. This could be due to a misbehaving client."
+            )
         message_type = content["type"]
         if message_type == "subscribe":
             async_to_sync(self.channel_layer.group_add)(channel_name, self.channel_name)
