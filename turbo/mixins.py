@@ -7,7 +7,8 @@ from turbo import (
     DELETED,
     REPLACE,
     REMOVE,
-    APPEND, )
+    APPEND,
+)
 
 
 class BroadcastableMixin(object):
@@ -36,7 +37,6 @@ class BroadcastableMixin(object):
             streams_action = REPLACE
         return streams_action
 
-
     def broadcast(self, model_action):
         streams_action = self.get_action(model_action)
 
@@ -52,10 +52,16 @@ class BroadcastableMixin(object):
     def get_context(self):
         return dict()
 
-    def send_broadcast(self, target, action):
-        turbo.broadcast_stream(target, self.get_dom_target(target), action,
-                               self.get_turbo_streams_template(), self.get_context(),
-                               send_type="notify.model", extra_palyoad={"pk": self.pk, "model": self._meta.model._meta.label})
+    def send_broadcast(self, stream_target, stream_action):
+        turbo.broadcast_stream(
+            stream_target,
+            self.get_dom_target(stream_target),
+            stream_action,
+            self.get_turbo_streams_template(),
+            self.get_context(),
+            send_type="notify.model",
+            extra_palyoad={"pk": self.pk, "model": self._meta.model._meta.label},
+        )
 
     def get_dom_target(self, target):
         if isinstance(target, Model):
@@ -66,7 +72,7 @@ class BroadcastableMixin(object):
             else:
                 return f"{self._meta.verbose_name.lower()}_{self.pk}"
         else:
-            return f'{target.lower()}'
+            return f"{target.lower()}"
 
     def save(self, *args, **kwargs):
         creating = self._state.adding

@@ -22,14 +22,19 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         model = apps.get_model(model_label)
         app, model_name = model_label.lower().split(".")
         instance = model.objects.get(pk=event["pk"])
-        event["context"].update({
-            "object": instance,
-            model_name: instance,
-        })
+        event["context"].update(
+            {
+                "object": instance,
+                model_name: instance,
+            }
+        )
 
         self.notify(event)
 
-    def notify(self, event,):
+    def notify(
+        self,
+        event,
+    ):
         extra_context = event["context"]
         action = event["action"]
         dom_target = event["dom_target"]
@@ -40,7 +45,7 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         # Remove actions don't have contents, so only add context for model
         # template if it's not a remove action.
         if action != REMOVE:
-            template_context.update({"model_template": event.get('template')})
+            template_context.update({"model_template": event.get("template")})
             template_context.update(extra_context)
 
         signed_channel_name = signer.sign(event["channel_name"])

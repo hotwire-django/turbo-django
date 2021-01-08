@@ -32,7 +32,15 @@ REPLACE = "replace"
 REMOVE = "remove"
 
 
-def broadcast_stream(stream_target, dom_target, action, template, context, send_type="notify", extra_palyoad=None):
+def broadcast_stream(
+    stream_target,
+    dom_target,
+    action,
+    template,
+    context,
+    send_type="notify",
+    extra_palyoad=None,
+):
     """
     Send a Broadcast to all Websocket Clients registered to a specifc stream!
     """
@@ -49,6 +57,6 @@ def broadcast_stream(stream_target, dom_target, action, template, context, send_
             "template": template,
             "context": context,
             "dom_target": dom_target,
-            **extra_palyoad
+            **extra_palyoad,
         },
     )

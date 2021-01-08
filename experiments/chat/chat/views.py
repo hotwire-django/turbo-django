@@ -41,13 +41,13 @@ def wiretap(request):
     """
     This is a View that just receives all messages sent in all rooms while its connected.
     """
-    return render(request, 'chat/wiretap.html', {})
+    return render(request, "chat/wiretap.html", {})
 
 
 def second_broadcast_view(request):
     context = {"broadcast": "This is a broadcast and NO MESSAGE"}
-    turbo.send_broadcast("broadcasts", "messages", APPEND, 'chat/broadcast.html', context)
+    turbo.broadcast_stream(
+        "broadcasts", "messages", APPEND, "chat/broadcast.html", context
+    )
 
-    return HttpResponse('Sent a Broadcast')
-
-
+    return HttpResponse("Sent a Broadcast")
