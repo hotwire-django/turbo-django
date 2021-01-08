@@ -5,14 +5,14 @@
   const socket = new ReconnectingWebSocket(
     `${protocol}://${location.hostname}${port}/ws/`
   );
+  let counter = 0;
 
   class TurboChannelsStreamSource extends HTMLElement {
-    static counter = 0;
     request_id;
 
     constructor() {
       super();
-      this.request_id = TurboChannelsStreamSource.counter++;
+      this.request_id = counter++;
     }
 
     async connectedCallback() {

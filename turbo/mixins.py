@@ -10,7 +10,7 @@ from turbo import (
     APPEND, )
 
 
-class BroadcastableModelMixin(object):
+class BroadcastableMixin(object):
     broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
     broadcast_self = True  # Whether or not to broadcast updates on this model's own stream.
     inserts_by = APPEND  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
@@ -46,17 +46,13 @@ class BroadcastableModelMixin(object):
             else:
                 self.send_broadcast(field_name, streams_action)
 
-    def _get_context(self):
-        app_name, model_name = self._meta.label.lower().split(".")
-        return {
-            "model_template": self.get_turbo_streams_template(),
-            "object": self,
-            model_name: self
-        }
+    def get_context(self):
+        return dict()
 
     def send_broadcast(self, target, action):
-        turbo.send_broadcast(target, self.get_dom_target(target), action,
-                             self.get_turbo_streams_template(), self._get_context())
+        turbo.broadcast_stream(target, self.get_dom_target(target), action,
+                               self.get_turbo_streams_template(), self.get_context(),
+                               send_type="notify.model", extra_palyoad={"pk": self.pk, "model": self._meta.model._meta.label})
 
     def get_dom_target(self, target):
         if isinstance(target, Model):

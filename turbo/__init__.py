@@ -32,20 +32,23 @@ REPLACE = "replace"
 REMOVE = "remove"
 
 
-def send_broadcast(stream_target, dom_target, action, template, context):
+def broadcast_stream(stream_target, dom_target, action, template, context, send_type="notify", extra_palyoad=None):
     """
     Send a Broadcast to all Websocket Clients registered to a specifc stream!
     """
+    if extra_palyoad is None:
+        extra_palyoad = dict()
     channel_layer = get_channel_layer()
     channel_name = get_channel_name(stream_target)
     async_to_sync(channel_layer.group_send)(
         channel_name,
         {
-            "type": "notify",
+            "type": send_type,
             "action": action,
             "channel_name": channel_name,
             "template": template,
             "context": context,
             "dom_target": dom_target,
+            **extra_palyoad
         },
     )

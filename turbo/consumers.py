@@ -1,5 +1,6 @@
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import JsonWebsocketConsumer
+from django.apps import apps
 from django.core.signing import Signer, BadSignature
 from django.template.loader import render_to_string
 
@@ -15,6 +16,18 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         self.requests = dict()
         self.accept()
 
+    def notify_model(self, event):
+        model_label = event["model"]
+        model = apps.get_model(model_label)
+        app, model_name = model_label.lower().split(".")
+        instance = model.objects.get(pk=event["pk"])
+        event["context"].update({
+            "object": instance,
+            model_name: instance,
+        })
+
+        self.notify(event)
+
     def notify(self, event,):
         extra_context = event["context"]
         action = event["action"]
@@ -26,12 +39,10 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
                 "dom_target": dom_target,
             }
 
-            if event.get('template') is not None:
-                template_context.update({"model_template": event.get('template')})
-
             # Remove actions don't have contents, so only add context for model
             # template if it's not a remove action.
             if action != REMOVE:
+                template_context.update({"model_template": event.get('template')})
                 template_context.update(extra_context)
 
             self.send_json(
@@ -52,7 +63,6 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
                 channel_name = signer.unsign(content.get("signed_channel_name", ""))
             except BadSignature:
                 raise TurboStreamException("Signature has been tampered with on the client!")
-
             self.requests.setdefault(channel_name, []).append(request_id)
             self.groups.append(channel_name)
             async_to_sync(self.channel_layer.group_add)(channel_name, self.channel_name)
