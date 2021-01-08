@@ -6,6 +6,8 @@ from django.template.loader import render_to_string
 
 from turbo import REMOVE
 
+signer = Signer()
+
 
 class TurboStreamException(Exception):
     pass
@@ -13,7 +15,6 @@ class TurboStreamException(Exception):
 
 class TurboStreamsConsumer(JsonWebsocketConsumer):
     def connect(self):
-        self.requests = dict()
         self.accept()
 
     def notify_model(self, event):
@@ -32,45 +33,35 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         extra_context = event["context"]
         action = event["action"]
         dom_target = event["dom_target"]
+        template_context = {
+            "action": action,
+            "dom_target": dom_target,
+        }
+        # Remove actions don't have contents, so only add context for model
+        # template if it's not a remove action.
+        if action != REMOVE:
+            template_context.update({"model_template": event.get('template')})
+            template_context.update(extra_context)
 
-        for request_id in self.requests[event["channel_name"]]:
-            template_context = {
-                "action": action,
-                "dom_target": dom_target,
+        signed_channel_name = signer.sign(event["channel_name"])
+        self.send_json(
+            {
+                "signed_channel_name": signed_channel_name,
+                "data": render_to_string("turbo/stream.html", template_context),
             }
-
-            # Remove actions don't have contents, so only add context for model
-            # template if it's not a remove action.
-            if action != REMOVE:
-                template_context.update({"model_template": event.get('template')})
-                template_context.update(extra_context)
-
-            self.send_json(
-                {
-                    "request_id": request_id,
-                    "data": render_to_string("turbo/stream.html", template_context),
-                }
-            )
+        )
 
     def receive_json(self, content, **kwargs):
-        signer = Signer()
-        request_id = content.get("request_id")
-        if request_id is None:
-            raise TurboStreamException("No request_id in subscription request.")
-        message_type = content.get("type")
+        try:
+            channel_name = signer.unsign(content["signed_channel_name"])
+        except (BadSignature, KeyError):
+            raise TurboStreamException(
+                "Signature is invalid or not present. This could be due to a misbehaving client."
+            )
+        message_type = content["type"]
         if message_type == "subscribe":
-            try:
-                channel_name = signer.unsign(content.get("signed_channel_name", ""))
-            except BadSignature:
-                raise TurboStreamException("Signature has been tampered with on the client!")
-            self.requests.setdefault(channel_name, []).append(request_id)
-            self.groups.append(channel_name)
             async_to_sync(self.channel_layer.group_add)(channel_name, self.channel_name)
         elif message_type == "unsubscribe":
-            try:
-                channel_name = [channel_name for channel_name, requests in self.requests.items() if request_id in requests][0]
-            except IndexError:
-                raise TurboStreamException("No subscription for a given request ID exists to unsubscribe.")
-            self.groups.remove(channel_name)
-            if channel_name not in self.groups:
-                async_to_sync(self.channel_layer.group_discard)(channel_name, self.channel_name)
+            async_to_sync(self.channel_layer.group_discard)(
+                channel_name, self.channel_name
+            )

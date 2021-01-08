@@ -12,7 +12,9 @@ from turbo import (
 
 class BroadcastableMixin(object):
     broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
-    broadcast_self = True  # Whether or not to broadcast updates on this model's own stream.
+    broadcast_self = (
+        True  # Whether or not to broadcast updates on this model's own stream.
+    )
     inserts_by = APPEND  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
     default_stream_action = APPEND
     turbo_streams_template = None
@@ -33,6 +35,7 @@ class BroadcastableMixin(object):
         else:  # TODO: What should the default be?
             streams_action = REPLACE
         return streams_action
+
 
     def broadcast(self, model_action):
         streams_action = self.get_action(model_action)

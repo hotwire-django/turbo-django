@@ -2,22 +2,20 @@ import turbo
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
-
 from turbo import APPEND
 from .models import Room, Message
 
 
 class RoomList(ListView):
     model = Room
-    context_object_name = 'rooms'
+    context_object_name = "rooms"
 
 
 class RoomDetail(DetailView):
     model = Room
-    context_object_name = 'room'
+    context_object_name = "room"
 
 
 class RoomUpdate(UpdateView):
