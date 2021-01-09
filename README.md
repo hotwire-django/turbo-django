@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/turbo-django/badge/?version=latest)](https://turbo-django.readthedocs.io/en/latest/?badge=latest)
+
 _Note_: This is not ready for production. APIs likely to change dramatically. Please drop by our [Slack channel](https://join.slack.com/t/pragmaticmindsgruppe/shared_invite/zt-kl0e0plt-uXGQ1PUt5yRohLNYcVvhhQ) to discuss!
 
 # Turbo for Django
