@@ -1,3 +1,4 @@
 - [Nikita Marchant](https://github.com/C4ptainCrunch)
 - [Davis Haupt](https://github.com/davish)
 - [Bo Lopker](https://github.com/blopker)
+- [Julian Feinauer](https://github.com/JulianFeinauer/)
