@@ -12,10 +12,7 @@ class Room(BroadcastableMixin, models.Model):
 
 
 class Message(BroadcastableMixin, models.Model):
-    def hi(self):
-        self._meta.model_name
-
-    broadcasts_to = ["room"]
+    broadcasts_to = ["room", "all-rooms"]
     broadcast_self = False
 
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)

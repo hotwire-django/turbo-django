@@ -5,6 +5,7 @@
   const socket = new ReconnectingWebSocket(
     `${protocol}://${location.hostname}${port}/ws/`
   );
+  let counter = 0;
 
   class TurboChannelsStreamSource extends HTMLElement {
     constructor() {

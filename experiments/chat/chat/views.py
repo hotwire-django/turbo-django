@@ -1,8 +1,10 @@
-from django.shortcuts import get_object_or_404
+import turbo
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
-
+from turbo import APPEND
 from .models import Room, Message
 
 
@@ -33,3 +35,19 @@ class MessageCreate(CreateView):
         room = get_object_or_404(Room, pk=self.kwargs["pk"])
         form.instance.room = room
         return super().form_valid(form)
+
+
+def wiretap(request):
+    """
+    This is a View that just receives all messages sent in all rooms while its connected.
+    """
+    return render(request, "chat/wiretap.html", {})
+
+
+def second_broadcast_view(request):
+    context = {"broadcast": "This is a broadcast and NO MESSAGE"}
+    turbo.broadcast_stream(
+        "broadcasts", "messages", APPEND, "chat/broadcast.html", context
+    )
+
+    return HttpResponse("Sent a Broadcast")
