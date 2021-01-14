@@ -15,12 +15,12 @@ _Note_: This is not ready for production. APIs likely to change dramatically. Pl
 
 ## Documentation
 
-Documentation is hosted on readthedocs [here](https://turbo-django.readthedocs.io/en/latest/index.html).
+Documentation is hosted on readthedocs [here](https://turbo-django.readthedocs.io/en/release-0.1/).
 
 ## Description
 
 This repository aims to help you integrate [Hotwire Turbo](https://turbo.hotwire.dev/) with Django. Inspiration taken from [@hotwired/turbo-rails](https://github.com/hotwired/turbo-rails).
-Documentation can be found on [readthedocs.org](https://turbo-django.readthedocs.io/en/latest/index.html) for the current integration.
+Documentation of the latest development version can be found on [readthedocs.org](https://turbo-django.readthedocs.io/en/latest/index.html).
 
 Discussions about a Django/Hotwire integration are happening on the [Hotwire forum](https://discuss.hotwire.dev/t/django-backend-support-for-hotwire/1570). And on Slack, which you can join by [clicking here!](https://join.slack.com/t/pragmaticmindsgruppe/shared_invite/zt-kl0e0plt-uXGQ1PUt5yRohLNYcVvhhQ)
 
