@@ -39,13 +39,13 @@ def broadcast_stream(
     template,
     context,
     send_type="notify",
-    extra_palyoad=None,
+    extra_payload=None,
 ):
     """
-    Send a Broadcast to all Websocket Clients registered to a specifc stream!
+    Send a Broadcast to all Websocket Clients registered to a specific stream!
     """
-    if extra_palyoad is None:
-        extra_palyoad = dict()
+    if extra_payload is None:
+        extra_payload = dict()
     channel_layer = get_channel_layer()
     channel_name = get_channel_name(stream_target)
     async_to_sync(channel_layer.group_send)(
@@ -57,6 +57,6 @@ def broadcast_stream(
             "template": template,
             "context": context,
             "dom_target": dom_target,
-            **extra_palyoad,
+            **extra_payload,
         },
     )

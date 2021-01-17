@@ -60,7 +60,7 @@ class BroadcastableMixin(object):
             self.get_turbo_streams_template(),
             self.get_context(),
             send_type="notify.model",
-            extra_palyoad={"pk": self.pk, "model": self._meta.model._meta.label},
+            extra_payload={"pk": self.pk, "model": self._meta.model._meta.label},
         )
 
     def get_dom_target(self, target):
