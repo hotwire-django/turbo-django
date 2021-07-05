@@ -29,7 +29,11 @@ DELETED = "DELETED"
 APPEND = "append"
 PREPEND = "prepend"
 REPLACE = "replace"
+UPDATE = "update"
 REMOVE = "remove"
+BEFORE = "before"
+AFTER = "after"
+
 
 
 def broadcast_stream(
