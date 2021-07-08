@@ -3,3 +3,5 @@
 - [Bo Lopker](https://github.com/blopker)
 - [Julian Feinauer](https://github.com/JulianFeinauer/)
 - [Edgard Pineda](https://github.com/epineda/)
+- [Stephen Mitchell](https://github.com/scuml/)
+

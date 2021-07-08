@@ -8,3 +8,5 @@ ve
 venv
 .vscode
 doc/build
+build/*
+poetry.lock

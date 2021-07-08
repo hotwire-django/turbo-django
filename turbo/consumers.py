@@ -37,10 +37,13 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
     ):
         extra_context = event["context"]
         action = event["action"]
-        dom_target = event["dom_target"]
+        selector_type = event["selector_type"]
+        selector = event["selector"]
+
         template_context = {
             "action": action,
-            "dom_target": dom_target,
+            "use_css_selector": selector_type=='css',
+            "selector": selector,
         }
         # Remove actions don't have contents, so only add context for model
         # template if it's not a remove action.

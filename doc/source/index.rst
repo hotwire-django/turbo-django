@@ -1,16 +1,20 @@
-.. turbo-django documentation master file, created by
-   sphinx-quickstart on Sat Jan  9 20:27:12 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+==========================
+Turbo-django documentation
+==========================
+
+.. rubric:: Everything you need to know about Turbo-django.
 
 Welcome to turbo-django's documentation!
 ========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-.. include:: ./main.rst
+   ./main.rst
+   ./broadcasts.rst
+   ./autoapi/index.rst
+
 
 
 
