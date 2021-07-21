@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "turbo-django"
+version = "0.8.0"
+description = "An elegant integration of Hotwired Turbo with Django allowing for a Python-driven dynamic web experience."
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+[tool.poetry.dev-dependencies]
+sphinx-autoapi = "^1.8.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
