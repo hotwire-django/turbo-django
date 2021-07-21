@@ -23,6 +23,7 @@ and an action is chosen to determine how the html block is inserted into the pag
     def send_broadcast(request):
 
         context = {"broadcast": f"{datetime.now()}: This is a broadcast and NO MESSAGE"}
+
         Broadcast('broadcast_name').append(selector=".messages_class").render(
             "chat/broadcast.html", context
         )
