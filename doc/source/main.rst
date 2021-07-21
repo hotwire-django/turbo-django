@@ -6,10 +6,9 @@ This package provides helpers for server-side rendering of `Hotwired/Turbo <http
 Requirements
 ============
 
+
 This library is tested for Python 3.6+.
 
-Turbo for Django
-================
 
 This repository aims to provide utilities for working with
 `Turbo <https://turbo.hotwired.dev>`__
@@ -153,5 +152,4 @@ templates and IDs:
 -  In our example, there should be a ``div`` or ``ul`` containing
    messages, with the encompassing element's ``id``
    being ``messages``.
-
 

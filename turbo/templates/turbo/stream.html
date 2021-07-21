@@ -1,4 +1,4 @@
-<turbo-stream action="{{ action }}" target="{{ dom_target }}">
+<turbo-stream action="{{ action }}" {% if use_css_selector %}targets{% else %}target{% endif %}="{{ selector }}">
   <template>
       {% if model_template %}
           {% include model_template %}
