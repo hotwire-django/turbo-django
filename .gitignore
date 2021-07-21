@@ -8,4 +8,4 @@ ve
 venv
 .vscode
 doc/build
-turbo/static/turbo/js/turbo.js
+build
