@@ -1,4 +1,4 @@
-This package provides helpers for server-side rendering of `Hotwired/Turbo <https://turbo.hotwire.dev/>`_ websocket based Streams.
+This package provides helpers for server-side rendering of `Hotwired/Turbo <https://turbo.hotwired.dev/>`_ websocket based Streams.
 
 **Disclaimer**: the Hotwired/Turbo client libraries are, at time of writing, still in Beta. We expect there will be breaking changes until the first stable release. This package, and the Turbo client, should therefore be used with caution in a production environment. The version used in testing is *@hotwired/turbo==7.0.0-beta.2*.
 
@@ -11,7 +11,7 @@ This library is tested for Python 3.6+.
 
 
 This repository aims to provide utilities for working with
-`Turbo <https://turbo.hotwire.dev>`__
+`Turbo <https://turbo.hotwired.dev>`__
 with the Django web framework.
 
 Setup
@@ -27,7 +27,7 @@ Turbo Streams
 -------------
 
 Currently, the repository contains utilities for working with
-`Turbo Streams <https://turbo.hotwire.dev/handbook/streams>`__ over
+`Turbo Streams <https://turbo.hotwired.dev/handbook/streams>`__ over
 Websockets, the one part of
 Turbo which requires a specific integration with the backend framework
 to function. In Django's
