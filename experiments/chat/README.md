@@ -1,7 +1,7 @@
 # Django Hotwire Demo
 
-This repository contains a demonstration of [Hotwire](https://hotwire.dev), specifically the three components of
-[Turbo](https://turbo.hotwire.dev) to build a realtime chat app in Django with only server-side custom code. It makes use
+This repository contains a demonstration of [Hotwire](https://hotwired.dev), specifically the three components of
+[Turbo](https://turbo.hotwired.dev) to build a realtime chat app in Django with only server-side custom code. It makes use
 of Django Channels for websocket support.
 
 To run this demo, after cloning the repository:

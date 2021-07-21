@@ -13,10 +13,10 @@ _Note_: This is not ready for production. APIs likely to change dramatically. Pl
 - Django 3.1+
 - Channels 3.0+ (Optional for Turbo Stream support)
 
-This repository aims to help you integrate [Hotwire Turbo](https://turbo.hotwire.dev/) with Django. Inspiration taken from [@hotwired/turbo-rails](https://github.com/hotwired/turbo-rails).
+This repository aims to help you integrate [Hotwire Turbo](https://turbo.hotwired.dev/) with Django. Inspiration taken from [@hotwired/turbo-rails](https://github.com/hotwired/turbo-rails).
 Documentation can be found [here](https://turbo-django.readthedocs.io/en/latest/index.html) for the current integration.
 
-Discussions about a Django/Hotwire integration are happening on the [Hotwire forum](https://discuss.hotwire.dev/t/django-backend-support-for-hotwire/1570). And on Slack, which you can join by [clicking here!](https://join.slack.com/t/pragmaticmindsgruppe/shared_invite/zt-kl0e0plt-uXGQ1PUt5yRohLNYcVvhhQ)
+Discussions about a Django/Hotwire integration are happening on the [Hotwire forum](https://discuss.hotwired.dev/t/django-backend-support-for-hotwire/1570). And on Slack, which you can join by [clicking here!](https://join.slack.com/t/pragmaticmindsgruppe/shared_invite/zt-kl0e0plt-uXGQ1PUt5yRohLNYcVvhhQ)
 
 As we discover this new magic, you can expect to see a few repositories with experiments and demos appear in [@hotwire-django](https://github.com/hotwire-django). If you too are experimenting, we encourage you to ask a write access to the GitHub organization and to publish your work in a @hotwire-django repository.
 
