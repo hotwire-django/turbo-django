@@ -1,4 +1,5 @@
 from django.db.models import Model
+from collections import Iterable
 
 import turbo
 from turbo import (
@@ -10,58 +11,98 @@ from turbo import (
     APPEND,
 )
 
+class AttrDict(dict):
+    """A dictionary with attribute-style access. It maps attribute access to
+    the real dictionary.  """
 
-class BroadcastableMixin(object):
-    broadcasts_to = []  # Foreign Key fieldnames to broadcast updates for.
-    broadcast_self = (
-        True  # Whether or not to broadcast updates on this model's own stream.
-    )
-    inserts_by = APPEND  # Whether to append or prepend when adding to a list (broadcasting to a foreign key).
-    default_stream_action = APPEND
-    turbo_streams_template = None
+    def __init__(self, init={}):
+        dict.__init__(self, init)
 
-    def get_turbo_streams_template(self):
-        if self.turbo_streams_template is not None:
-            return self.turbo_streams_template
-        app_name, model_name = self._meta.label.lower().split(".")
-        return f"{app_name}/{model_name}.html"
+    def __getstate__(self):
+        return self.__dict__.items()
 
-    def get_action(self, model_action):
-        if model_action == CREATED:
-            streams_action = self.inserts_by
-        elif model_action == UPDATED:
-            streams_action = REPLACE
-        elif model_action == DELETED:
-            streams_action = REMOVE
-        else:  # TODO: What should the default be?
-            streams_action = REPLACE
-        return streams_action
+    def __setstate__(self, items):
+        for key, val in items:
+            self.__dict__[key] = val
 
-    def broadcast(self, model_action):
-        streams_action = self.get_action(model_action)
+    def __repr__(self):
+        return "%s(%s)" % (self.__class__.__name__, dict.__repr__(self))
 
-        if self.broadcast_self:
-            self.send_broadcast(self, streams_action)
+    def __setitem__(self, key, value):
+        return super(AttrDict, self).__setitem__(key, value)
 
-        for field_name in self.broadcasts_to:
-            if hasattr(self, field_name):
-                self.send_broadcast(getattr(self, field_name), streams_action)
+    def __getitem__(self, name):
+        return super(AttrDict, self).__getitem__(name)
+
+    def __delitem__(self, name):
+        return super(AttrDict, self).__delitem__(name)
+
+    __getattr__ = __getitem__
+    __setattr__ = __setitem__
+
+def assign_meta(new_class, bases, meta):
+    m = {}
+    for base in bases:
+        m.update({k: v for k, v in getattr(base, "_broadcast", {}).items()})
+
+    m.update({k: v for k, v in getattr(meta, "__dict__", {}).items() if not k.startswith("__")})
+
+    _broadcast = AttrDict(m)
+
+    return _broadcast
+
+class BroadcastMetaclass(type(Model)):
+    """
+    Metaclass that collects Fields declared on the base classes.
+    """
+    def __new__(mcs, name, bases, attrs):
+
+        # Pop the Broadcast class if exists
+        broadcast_inner_obj = attrs.pop('Broadcast', None)
+        new_class = (super().__new__(mcs, name, bases, attrs))
+
+        _broadcast = assign_meta(new_class, bases, broadcast_inner_obj)
+
+        new_class._broadcast = _broadcast
+
+        return new_class
+
+
+class BroadcastableMixin(object, metaclass=BroadcastMetaclass):
+
+    class Broadcast:
+
+        def __init__(self):
+            self._broadcast = {
+                "on_save": (),
+                "on_create" : (),
+                "on_update" : (),
+                "on_delete" : (),
+            }
+
+    def broadcast(self, broadcast: turbo.Broadcast):
+        if broadcast.stream_target_name == "self":
+            broadcast.set_source_instance(self)
+
+        elif hasattr(self, broadcast.stream_target_name):
+            broadcast.set_source_instance(getattr(self, broadcast.stream_target_name))
+        else:
+            broadcast.set_source_instance(None)
+
+        for target in broadcast._targets:
+            target.rendered_context = self._process_context(target.context)
+
+        broadcast.broadcast()
+
+    def _process_context(self, context):
+        rendered_context = {}
+        for k, v in context.items():
+            if v == "self":
+                rendered_context[k] = self
             else:
-                self.send_broadcast(field_name, streams_action)
+                rendered_context[k] = v
 
-    def get_context(self):
-        return dict()
-
-    def send_broadcast(self, stream_target, stream_action):
-        turbo.broadcast_stream(
-            stream_target,
-            self.get_dom_target(stream_target),
-            stream_action,
-            self.get_turbo_streams_template(),
-            self.get_context(),
-            send_type="notify.model",
-            extra_payload={"pk": self.pk, "model": self._meta.model._meta.label},
-        )
+        return rendered_context
 
     def get_dom_target(self, target):
         if isinstance(target, Model):
@@ -77,8 +118,18 @@ class BroadcastableMixin(object):
     def save(self, *args, **kwargs):
         creating = self._state.adding
         super().save(*args, **kwargs)
-        self.broadcast(CREATED if creating else UPDATED)
+
+        for b in self._broadcast.get('on_save', ()):
+            self.broadcast(b)
+
+        if creating:
+            for b in self._broadcast.get('on_create', ()):
+                self.broadcast(b)
+        else:
+            for b in self._broadcast.get('on_update', ()):
+                self.broadcast(b)
 
     def delete(self, *args, **kwargs):
-        self.broadcast(DELETED)
+        for b in self._broadcast.get('on_delete', ()):
+            self.broadcast(b)
         super().delete(*args, **kwargs)

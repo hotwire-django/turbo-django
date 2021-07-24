@@ -17,45 +17,12 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
     def connect(self):
         self.accept()
 
-    def notify_model(self, event):
-        model_label = event["model"]
-        model = apps.get_model(model_label)
-        app, model_name = model_label.lower().split(".")
-        instance = model.objects.get(pk=event["pk"])
-        event["context"].update(
-            {
-                "object": instance,
-                model_name: instance,
-            }
-        )
-
-        self.notify(event)
-
-    def notify(
-        self,
-        event,
-    ):
-        extra_context = event["context"]
-        action = event["action"]
-        selector_type = event["selector_type"]
-        selector = event["selector"]
-
-        template_context = {
-            "action": action,
-            "use_css_selector": selector_type=='css',
-            "selector": selector,
-        }
-        # Remove actions don't have contents, so only add context for model
-        # template if it's not a remove action.
-        if action != REMOVE:
-            template_context.update({"model_template": event.get("template")})
-            template_context.update(extra_context)
-
+    def notify(self, event):
         signed_channel_name = signer.sign(event["channel_name"])
         self.send_json(
             {
                 "signed_channel_name": signed_channel_name,
-                "data": render_to_string("turbo/stream.html", template_context),
+                "data": event.get("rendered_template")
             }
         )
 
