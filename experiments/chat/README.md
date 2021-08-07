@@ -19,5 +19,4 @@ pip install -r requirements.txt
 ./manage.py runserver
 ```
 
-Log into `http://localhost:8000/admin` and create a `Room`
 Go to `http://localhost:8000`, select your room, and start chatting! Open as many windows as you'd like.

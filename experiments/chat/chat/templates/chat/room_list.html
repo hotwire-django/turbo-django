@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat Rooms</title>
-    {% include "turbo/head.html" %}
 </head>
 <body>
-{% if rooms %}
+    <h1>Room List</h1>
     <ul>
     {% for room in rooms %}
-        <li><a href="{% url 'detail' room.id %}">{{ room.name }}</a></li>
+        <li><a href="{% url 'room_detail' room.id %}">{{ room.name }}</a></li>
+    {% empty %}
+        <li>No Rooms Available</li>
     {% endfor %}
     </ul>
-{% else %}
-    <p>No rooms available.</p>
-{% endif %}
 </body>
 </html>

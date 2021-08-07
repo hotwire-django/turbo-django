@@ -7,13 +7,16 @@ def register(*models, site=None):
     This attaches the on_save and on_delete methods to the provided
     model signals.
 
-    @turbo.register(Room)
-    class RoomBroadcast(turbo.ModelBroadcast):
-        def on_save(self, room, created, *args, **kwargs):
-            pass
+    .. code-block:: python
 
-        def on_delete(self, room, *args, **kwargs):
-            pass
+        @turbo.register(Room)
+        class RoomBroadcast(turbo.ModelBroadcast):
+
+            def on_save(self, room, created, *args, **kwargs):
+                    pass
+
+            def on_delete(self, room, *args, **kwargs):
+                    pass
 
     """
     from turbo.classes import ModelBroadcast

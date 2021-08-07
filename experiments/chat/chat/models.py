@@ -1,20 +1,12 @@
 from django.db import models
-from django.urls import reverse
 
-from turbo.mixins import BroadcastableMixin
+from turbo.mixins import TurboMixin
 
-
-class Room(BroadcastableMixin, models.Model):
+class Room(TurboMixin, models.Model):
     name = models.CharField(max_length=255)
 
-    def get_absolute_url(self):
-        return reverse("detail", kwargs={"pk": self.pk})
-
-
-class Message(BroadcastableMixin, models.Model):
-    broadcasts_to = ["room", "all-rooms"]
-    broadcast_self = False
+class Message(TurboMixin, models.Model):
 
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)

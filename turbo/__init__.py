@@ -11,6 +11,7 @@ from .classes import (
     ModelBroadcast,
     APPEND, PREPEND, REPLACE, UPDATE, REMOVE, BEFORE, AFTER,
 )
+from .classes import Turbo
 from .utils import get_channel_name
 
 from turbo.decorators import register
