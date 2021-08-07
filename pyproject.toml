@@ -3,8 +3,8 @@ name = "turbo-django"
 authors = ["Nikita Marchant (https://github.com/C4ptainCrunch)", "Davis Haupt (https://github.com/davish)", "Bo Lopker (https://github.com/blopker)", "Julian Feinauer (https://github.com/JulianFeinauer/)", "Edgard Pineda (https://github.com/epineda/)", "Stephen Mitchell (https://github.com/scuml/)"]
 
 
-version = "0.9.0"
-description = "An elegant integration of Hotwired Turbo with Django allowing for a Python-driven dynamic web experience."
+version = "0.2.0"
+description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -14,6 +14,7 @@ python = "^3.8"
 sphinx-autoapi = "^1.8.1"
 alabaster-hotwire = {git = "https://github.com/hotwire-django/sphinx-hotwire-theme.git", rev = "1.0"}
 sphinxcontrib-fulltoc = "^1.2.0"
+bump2version = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

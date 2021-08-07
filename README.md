@@ -6,7 +6,7 @@
 # Turbo for Django
 
 
-This repository aims to help you integrate [Hotwire Turbo](https://turbo.hotwired.dev/) with Django.
+Integrate [Hotwire Turbo](https://turbo.hotwired.dev/) with Django with ease.
 
 
 ## Requirements
