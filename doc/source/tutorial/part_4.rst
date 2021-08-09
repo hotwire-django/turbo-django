@@ -5,7 +5,7 @@ Part 4 - Pushing data with Broadcasts
 Broadcasts
 ==========
 
-Broadcasts allow html to be sent to the client page without a request from the client.  The client does need to subscribe to broadcasts and this is done with the :doc:`turbo_subscribe tag </topics/templates>`.
+Broadcasts allow HTML to be sent to the client page without a request from the client.  The client does need to subscribe to broadcasts and this is done with the :doc:`turbo_subscribe tag </topics/templates>`.
 
 Add the following:
 
@@ -72,7 +72,7 @@ Create ``broadcasts.py`` in the `chat/` directory.
 
 
 
-This file is automically detected by the turbo-django library.  The library then registers the `on_save` and `on_delete` methods to the specified model.  In this example, anytime a message is saved, we broadcast a message to the message's room using ``message.room.turbo``.  This returns a `Turbo()` object.  Turbo objects have a render method, similar to django's render method that returns a ``TurboRender`` object.  That rendered template is then broadcast with ``append()`` and tells all subscribed clients to append the rendered template to the html element with the id of `#messages`.
+This file is automatically detected by the Turbo Django library.  The library then registers the `on_save` and `on_delete` methods to the specified model.  In this example, anytime a message is saved, we broadcast a message to the message's room using ``message.room.turbo``.  This returns a `Turbo()` object.  Turbo objects have a render method, similar to Django's render method that returns a ``TurboRender`` object.  That rendered template is then broadcast with ``append()`` and tells all subscribed clients to append the rendered template to the HTML element with the id of `#messages`.
 
 Run this code and see it work in the browser.  Now open up a new window and see how the pages update each other.
 

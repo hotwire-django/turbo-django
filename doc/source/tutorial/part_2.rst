@@ -45,7 +45,7 @@ Make a migration and migrate, and then create a test room.
 Views and URLs
 ================================
 
-This tutorial uses generic class-based views to keep the tutorial consise.  Add generic `List`, `Detail`, and `Update` views to ``chat/views.py``, and the urls to access them.  There is nothing turbo-specific in the following section - we'll be adding that next.
+This tutorial uses generic class-based views to keep the tutorial concise.  Add generic `List`, `Detail`, and `Update` views to ``chat/views.py``, and the urls to access them.  There is nothing turbo-specific in the following section - we'll be adding that next.
 
 .. code-block:: python
     :caption: chat/views.py

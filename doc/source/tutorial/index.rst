@@ -2,9 +2,9 @@ Tutorial
 ========
 
 Turbo-Django allows you to easily integrate the Hotwire Turbo framework into your
-Django site. This will allow clients to recieve blocks of html sent from your webserver
+Django site. This will allow clients to receive blocks of html sent from your web server
 without using HTTP long-polling or other expensive techniques.  This makes for
-dynamic interactive webpages, without all the mucking about with serialziers and javascript.
+dynamic interactive webpages, without all the mucking about with serializers and JavaScript.
 
 In this tutorial we will build a simple chat server, where you can join an
 online room, post messages to the room, and have others in the same room see

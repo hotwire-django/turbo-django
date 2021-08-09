@@ -23,7 +23,7 @@ Turbo Django is available on PyPI - to install it, just run:
 
 _Note: Both Hotwire and this library are still in beta development and may introduce breaking API changes between releases.  It is advised to pin the library to a specific version during install._
 
-##Quickstart
+## Quickstart
 Want to see Hotwire in action? Here's a simple broadcast that can be setup in less than a minute.
 
 **The basics:**
@@ -33,7 +33,7 @@ Want to see Hotwire in action? Here's a simple broadcast that can be setup in le
 * A view sends a rendered template to all subscribed pages telling the page where to position the new content.
 
 
-###Example
+### Example
 
 First, create a view that takes a broadcast name.
 
@@ -47,7 +47,7 @@ urlpatterns = [
 ]
 ```
 
-```python
+```html
 # broadcast_example.html
 
 {% load turbo_streams %}
@@ -64,7 +64,7 @@ urlpatterns = [
 </html>
 ```
 
-Now open ``./manage.py shell``.  Create a Turbo object that references the broadcast name.  Tell the object to render a ``TurboRender`` object from the string, and then broadcast a command to ``update`` the inside of the element with id `broadcast_box` on all subscribed pages.
+Now run ``./manage.py shell``.  Create a Turbo object that references the broadcast name.  Tell the object to render a ``TurboRender`` object from the string, and then broadcast a command to `update` the inside of the element with id `broadcast_box` on all subscribed pages.
 
 ```python
 from turbo import Turbo
@@ -76,9 +76,9 @@ Turbo('broadcast_name').render_from_string(
 ).update(id="broadcast_box")
 ```
 
-With the ``quickstart/`` path open in a browser window, watch as the broadcast pushes messages to the page.
+With the `quickstart/` path open in a browser window, watch as the broadcast pushes messages to the page.
 
-Now change ``.update()`` to ``.append()`` and resend the broadcast a few times. Notice you do not have to reload the page to get this modified behavior.
+Now change `.update()` to `.append()` and resend the broadcast a few times. Notice you do not have to reload the page to get this modified behavior.
 
 Excited to learn more?  Be sure to walk through the [tutorial](https://turbo-django.readthedocs.io/en/latest/index.html) and read more about what Turbo can do for you.
 

@@ -5,7 +5,7 @@ Model Integration
 TurboMixin
 ==========
 
-Adding ``TurboMixin`` to django model classes will assign the result of ``turbo.Turbo(instance)`` to the instance attribute ``.turbo``  This allows for logical broadcasting from the instance itself.
+Adding ``TurboMixin`` to Django model classes will assign the result of ``turbo.Turbo(instance)`` to the instance attribute ``.turbo``  This allows for logical broadcasting from the instance itself.
 
 Implementation
 --------------
@@ -42,7 +42,7 @@ Calling
 ModelBroadcast
 ==============
 
-A common use-case for broadcasts is to send page updates when a model is created, modified, or deleted.  To organize these events in one place, turbo-django uses ``ModelBroadCast``.  When registered to a particular model, these classes will trigger the appropriate method on save and delete.  ``ModelBroadcast`` objects are automatically detected when place in  ``broadcasts.py``.
+A common use-case for broadcasts is to send page updates when a model is created, modified, or deleted.  To organize these events in one place, Turbo Django uses ``ModelBroadCast``.  When registered to a particular model, these classes will trigger the appropriate method on save and delete.  ``ModelBroadcast`` objects are automatically detected when place in  ``broadcasts.py``.
 
 Sample `broadcasts.py`
 ----------------------

@@ -77,4 +77,4 @@ Your ``settings.py`` file should now look like this.
 
 
 
-You should now be able to run ``python manage.py runserver``, visit ``http://127.0.0.1:8000/`` and see the standar django startup screen greeting: `The install worked successfully! Congratulations!`. If so, we're ready to :doc:`start coding </tutorial/part_2>`.
+You should now be able to run ``python manage.py runserver``, visit ``http://127.0.0.1:8000/`` and see the standard django startup screen greeting: `The install worked successfully! Congratulations!`. If so, we're ready to :doc:`start coding </tutorial/part_2>`.

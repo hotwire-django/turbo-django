@@ -1,7 +1,7 @@
 Templates
 ==========
 
-Templates subscribe to streams using the ``turbo_subscribe`` template tag.  Import this tag by calling ``{% load turbo_streams %}``.  Pass a stream name as a string, or pass a django instance to listen to messages sent to a particular object.  This tag can be called anywhere on the page and can be called multiple times if desired.
+Templates subscribe to streams using the ``turbo_subscribe`` template tag.  Import this tag by calling ``{% load turbo_streams %}``.  Pass a stream name as a string, or pass a Django instance to listen to messages sent to a particular object.  This tag can be called anywhere on the page and can be called multiple times if desired.
 
 .. code-block:: html
     :caption: broadcast_example.html

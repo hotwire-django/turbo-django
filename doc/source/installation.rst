@@ -21,7 +21,7 @@ Turbo Django is available on PyPI - to install it, just run:
 
 .. note::
 
-    Both turbo and turbo-django are under beta development and the API can change quickly as new features are added and the API is refined.  It would be prudent to pin to a specific version until the first major release.  You can pin with pip using a command like ``pip install turbo-django==0.2.0``.  The latest version can be found `at PyPi <https://pypi.org/project/turbo-django/>`_.
+    Both Turbo and Turbo Django are under beta development and the API can change quickly as new features are added and the API is refined.  It would be prudent to pin to a specific version until the first major release.  You can pin with pip using a command like ``pip install turbo-django==0.2.0``.  The latest version can be found `at PyPi <https://pypi.org/project/turbo-django/>`_.
 
 Once that's done, you should add ``turbo`` and ``channels`` to your
 ``INSTALLED_APPS`` setting:
@@ -39,7 +39,7 @@ Once that's done, you should add ``turbo`` and ``channels`` to your
     )
 
 .. note::
-   Turbo relies on the ``channels`` library to push data to the client (also known as Turbo Streams).  Adding channels may not be needed if using only implementing Turbo Frames to componentify your app.  For the tutorial, you will need channels installed.
+   Turbo relies on the ``channels`` library to push data to the client (also known as Turbo Streams).  Adding channels may not be needed if using only implementing Turbo Frames to component-ify your app.  For the tutorial, you will need channels installed.
 
 
 Then, adjust your project's ``asgi.py`` to wrap the Django ASGI application::
@@ -65,4 +65,4 @@ object as your root application:
 
     ASGI_APPLICATION = "myproject.asgi.application"
 
-All set! ``turbo`` is now ready to use in your django app.
+All set! ``turbo`` is now ready to use in your Django app.

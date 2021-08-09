@@ -7,9 +7,9 @@ Removing Chat Messages
 
 Let's continue to build on this basic chat application by allowing the user to remove messages. Let's walk through the steps to accomplish this:
 
-* Add links to the `message` component template to remove the message.  Add a message_id to each list item so trbo knows which message to delete.
+* Add links to the `message` component template to remove the message.  Add a message_id to each list item so Turbo knows which message to delete.
 * Create a view that deletes the message.
-* Add an ``on_delete`` method to the ModelBroadcast.  Tell the room subscribers to remove ,
+* Add an ``on_delete`` method to the ModelBroadcast.  Tell the room subscribers to remove the message div by ID.
 
 
 Start by adding a unique id to each ``<li>`` element.  Then add a link to remove that message in the template.
@@ -73,5 +73,5 @@ And finally, let your message broadcast tell clients subscribed to the message's
 
 
 .. note::
-   Notice that ``.remove()`` is used without first calling ``.render()``.  Remove only takes away content, so rendering a template is not neccesary.
+   Notice that ``.remove()`` is used without first calling ``.render()``.  Remove only takes away content, so rendering a template is not necessary.
 
