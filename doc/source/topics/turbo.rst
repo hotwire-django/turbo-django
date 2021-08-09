@@ -50,11 +50,11 @@ Each of the following methods take either an ``id`` or ``selector`` parameter (o
 
 .. method:: append(id=None, selector=None)
 
-    Append the rendered template to the end of the specified HTML element.
+    Add the rendered template to the end of the specified HTML element.
 
 .. method:: prepend(id=None, selector=None)
 
-    Append the rendered template to the beginning of the specified HTML element.
+    Add the rendered template to the beginning of the specified HTML element.
 
 .. method:: replace(id=None, selector=None)
 
