@@ -78,8 +78,5 @@ Run the code and test.  When text is submitted in the text box, the box is clear
 * The user types content into the form and hits submit.
 * The framed form is submitted without the page reloading.  The success url returns a new blank form which is inserted into the frame.
 
-// The ``get_success_url`` method returns another rendered version of the `message create` form.  This has a ``<turbo-frame id="send-message">`` tag which is then inserted into the tag with the same id on the parent page.
-
-
 Refreshing the page renders the submitted messages. But for a chat client, we need those messages to appear immediately on this page, and others.  For that, we use  :doc:`broadcasts </tutorial/part_4>`.
 
