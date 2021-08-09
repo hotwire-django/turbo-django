@@ -68,7 +68,6 @@ Now run ``./manage.py shell``.  Create a Turbo object that references the broadc
 
 ```python
 from turbo import Turbo
-from django.http import HttpResponse
 from datetime import datetime
 
 Turbo('broadcast_name').render_from_string(
@@ -91,7 +90,6 @@ Read the [full documentation](https://turbo-django.readthedocs.io/en/latest/inde
 Discussions about a Django/Hotwire integration are happening on the [Hotwire forum](https://discuss.hotwired.dev/t/django-backend-support-for-hotwire/1570). And on Slack, which you can join by [clicking here!](https://join.slack.com/t/pragmaticmindsgruppe/shared_invite/zt-kl0e0plt-uXGQ1PUt5yRohLNYcVvhhQ)
 
 As this new magic is discovered, you can expect to see a few repositories with experiments and demos appear in [@hotwire-django](https://github.com/hotwire-django). If you too are experimenting, we encourage you to ask for write access to the GitHub organization and to publish your work in a @hotwire-django repository.
-
 
 
 ## License

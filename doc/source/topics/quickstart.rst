@@ -51,7 +51,6 @@ Now open ``./manage.py shell``.  Create a Turbo object that references the broad
 .. code-block:: python
 
     from turbo import Turbo
-    from django.http import HttpResponse
     from datetime import datetime
 
     Turbo('broadcast_name').render_from_string(
