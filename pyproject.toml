@@ -13,8 +13,10 @@ description = "Integrate Hotwire Turbo with Django allowing for a Python-driven 
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = ">=3.0"
-channels = ">=2.0.0"
+Django = ">=3.0.0"
+channels = ">=3.0.0"
+
+
 
 [tool.poetry.dev-dependencies]
 sphinx-autoapi = "^1.8.1"
