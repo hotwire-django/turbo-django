@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "turbo"
 authors = [
-    "Nikita Marchant (@C4ptainCrunch)",
-    "Davis Haupt (@davish)",
-    "Bo Lopker (@blopker)",
-    "Julian Feinauer (@JulianFeinauer)",
-    "Edgard Pineda (@epineda)",
-    "Stephen Mitchell (@scuml)"
+    "Nikita Marchant <C4ptainCrunch@github>",
+    "Davis Haupt <davish@github>",
+    "Bo Lopker <blopker@github>",
+    "Julian Feinauer <JulianFeinauer@github>",
+    "Edgard Pineda <epineda@github>",
+    "Stephen Mitchell <scuml@github>"
 ]
 version = "0.2.0"
 description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
