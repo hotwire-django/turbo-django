@@ -1,22 +1,11 @@
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.db.models import Model
-from django.template.loader import render_to_string
 
-from typing import Optional
-
-default_app_config = "turbo.apps.TurboDjangoConfig"
-
-from .classes import (
-    ModelBroadcast,
-    APPEND, PREPEND, REPLACE, UPDATE, REMOVE, BEFORE, AFTER,
-)
-from .classes import Turbo
 from .utils import get_channel_name
 
-from turbo.decorators import register
-from django.contrib.admin.sites import site
 from django.utils.module_loading import autodiscover_modules
+
+default_app_config = "turbo.apps.TurboDjangoConfig"
 
 
 def autodiscover():
@@ -38,6 +27,7 @@ def broadcast_stream(
 ):
     """
     Send a Broadcast to all Websocket Clients registered to a specific stream!
+    Here for manual control of streams and backwards-compatibility.
     """
     if extra_payload is None:
         extra_payload = dict()
@@ -67,4 +57,3 @@ def broadcast_stream(
             **extra_payload,
         },
     )
-

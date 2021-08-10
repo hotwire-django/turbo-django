@@ -1,10 +1,6 @@
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import JsonWebsocketConsumer
-from django.apps import apps
 from django.core.signing import Signer, BadSignature
-from django.template.loader import render_to_string
-
-from turbo import REMOVE
 
 signer = Signer()
 
