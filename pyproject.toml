@@ -1,5 +1,6 @@
 [tool.poetry]
-name = "turbo"
+name = "turbo-django"
+
 authors = [
     "Nikita Marchant <C4ptainCrunch@github>",
     "Davis Haupt <davish@github>",
@@ -10,12 +11,14 @@ authors = [
 ]
 version = "0.2.0"
 description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
+packages = [
+    { include = "turbo" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 Django = ">=3.0.0"
 channels = ">=3.0.0"
-
 
 
 [tool.poetry.dev-dependencies]
