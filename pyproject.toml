@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "turbo-django"
-
+version = "0.2.0"
+description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
 authors = [
     "Nikita Marchant <C4ptainCrunch@github>",
     "Davis Haupt <davish@github>",
@@ -9,16 +10,29 @@ authors = [
     "Edgard Pineda <epineda@github>",
     "Stephen Mitchell <scuml@github>"
 ]
-version = "0.2.0"
-description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
+readme = "README.md"
+license = "MIT"
 packages = [
-    { include = "turbo" },
+    { include = "turbo" }
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
 ]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 Django = ">=3.0.0"
-channels = ">=3.0.0"
+channels = ">=2.0.0"
 
 
 [tool.poetry.dev-dependencies]
