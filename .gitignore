@@ -10,3 +10,5 @@ venv
 doc/build
 build/*
 poetry.lock
+dist/
+
