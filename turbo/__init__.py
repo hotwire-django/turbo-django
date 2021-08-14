@@ -5,6 +5,13 @@ from .utils import get_channel_name
 
 from django.utils.module_loading import autodiscover_modules
 
+# Bring classes up to turbo namespace.
+from .classes import (
+    ModelBroadcast,
+    Turbo,
+    APPEND, PREPEND, REPLACE, UPDATE, REMOVE, BEFORE, AFTER,
+)
+
 default_app_config = "turbo.apps.TurboDjangoConfig"
 
 
@@ -33,7 +40,8 @@ def broadcast_stream(
         extra_payload = dict()
 
     if dom_target is None:
-        raise ValueError('Either dom_target or css_selector must be set as a parameter to broadcast_stream().')
+        raise ValueError(
+            'Either dom_target or css_selector must be set as a parameter to broadcast_stream().')
 
     selector_type = "id"
     selector = dom_target

@@ -1,5 +1,6 @@
 from django.db.models import Model
 
+
 def make_channel_name(model_label, pk):
     return f"BROADCAST-{model_label}-{pk}".lower()
 

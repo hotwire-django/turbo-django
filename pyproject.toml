@@ -3,12 +3,12 @@ name = "turbo-django"
 version = "0.2.0"
 description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
 authors = [
-    "Nikita Marchant <C4ptainCrunch@github>",
-    "Davis Haupt <davish@github>",
-    "Bo Lopker <blopker@github>",
-    "Julian Feinauer <JulianFeinauer@github>",
-    "Edgard Pineda <epineda@github>",
-    "Stephen Mitchell <scuml@github>"
+    "Nikita Marchant <C4ptainCrunch@github-username.x>",
+    "Davis Haupt <davish@github-username.x>",
+    "Bo Lopker <blopker@github-username.x>",
+    "Julian Feinauer <JulianFeinauer@github-username.x>",
+    "Edgard Pineda <epineda@github-username.x>",
+    "Stephen Mitchell <scuml@github-username.x>"
 ]
 readme = "README.md"
 license = "MIT"
