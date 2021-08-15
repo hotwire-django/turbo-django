@@ -6,6 +6,7 @@ from .utils import get_channel_name
 from django.utils.module_loading import autodiscover_modules
 
 # Bring classes up to turbo namespace.
+from turbo.decorators import register  # for @turbo.register
 from .classes import (
     ModelBroadcast,
     Turbo,
