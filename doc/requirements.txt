@@ -1,2 +1,4 @@
-sphinx-autoapi==1.5.1
+sphinx-autoapi==1.8.1
 sphinx-rtd-theme==0.5.1
+sphinxcontrib-fulltoc==1.2.0
+-e git://github.com/hotwire-django/sphinx-hotwire-theme.git@main#egg=alabaster-hotwire

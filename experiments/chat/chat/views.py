@@ -6,6 +6,7 @@ from django.views.generic import CreateView, ListView, DetailView
 from chat.models import Room, Message
 from turbo import Turbo
 
+
 class RoomList(ListView):
     model = Room
     context_object_name = "rooms"
@@ -38,6 +39,7 @@ def message_delete(request, message_id):
 
 
 from datetime import datetime
+
 
 def send_broadcast(request):
 

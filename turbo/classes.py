@@ -19,6 +19,7 @@ class ModelBroadcast:
     def __init__(self, model):
         self.model = model
         super().__init__()
+
     pass
 
 
@@ -98,11 +99,7 @@ class TurboRender:
     A rendered template, ready to broadcast using turbo.
     """
 
-    def __init__(
-        self,
-        stream_name: str,
-        rendered_template: str = '',
-    ):
+    def __init__(self, stream_name: str, rendered_template: str = ''):
         self.stream_name = stream_name
         self.rendered_template = rendered_template
 
@@ -144,7 +141,9 @@ class TurboRender:
             selector = id
 
         return self._broadcast(
-            self._render_frame(selector_type=selector_type, selector=selector, action=action)
+            self._render_frame(
+                selector_type=selector_type, selector=selector, action=action
+            )
         )
 
     def _render_frame(self, selector_type, selector, action) -> str:
@@ -169,6 +168,6 @@ class TurboRender:
             {
                 "type": 'notify',
                 "channel_name": self.stream_name,
-                "rendered_template": rendered_frame
+                "rendered_template": rendered_frame,
             },
         )

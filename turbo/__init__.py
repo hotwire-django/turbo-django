@@ -10,7 +10,13 @@ from turbo.decorators import register  # noqa: F401
 from .classes import (  # noqa: F401
     ModelBroadcast,
     Turbo,
-    APPEND, PREPEND, REPLACE, UPDATE, REMOVE, BEFORE, AFTER,
+    APPEND,
+    PREPEND,
+    REPLACE,
+    UPDATE,
+    REMOVE,
+    BEFORE,
+    AFTER,
 )
 
 default_app_config = "turbo.apps.TurboDjangoConfig"
@@ -42,7 +48,8 @@ def broadcast_stream(
 
     if dom_target is None:
         raise ValueError(
-            'Either dom_target or css_selector must be set as a parameter to broadcast_stream().')
+            'Either dom_target or css_selector must be set as a parameter to broadcast_stream().'
+        )
 
     selector_type = "id"
     selector = dom_target
