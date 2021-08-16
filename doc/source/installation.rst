@@ -5,7 +5,7 @@ Installation
 Requirements
 ============
 
-This library is tested for Python 3.6+ and Django 3.1+
+This library is tested for Python 3.8+ and Django 3.1+
 
 ============
 Installation

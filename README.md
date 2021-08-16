@@ -11,7 +11,7 @@ Integrate [Hotwire Turbo](https://turbo.hotwired.dev/) with Django with ease.
 
 ## Requirements
 
-- Python 3.6+
+- Python 3.8+
 - Django 3.1+
 - Channels 3.0+ _(Optional for Turbo Frames, but needed for Turbo Stream support)_
 
