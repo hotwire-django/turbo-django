@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "turbo-django"
+version = "0.2.3"
+description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
+authors = [
+    "Nikita Marchant <C4ptainCrunch@github-username.x>",
+    "Davis Haupt <davish@github-username.x>",
+    "Bo Lopker <blopker@github-username.x>",
+    "Julian Feinauer <JulianFeinauer@github-username.x>",
+    "Edgard Pineda <epineda@github-username.x>",
+    "Stephen Mitchell <scuml@github-username.x>"
+]
+readme = "README.md"
+license = "MIT"
+packages = [
+    { include = "turbo" }
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+Django = ">=3.0.0"
+channels = ">=2.0.0"
+
+
+[tool.poetry.dev-dependencies]
+sphinx-autoapi = "^1.8.1"
+alabaster-hotwire = {git = "https://github.com/hotwire-django/sphinx-hotwire-theme.git", rev = "1.0"}
+sphinxcontrib-fulltoc = "^1.2.0"
+bump2version = "^1.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

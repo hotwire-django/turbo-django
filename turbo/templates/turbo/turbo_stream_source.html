@@ -1,1 +1,3 @@
-<turbo-channels-stream-source signed-channel-name="{{ signed_channel_name }}" />
+{% for channel_name in signed_channel_names %}
+    <turbo-channels-stream-source signed-channel-name="{{ channel_name }}" />
+{% endfor %}

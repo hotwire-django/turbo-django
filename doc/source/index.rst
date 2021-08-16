@@ -1,22 +1,31 @@
-.. turbo-django documentation master file, created by
-   sphinx-quickstart on Sat Jan  9 20:27:12 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Turbo Django
+============
 
-Welcome to turbo-django's documentation!
-========================================
+Turbo Django is a project that integrates the `Hotwire Turbo framework <https://turbo.hotwired.dev/>`_ with `Django <https://www.djangoproject.com/>`_, allowing for rendered page updates to be delivered over websockets. By keeping template rendering in Django, dynamic and interactive web pages can be written without any serialization frameworks or JavaScript, dramatically simplifying development.
+
+.. warning::
+   Both Turbo and this library are under development.  Be sure to pin requirements to avoid issues with API changes.
+
+
+Topics
+------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-.. include:: ./main.rst
+   installation
+   tutorial/index
+   topics/quickstart.rst
+   topics/turbo.rst
+   topics/model_integration.rst
+   topics/templates.rst
 
 
+Reference
+---------
 
-Indices and tables
-==================
+.. toctree::
+   :maxdepth: 1
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   ./autoapi/index.rst
+

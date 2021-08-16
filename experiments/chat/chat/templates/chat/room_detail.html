@@ -4,30 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Room Detail</title>
-    <style>
-        textarea {
-            width: 200px;
-            height: 2rem;
-        }
-    </style>
     {% include "turbo/head.html" %}
 </head>
 <body>
-<a href="/">Home</a>
-<turbo-frame id="update-room">
-    {% include 'chat/room.html' %}
-    <a href="{% url 'update' room.pk %}">Edit</a>
-</turbo-frame>
-{% turbo_stream_from room %}
-{% turbo_stream_from 'broadcasts' %}
-<turbo-frame id="messages-frame">
-     <ul id="messages">
-        {% for message in room.messages.all %}
-            {% include "chat/message.html" with message=message only %}
+     {% turbo_subscribe room %}
+
+    <a href="{% url 'room_list' %}">Home</a>
+
+    <h1>{{ room.name }}</h1>
+
+    <turbo-frame id="message-list">
+    <ul id="messages">
+        {% for message in room.messages.all%}
+            {% include "chat/components/message.html"  with message=message only %}
         {% endfor %}
     </ul>
-</turbo-frame>
-<turbo-frame id="send-message" src="{% url 'send' room.id %}">
-</turbo-frame>
+    </turbo-frame>
+
+    <turbo-frame id="send-message" src="{% url 'message_create' room.id %}"></turbo-frame>
 </body>
 </html>
