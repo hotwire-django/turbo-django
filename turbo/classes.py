@@ -41,7 +41,7 @@ class Turbo:
     @singledispatchmethod
     def __init__(self):
         # Override with singledispatchmethods
-        raise NotImplemented
+        raise NotImplementedError
 
     @__init__.register
     def _init_with_str(self, stream_name: str = ''):
@@ -135,7 +135,7 @@ class TurboRender:
         return self._add_target(selector, id, AFTER)
 
     def _add_target(self, selector, id, action):
-        if selector is None != id is None:
+        if selector is None != id is None:  # noqa: E711
             raise ValueError("Either selector or id can be used as a parameter.")
 
         selector_type = SELECTOR_CSS
