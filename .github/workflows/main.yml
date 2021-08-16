@@ -20,6 +20,6 @@ jobs:
       - name: Run linter
         run: flake8 turbo
       - name: Run formatter
-        run: black -S --target-version=py38 --check .  --exclude doc --exclude migrations
+        run: black -S --target-version=py38 --check . --exclude "doc|migrations"
       - name: Run unit tests
         run: pytest tests
