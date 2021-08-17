@@ -34,6 +34,7 @@ def register(*models, site=None):
             post_delete.connect(post_delete_broadcast_model, sender=model)
 
         return broadcast_class
+
     return _model_broadcast_wrapper
 
 
