@@ -15,7 +15,7 @@ Integrate [Hotwire Turbo](https://turbo.hotwired.dev/) with Django with ease.
 - Django 3.1+
 - Channels 3.0+ _(Optional for Turbo Frames, but needed for Turbo Stream support)_
 
-##Installation
+## Installation
 
 Turbo Django is available on PyPI - to install it, just run:
 
