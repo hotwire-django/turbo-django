@@ -15,6 +15,7 @@ def turbo_subscribe(*stream_names):
     return {"signed_channel_names": signed_channel_names}
 
 
+# deprecated - used in version 0.1.0
 @register.simple_tag
 def stream_id(target):
     if isinstance(target, Model):
