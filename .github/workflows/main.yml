@@ -20,6 +20,6 @@ jobs:
       - name: Run linter
         run: pflake8 turbo
       - name: Run formatter
-        run: black --config=pyproject.toml -S --check .
+        run: black -S --target-version=py38 --line-length=100 --check . --exclude "doc|migrations"
       - name: Run unit tests
         run: pytest tests
