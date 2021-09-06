@@ -40,10 +40,16 @@ sphinx-autoapi = "^1.8.1"
 alabaster-hotwire = {git = "https://github.com/hotwire-django/sphinx-hotwire-theme.git", rev = "1.0"}
 sphinxcontrib-fulltoc = "^1.2.0"
 bump2version = "^1.0.1"
+pyproject-flake8 = "^0.0.1-alpha.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 100
+max-complexity = 10
+exclude = 'doc,migrations'
 
 [tool.black]
 line-length = 100

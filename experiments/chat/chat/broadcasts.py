@@ -1,4 +1,4 @@
-from .models import Message, Room
+from .models import Message
 
 import turbo
 

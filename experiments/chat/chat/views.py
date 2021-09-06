@@ -1,6 +1,7 @@
-from django.shortcuts import render, reverse, get_object_or_404
-from django.http import HttpResponse
+from datetime import datetime
 
+from django.shortcuts import reverse, get_object_or_404
+from django.http import HttpResponse
 from django.views.generic import CreateView, ListView, DetailView
 
 from chat.models import Room, Message
@@ -36,9 +37,6 @@ def message_delete(request, message_id):
     message = get_object_or_404(Message, pk=message_id)
     message.delete()
     return HttpResponse()
-
-
-from datetime import datetime
 
 
 def send_broadcast(request):
