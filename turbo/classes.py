@@ -141,9 +141,7 @@ class TurboRender:
             selector = id
 
         return self._broadcast(
-            self._render_frame(
-                selector_type=selector_type, selector=selector, action=action
-            )
+            self._render_frame(selector_type=selector_type, selector=selector, action=action)
         )
 
     def _render_frame(self, selector_type, selector, action) -> str:

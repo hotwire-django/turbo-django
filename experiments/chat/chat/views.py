@@ -43,8 +43,8 @@ from datetime import datetime
 
 def send_broadcast(request):
 
-    Turbo('broadcast_name').render_from_string(
-        f"{datetime.now()}: This is a broadcast."
-    ).update(id="broadcast_box")
+    Turbo('broadcast_name').render_from_string(f"{datetime.now()}: This is a broadcast.").update(
+        id="broadcast_box"
+    )
 
     return HttpResponse("Sent a Broadcast")

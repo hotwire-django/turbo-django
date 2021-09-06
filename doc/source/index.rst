@@ -28,4 +28,4 @@ Reference
    :maxdepth: 1
 
    ./autoapi/index.rst
-
+   GitHub Repo <https://github.com/hotwire-django/turbo-django>
