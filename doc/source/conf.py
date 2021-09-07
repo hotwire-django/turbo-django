@@ -31,7 +31,12 @@ author = 'Hotwire-Django Team'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinxcontrib.fulltoc', "sphinx.ext.autodoc", "autoapi.extension", 'sphinx_toolbox.code',]
+extensions = [
+    'sphinxcontrib.fulltoc',
+    'sphinx.ext.autodoc',
+    'autoapi.extension',
+    'sphinx_toolbox.code',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -60,7 +65,7 @@ html_theme = 'alabaster_hotwire'
 html_static_path = ['_static']
 
 html_context = {
-    'topbar' : [
+    'topbar': [
         {"url": "https://turbo-django.readthedocs.io/", "name": "Turbo Django", "active": True},
         {"url": "https://django-turbo-response.readthedocs.io/", "name": "Django Turbo Response"},
         {"name": "Stimulus Django"},

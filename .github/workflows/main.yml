@@ -18,8 +18,8 @@ jobs:
           pip install -r requirements.txt
           pip install .
       - name: Run linter
-        run: flake8 turbo
+        run: pflake8 turbo
       - name: Run formatter
-        run: black -S --target-version=py38 --check . --exclude "doc|migrations"
+        run: black -S --target-version=py38 --line-length=100 --check . --exclude "doc|migrations"
       - name: Run unit tests
         run: pytest tests

@@ -33,6 +33,4 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         if message_type == "subscribe":
             async_to_sync(self.channel_layer.group_add)(channel_name, self.channel_name)
         elif message_type == "unsubscribe":
-            async_to_sync(self.channel_layer.group_discard)(
-                channel_name, self.channel_name
-            )
+            async_to_sync(self.channel_layer.group_discard)(channel_name, self.channel_name)

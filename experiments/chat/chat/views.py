@@ -1,6 +1,7 @@
-from django.shortcuts import render, reverse, get_object_or_404
-from django.http import HttpResponse
+from datetime import datetime
 
+from django.shortcuts import reverse, get_object_or_404
+from django.http import HttpResponse
 from django.views.generic import CreateView, ListView, DetailView
 
 from chat.models import Room, Message
@@ -38,13 +39,10 @@ def message_delete(request, message_id):
     return HttpResponse()
 
 
-from datetime import datetime
-
-
 def send_broadcast(request):
 
-    Turbo('broadcast_name').render_from_string(
-        f"{datetime.now()}: This is a broadcast."
-    ).update(id="broadcast_box")
+    Turbo('broadcast_name').render_from_string(f"{datetime.now()}: This is a broadcast.").update(
+        id="broadcast_box"
+    )
 
     return HttpResponse("Sent a Broadcast")

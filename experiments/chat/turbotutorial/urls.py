@@ -23,10 +23,6 @@ urlpatterns = [
     path('quickstart/send', views.send_broadcast),
     path("", views.RoomList.as_view(), name="room_list"),
     path("<slug:pk>/", views.RoomDetail.as_view(), name="room_detail"),
-    path(
-        "<slug:pk>/message_create", views.MessageCreate.as_view(), name="message_create"
-    ),
-    path(
-        "message/<int:message_id>/delete", views.message_delete, name="message_delete"
-    ),
+    path("<slug:pk>/message_create", views.MessageCreate.as_view(), name="message_create"),
+    path("message/<int:message_id>/delete", views.message_delete, name="message_delete"),
 ]
