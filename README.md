@@ -21,6 +21,32 @@ Turbo Django is available on PyPI - to install it, just run:
 
     pip install turbo-django
 
+Add `turbo` and `channels` to `INSTALLED_APPS`, and copy the following `CHANNEL_LAYERS` setting:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'turbo',
+    `channels`
+	...
+]
+
+CHANNEL_LAYERS = {
+    "default": {
+        # Don't use this backend in production
+        # See https://channels.readthedocs.io/en/latest/topics/channel_layers.html
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+```
+
+And collect static files if the development server is not hosting them:
+
+```sh
+./manage.py collectstatic
+```
+
 _Note: Both Hotwire and this library are still in beta development and may introduce breaking API changes between releases.  It is advised to pin the library to a specific version during install._
 
 ## Quickstart
