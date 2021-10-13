@@ -27,7 +27,7 @@ Add `turbo` and `channels` to `INSTALLED_APPS`, and copy the following `CHANNEL_
 INSTALLED_APPS = [
     ...
     'turbo',
-    `channels`
+    'channels'
     ...
 ]
 
