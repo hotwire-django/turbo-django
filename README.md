@@ -33,9 +33,13 @@ INSTALLED_APPS = [
 
 CHANNEL_LAYERS = {
     "default": {
-        # Don't use this backend in production
+        # You will need to `pip install channels_redis` and configure a redis instance.
+        # Using InMemoryChannelLayer will not work as the memory is not shared between threads.
         # See https://channels.readthedocs.io/en/latest/topics/channel_layers.html
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
     }
 }
 
