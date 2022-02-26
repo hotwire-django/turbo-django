@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load turbo_streams %}
+
+
+{% block body %}
+    <h1>Reminders</h1>
+    <p class="lead">This application demonstrates a simple implementation of forms and turbo-frames written without any custom javascript.</p>
+
+    <turbo-frame id="search-reminder">
+     <form method="post" action="{% url 'reminder_list_search' %}">
+        {% csrf_token %}
+        <input name="search" type="search" autocomplete='off' placeholder="Search" onkeyup="$('#search_submit').click()">
+        <input type="submit" value="Search" id='search_submit'>
+    </form>
+    </turbo-frame>
+
+    {% include "reminders/reminder_list_items.html" %}
+
+    <turbo-frame id="add-reminder" src="{% url 'reminder_list_form' %}"></turbo-frame>
+
+{% endblock body %}
+
