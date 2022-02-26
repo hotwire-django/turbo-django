@@ -19,6 +19,7 @@ def render_frame_string(text: str) -> "TurboRender":
 
     return TurboRender(text)
 
+
 def remove_frame(selector=None, id=None) -> "TurboRender":
     """
     Returns a removal frame.  These don't use a template.

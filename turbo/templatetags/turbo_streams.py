@@ -23,7 +23,9 @@ def turbo_subscribe(*stream_items):
         if isinstance(stream_item, Model):
             channel = stream_item.channel
         else:
-            channel, is_model_channel, pk = channel_for_channel_name(to_subscribable_name(stream_item))
+            channel, is_model_channel, pk = channel_for_channel_name(
+                to_subscribable_name(stream_item)
+            )
             if is_model_channel:
                 channel = Channel.from_pk(pk)
 
@@ -32,8 +34,6 @@ def turbo_subscribe(*stream_items):
                 continue
 
         channel_names.append(channel.channel_name)
-
-
 
     signed_channel_names = [signer.sign(to_subscribable_name(s)) for s in channel_names]
     return {"signed_channel_names": signed_channel_names}

@@ -4,13 +4,11 @@ from django.db.models.signals import post_init, post_save, post_delete
 import sys
 from inspect import getmembers, isclass
 
-from .classes import (  # noqa: F401
-    Channel, ModelChannel
-)
+from .classes import Channel, ModelChannel  # noqa: F401
 from turbo.signals import (
     post_save_broadcast_model,
     post_delete_broadcast_model,
-    post_init_broadcast_model
+    post_init_broadcast_model,
 )
 
 

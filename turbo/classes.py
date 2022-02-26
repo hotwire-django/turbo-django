@@ -50,7 +50,6 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
     def label(self):
         return '%s.%s' % (self.app_label, self.object_name)
 
-
     def append(self, template, context=None, selector=None, id=None):
         """Shortcut to stream an append frame"""
         frame = TurboRender.init_from_template(template, context)
@@ -74,7 +73,6 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
         frame = TurboRender.init_from_template(template, context)
         frame.update(selector=selector, id=id)
         self.stream(frame)
-
 
     def before(self, selector=None, id=None):
         """Shortcut to stream an append frame"""
@@ -114,13 +112,11 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
             raise ValueError("No action (append, update, remove...) assigned to Turbo Frame.")
         self.stream_raw(frame.rendered_template)
 
-
     def user_passes_test(self, user):
         return True
 
 
 class ModelChannel(Channel):
-
     def __init__(self, pk, instance=None):
         super().__init__()
         self.pk = pk
@@ -225,7 +221,9 @@ class TurboRender:
     @property
     def rendered_template(self):
         if self._rendered_template is None:
-            raise ValueError("Template must be rendered with an template action (append, update, remove, etc...)")
+            raise ValueError(
+                "Template must be rendered with an template action (append, update, remove, etc...)"
+            )
         return self._rendered_template
 
     def render(self, selector_type, selector, action) -> str:

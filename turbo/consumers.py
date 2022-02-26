@@ -56,7 +56,8 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         if not channel.user_passes_test(user):
             logger.warning(
                 "User `%s` does not have permission to access channel '%s'.",
-                user, channel.channel_name
+                user,
+                channel.channel_name,
             )
             return False
 

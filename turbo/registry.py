@@ -13,6 +13,7 @@ logger = logging.getLogger('turbo.channels')
 
 model_channel_regex = re.compile(r"(?P<app_name>\w+)\.(?P<channel_name>\w+)(\-(?P<pk>[\w-]+))?")
 
+
 class ChannelRegistry(dict):
 
     channels_by_app = defaultdict(dict)
@@ -22,7 +23,6 @@ class ChannelRegistry(dict):
 
     def get_channel(self, app_name: str, channel_name: str) -> "Channel":
         return self.channels_by_app[app_name].get(channel_name)
-
 
 
 def channel_for_channel_name(channel_name: str):
@@ -42,8 +42,7 @@ def channel_for_channel_name(channel_name: str):
         return None, {}, None
 
     ChannelCls = channel_registry.get_channel(
-            model_channel_parts['app_name'],
-            model_channel_parts['channel_name']
+        model_channel_parts['app_name'], model_channel_parts['channel_name']
     )
     is_model_channel = False
     if ChannelCls:

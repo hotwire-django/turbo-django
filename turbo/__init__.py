@@ -13,7 +13,7 @@ from .classes import (  # noqa: F401
     REMOVE,
     BEFORE,
     AFTER,
-    TurboRender
+    TurboRender,
 )
 from .module_loading import autodiscover_channels
 from .registry import channel_registry
@@ -25,6 +25,5 @@ default_app_config = "turbo.apps.TurboDjangoConfig"
 from django.contrib.admin.sites import AdminSite, site
 
 
-
 def autodiscover():
-   autodiscover_channels(channel_registry)
+    autodiscover_channels(channel_registry)

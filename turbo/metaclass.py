@@ -1,6 +1,6 @@
 class AttrDict(dict):
     """A dictionary with attribute-style access. It maps attribute access to
-    the real dictionary.  """
+    the real dictionary."""
 
     def __init__(self, init={}):
         dict.__init__(self, init)
@@ -47,6 +47,7 @@ class DeclarativeFieldsMetaclass(type):
     """
     Metaclass that updates a _meta dict declared on base classes.
     """
+
     def __new__(mcs, name, bases, attrs):
 
         # Pop the Meta class if exists
