@@ -9,7 +9,7 @@ Let's continue to build on this basic chat application by allowing the user to r
 
 * Add links to the `message` component template to remove the message.  Add a message_id to each list item so Turbo knows which message to delete.
 * Create a view that deletes the message.
-* Add an ``on_delete`` method to the ModelBroadcast.  Tell the room subscribers to remove the message div by ID.
+* Add an ``on_delete`` method to the ModelChannel.  Tell the room subscribers to remove the message div by ID.
 
 
 Start by adding a unique id to each ``<li>`` element.  Then add a link to remove that message in the template.
@@ -64,7 +64,7 @@ And finally, let your message broadcast tell clients subscribed to the message's
     :caption: chat/broadcasts.py
 
     @turbo.register(Message)
-    class MessageBroadcast(turbo.ModelBroadcast):
+    class MessageBroadcast(turbo.ModelChannel):
 
         ...
 

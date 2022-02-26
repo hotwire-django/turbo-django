@@ -39,10 +39,10 @@ Calling
     You can only broadcast to instances that have a primary key.  A ``ValueError`` is thrown when trying to broadcast to an object that does not have a primary key set.
 
 
-ModelBroadcast
+ModelChannel
 ==============
 
-A common use-case for broadcasts is to send page updates when a model is created, modified, or deleted.  To organize these events in one place, Turbo Django uses ``ModelBroadCast``.  When registered to a particular model, these classes will trigger the appropriate method on save and delete.  ``ModelBroadcast`` objects are automatically detected when place in  ``broadcasts.py``.
+A common use-case for broadcasts is to send page updates when a model is created, modified, or deleted.  To organize these events in one place, Turbo Django uses ``ModelChannEl``.  When registered to a particular model, these classes will trigger the appropriate method on save and delete.  ``ModelChannel`` objects are automatically detected when place in  ``broadcasts.py``.
 
 Sample `broadcasts.py`
 ----------------------
@@ -55,14 +55,14 @@ Sample `broadcasts.py`
     import turbo
 
     @turbo.register(Room)
-    class RoomBroadcast(turbo.ModelBroadcast):
+    class RoomBroadcast(turbo.ModelChannel):
 
         def on_save(self, room, created, *args, **kwargs):
             room.turbo.render("chat/room_name.html", {"room": room}).replace(id="update-room")
 
 
     @turbo.register(Message)
-    class MessageBroadcast(turbo.ModelBroadcast):
+    class MessageBroadcast(turbo.ModelChannel):
 
         def on_save(self, message, created, *args, **kwargs):
             if created:

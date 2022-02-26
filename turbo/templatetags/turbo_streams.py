@@ -1,17 +1,41 @@
 from django import template
 from django.core.signing import Signer
 from django.db.models import Model
+from django.template import (
+    TemplateSyntaxError,
+)
 
-from turbo import get_channel_name
+from turbo.registry import channel_for_channel_name
+from turbo.utils import to_subscribable_name
 
 register = template.Library()
 
 
 @register.inclusion_tag("turbo/turbo_stream_source.html")
-def turbo_subscribe(*stream_names):
+def turbo_subscribe(*stream_items):
     # https://docs.djangoproject.com/en/3.1/topics/signing/
+    channel_names = []
+    signed_channel_names = []
+
     signer = Signer()
-    signed_channel_names = [signer.sign(get_channel_name(s)) for s in stream_names]
+    for stream_item in stream_items:
+
+        if isinstance(stream_item, Model):
+            channel = stream_item.channel
+        else:
+            channel, is_model_channel, pk = channel_for_channel_name(to_subscribable_name(stream_item))
+            if is_model_channel:
+                channel = Channel.from_pk(pk)
+
+            if not channel:
+                raise TemplateSyntaxError('Could not fetch channel with name: %s' % stream_item)
+                continue
+
+        channel_names.append(channel.channel_name)
+
+
+
+    signed_channel_names = [signer.sign(to_subscribable_name(s)) for s in channel_names]
     return {"signed_channel_names": signed_channel_names}
 
 
