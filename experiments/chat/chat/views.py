@@ -10,6 +10,7 @@ from chat.forms import RoomForm
 
 from turbo.shortcuts import render_frame, remove_frame
 
+
 class RoomList(ListView):
     model = Room
     context_object_name = "rooms"
@@ -32,12 +33,15 @@ class RoomList(ListView):
 
         new_form = RoomForm()
 
-        return render_frame(
-            request,
-            "chat/components/create_room_form.html",
-            {"form": new_form},
-        ).replace(id="create-room-form").response
-
+        return (
+            render_frame(
+                request,
+                "chat/components/create_room_form.html",
+                {"form": new_form},
+            )
+            .replace(id="create-room-form")
+            .response
+        )
 
 
 class RoomDetail(DetailView):
@@ -64,4 +68,3 @@ def message_delete(request, message_id):
     message = get_object_or_404(Message, pk=message_id)
     message.delete()
     return HttpResponse()
-
