@@ -1,7 +1,7 @@
 from .classes import TurboRender
 
 
-def render_frame(template_name: str, context=None) -> "TurboRender":
+def render_frame(request, template_name: str, context=None) -> "TurboRender":
     """
     Returns a TurboRender object from a django template.  This rendered template
     can then be broadcast to subscribers with the TurboRender actions
@@ -9,7 +9,7 @@ def render_frame(template_name: str, context=None) -> "TurboRender":
 
     Takes a template name and context identical to Django's render() method.
     """
-    return TurboRender.init_from_template(template_name, context=context)
+    return TurboRender.init_from_template(template_name, context=context, request=request)
 
 
 def render_frame_string(text: str) -> "TurboRender":

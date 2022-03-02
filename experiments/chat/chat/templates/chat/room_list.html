@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Chat Rooms</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load turbo_streams %}
+{% block body %}
+
+    {% turbo_subscribe "chat:RoomListChannel" %}
+
     <h1>Room List</h1>
-    <ul>
+    <ul id="room_list">
     {% for room in rooms %}
-        <li><a href="{% url 'room_detail' room.id %}">{{ room.name }}</a></li>
-    {% empty %}
-        <li>No Rooms Available</li>
+        {% include "chat/components/room_list_item.html" %}
     {% endfor %}
     </ul>
-</body>
-</html>
+
+    {% include "chat/components/create_room_form.html" %}
+
+{% endblock body %}

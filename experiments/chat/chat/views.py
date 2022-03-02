@@ -5,12 +5,39 @@ from django.http import HttpResponse
 from django.views.generic import CreateView, ListView, DetailView
 
 from chat.models import Room, Message
-from turbo import Turbo
+from chat.channels import RoomListChannel
+from chat.forms import RoomForm
 
+from turbo.shortcuts import render_frame, remove_frame
 
 class RoomList(ListView):
     model = Room
     context_object_name = "rooms"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = RoomForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        action = request.POST.get('action')
+        if action == "Delete All":
+            Room.objects.all().delete()
+            RoomListChannel().delete_all()
+            return HttpResponse()
+
+        form = RoomForm(request.POST)
+        form.save()
+
+        new_form = RoomForm()
+
+        return render_frame(
+            request,
+            "chat/components/create_room_form.html",
+            {"form": new_form},
+        ).replace(id="create-room-form").response
+
 
 
 class RoomDetail(DetailView):
@@ -38,11 +65,3 @@ def message_delete(request, message_id):
     message.delete()
     return HttpResponse()
 
-
-def send_broadcast(request):
-
-    Turbo('broadcast_name').render_from_string(f"{datetime.now()}: This is a broadcast.").update(
-        id="broadcast_box"
-    )
-
-    return HttpResponse("Sent a Broadcast")

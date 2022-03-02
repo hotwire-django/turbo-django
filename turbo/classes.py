@@ -50,39 +50,46 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
     def label(self):
         return '%s.%s' % (self.app_label, self.object_name)
 
-    def append(self, template, context=None, selector=None, id=None):
+    def _get_frame(self, template=None, context=None, text=None):
+        if text:
+            return TurboRender(text)
+        else:
+            return TurboRender.init_from_template(template, context)
+
+    def append(self, template=None, context=None, text=None, selector=None, id=None):
         """Shortcut to stream an append frame"""
-        frame = TurboRender.init_from_template(template, context)
+
+        frame = self._get_frame(template, context, text)
         frame.append(selector=selector, id=id)
         self.stream(frame)
 
-    def prepend(self, selector=None, id=None):
+    def prepend(self, template=None, context=None, text=None, selector=None, id=None):
         """Shortcut to stream an append frame"""
-        frame = TurboRender.init_from_template(template, context)
+        frame = self._get_frame(template, context, text)
         frame.prepend(selector=selector, id=id)
         self.stream(frame)
 
-    def replace(self, selector=None, id=None):
+    def replace(self, template=None, context=None, text=None, selector=None, id=None):
         """Shortcut to stream an append frame"""
-        frame = TurboRender.init_from_template(template, context)
+        frame = self._get_frame(template, context, text)
         frame.replace(selector=selector, id=id)
         self.stream(frame)
 
-    def update(self, selector=None, id=None):
+    def update(self, template=None, context=None, text=None, selector=None, id=None):
         """Shortcut to stream an append frame"""
-        frame = TurboRender.init_from_template(template, context)
+        frame = self._get_frame(template, context, text)
         frame.update(selector=selector, id=id)
         self.stream(frame)
 
-    def before(self, selector=None, id=None):
+    def before(self, template=None, context=None, text=None, selector=None, id=None):
         """Shortcut to stream an append frame"""
-        frame = TurboRender.init_from_template(template, context)
+        frame = self._get_frame(template, context, text)
         frame.before(selector=selector, id=id)
         self.stream(frame)
 
-    def after(self, selector=None, id=None):
+    def after(self, template=None, context=None, text=None, selector=None, id=None):
         """Shortcut to stream an append frame"""
-        frame = TurboRender.init_from_template(template, context)
+        frame = self._get_frame(template, context, text)
         frame.after(selector=selector, id=id)
         self.stream(frame)
 
@@ -161,7 +168,7 @@ class TurboRender:
         self._rendered_template = None
 
     @classmethod
-    def init_from_template(cls, template_name: str, context=None) -> "TurboRender":
+    def init_from_template(cls, template_name: str, context=None, request=None) -> "TurboRender":
         """
         Returns a TurboRender object from a django template.  This rendered template
         can then be broadcast to subscribers with the TurboRender actions
@@ -172,7 +179,7 @@ class TurboRender:
         if context is None:
             context = {}
 
-        return cls(render_to_string(template_name, context))
+        return cls(render_to_string(template_name, context, request))
 
     def append(self, selector=None, id=None):
         """Add a target action to the given selector."""

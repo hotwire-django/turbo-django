@@ -49,7 +49,7 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
             logger.warning(f"Channel '%s' could not be located.", channel_name)
             return
 
-        self.subscribe_to_channel(message_type, channel, self.scope['user'])
+        self.subscribe_to_channel(message_type, channel, self.scope.get('user'))
 
     def subscribe_to_channel(self, message_type, channel, user):
 

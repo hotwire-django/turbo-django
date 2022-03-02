@@ -25,7 +25,7 @@ def reminder_list_form(request):
         if form.is_valid():
             reminder = form.save()
             frame = render_frame(
-                "reminders/reminder_list_item.html", {'reminder': reminder}
+                request, "reminders/reminder_list_item.html", {'reminder': reminder}
             ).append(id='reminders')
             return frame.response
 
@@ -38,5 +38,5 @@ def reminder_list_form(request):
 def reminder_list_search(request):
     # Post request to search
     reminders = Reminder.objects.filter(reminder_text__icontains=request.POST.get('search', ''))
-    frame = render_frame("reminders/reminder_list_items.html", {"reminders": reminders})
+    frame = render_frame(request, "reminders/reminder_list_items.html", {"reminders": reminders})
     return frame.replace(id='reminders').response

@@ -1,13 +1,9 @@
+{% extends "base.html" %}
 {% load turbo_streams %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Room Detail</title>
-    {% include "turbo/head.html" %}
-</head>
-<body>
-     {% turbo_subscribe room %}
+
+{% block body %}
+
+    {% turbo_subscribe room %}
 
     <a href="{% url 'room_list' %}">Home</a>
 
@@ -22,5 +18,5 @@
     </turbo-frame>
 
     <turbo-frame id="send-message" src="{% url 'message_create' room.id %}"></turbo-frame>
-</body>
-</html>
+
+{% endblock body %}
