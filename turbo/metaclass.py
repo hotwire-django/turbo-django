@@ -51,11 +51,11 @@ class DeclarativeFieldsMetaclass(type):
     def __new__(mcs, name, bases, attrs):
 
         # Pop the Meta class if exists
-        meta = attrs.pop('Meta', None)
+        meta = attrs.pop("Meta", None)
 
         # Value of abstract by default should be set to false.
         # It is never inherited.
-        abstract = getattr(meta, 'abstract', False)
+        abstract = getattr(meta, "abstract", False)
 
         new_class = super().__new__(mcs, name, bases, attrs)
 

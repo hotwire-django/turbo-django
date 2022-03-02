@@ -4,10 +4,10 @@ from django.core.signing import Signer, BadSignature
 
 import logging
 
-from .registry import channel_registry, channel_for_channel_name
+from .registry import channel_for_channel_name
 from .utils import to_subscribable_name
 
-logger = logging.getLogger('turbo.streams')
+logger = logging.getLogger("turbo.streams")
 
 signer = Signer()
 
@@ -46,10 +46,10 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         elif Channel:
             channel = Channel()
         else:
-            logger.warning(f"Channel '%s' could not be located.", channel_name)
+            logger.warning("Channel '%s' could not be located.", channel_name)
             return
 
-        self.subscribe_to_channel(message_type, channel, self.scope.get('user'))
+        self.subscribe_to_channel(message_type, channel, self.scope.get("user"))
 
     def subscribe_to_channel(self, message_type, channel, user):
 

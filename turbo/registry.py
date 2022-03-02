@@ -1,15 +1,11 @@
-from typing import List
 from collections import defaultdict
 import re
-
 import logging
 
-from django.db.models import Model
-
-from .classes import ModelChannel
+from .classes import Channel, ModelChannel
 
 
-logger = logging.getLogger('turbo.channels')
+logger = logging.getLogger("turbo.channels")
 
 model_channel_regex = re.compile(r"(?P<app_name>\w+)\.(?P<channel_name>\w+)(\-(?P<pk>[\w-]+))?")
 
@@ -21,7 +17,7 @@ class ChannelRegistry(dict):
     def add_channel(self, app_name, channel_name, channel):
         self.channels_by_app[app_name][channel_name] = channel
 
-    def get_channel(self, app_name: str, channel_name: str) -> "Channel":
+    def get_channel(self, app_name: str, channel_name: str) -> Channel:
         return self.channels_by_app[app_name].get(channel_name)
 
 
@@ -42,12 +38,12 @@ def channel_for_channel_name(channel_name: str):
         return None, {}, None
 
     ChannelCls = channel_registry.get_channel(
-        model_channel_parts['app_name'], model_channel_parts['channel_name']
+        model_channel_parts["app_name"], model_channel_parts["channel_name"]
     )
     is_model_channel = False
     if ChannelCls:
         is_model_channel = issubclass(ChannelCls, ModelChannel)
-    return (ChannelCls, is_model_channel, model_channel_parts['pk'])
+    return (ChannelCls, is_model_channel, model_channel_parts["pk"])
 
 
 channel_registry = ChannelRegistry()

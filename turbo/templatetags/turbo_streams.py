@@ -23,14 +23,15 @@ def turbo_subscribe(*stream_items):
         if isinstance(stream_item, Model):
             channel = stream_item.channel
         else:
-            channel, is_model_channel, pk = channel_for_channel_name(
+            Channel, is_model_channel, pk = channel_for_channel_name(
                 to_subscribable_name(stream_item)
             )
             if is_model_channel:
                 channel = Channel.from_pk(pk)
-
+            else:
+                channel = Channel()
             if not channel:
-                raise TemplateSyntaxError('Could not fetch channel with name: %s' % stream_item)
+                raise TemplateSyntaxError("Could not fetch channel with name: %s" % stream_item)
                 continue
 
         channel_names.append(channel.channel_name)

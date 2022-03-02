@@ -17,8 +17,8 @@ def autodiscover_channels(register_to):
     Add all Channels to registry
     Look for ModelChannel classes in channels.py
     """
-    autodiscover_modules('channels')
-    broadcast_modules = [v for k, v in sys.modules.items() if k.endswith('.channels')]
+    autodiscover_modules("channels")
+    broadcast_modules = [v for k, v in sys.modules.items() if k.endswith(".channels")]
 
     for broadcast_module in broadcast_modules:
         app_name = broadcast_module.__package__
@@ -31,7 +31,7 @@ def autodiscover_channels(register_to):
                 try:
                     model = channel_model._meta.model
                 except (KeyError, AttributeError):
-                    raise AttributeError(f'{channel_model.__name__} missing Meta.model attribute')
+                    raise AttributeError(f"{channel_model.__name__} missing Meta.model attribute")
 
                 model._meta.channel_model = channel_model
                 post_init.connect(post_init_broadcast_model, sender=model)

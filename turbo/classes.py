@@ -1,9 +1,10 @@
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from functools import singledispatchmethod, cached_property
-from django.db.models import Model
+from functools import cached_property
+
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+
 from .utils import to_subscribable_name
 from .metaclass import DeclarativeFieldsMetaclass
 
@@ -17,8 +18,8 @@ BEFORE = "before"
 AFTER = "after"
 
 
-SELECTOR_CSS = 'css'
-SELECTOR_ID = 'id'
+SELECTOR_CSS = "css"
+SELECTOR_ID = "id"
 SELECTOR_TYPES = (SELECTOR_ID, SELECTOR_CSS)
 
 
@@ -40,15 +41,15 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
     """
 
     class Meta:
-        app_name = ''
+        app_name = ""
 
     @classproperty
     def channel_name(self):
-        return f'{self._meta.app_name}:{self.__name__}'
+        return f"{self._meta.app_name}:{self.__name__}"
 
     @property
     def label(self):
-        return '%s.%s' % (self.app_label, self.object_name)
+        return "%s.%s" % (self.app_label, self.object_name)
 
     def _get_frame(self, template=None, context=None, text=None):
         if text:
@@ -108,7 +109,7 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
         async_to_sync(channel_layer.group_send)(
             subscribable_stream_name,
             {
-                "type": 'notify',
+                "type": "notify",
                 "channel_name": subscribable_stream_name,
                 "rendered_template": raw_text,
             },
@@ -144,7 +145,7 @@ class ModelChannel(Channel):
 
     @property
     def channel_name(self):
-        return f'{super().channel_name}-{self.pk}'
+        return f"{super().channel_name}-{self.pk}"
 
     def user_passes_test(self, user):
         return True
@@ -163,7 +164,7 @@ class TurboRender:
     A rendered template, ready to broadcast using turbo.
     """
 
-    def __init__(self, inner_html: str = ''):
+    def __init__(self, inner_html: str = ""):
         self.inner_html = inner_html
         self._rendered_template = None
 
@@ -223,7 +224,7 @@ class TurboRender:
 
     @property
     def response(self):
-        return HttpResponse(self.rendered_template, 'text/vnd.turbo-stream.html', 200)
+        return HttpResponse(self.rendered_template, "text/vnd.turbo-stream.html", 200)
 
     @property
     def rendered_template(self):
