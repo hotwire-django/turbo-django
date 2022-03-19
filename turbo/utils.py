@@ -1,2 +1,2 @@
-def to_subscribable_name(channel_name):
-    return channel_name.__str__().replace(":", ".")
+def to_subscribable_name(stream_name):
+    return stream_name.__str__().replace(":", ".")

@@ -5,7 +5,7 @@ from django.template import (
     TemplateSyntaxError,
 )
 
-from turbo.registry import channel_for_channel_name
+from turbo.registry import stream_for_stream_name, stream_registry
 from turbo.utils import to_subscribable_name
 
 register = template.Library()
@@ -14,30 +14,33 @@ register = template.Library()
 @register.inclusion_tag("turbo/turbo_stream_source.html")
 def turbo_subscribe(*stream_items):
     # https://docs.djangoproject.com/en/3.1/topics/signing/
-    channel_names = []
-    signed_channel_names = []
+    stream_names = []
+    signed_stream_names = []
 
     signer = Signer()
     for stream_item in stream_items:
 
         if isinstance(stream_item, Model):
-            channel = stream_item.channel
+            stream = stream_item.stream
         else:
-            Channel, is_model_channel, pk = channel_for_channel_name(
+            Stream, is_model_stream, pk = stream_for_stream_name(
                 to_subscribable_name(stream_item)
             )
-            if is_model_channel:
-                channel = Channel.from_pk(pk)
-            else:
-                channel = Channel()
-            if not channel:
-                raise TemplateSyntaxError("Could not fetch channel with name: %s" % stream_item)
+
+            if not Stream:
+                stream_names = stream_registry.get_stream_names()
+                raise TemplateSyntaxError("Could not fetch stream with name: '%s'  Registered streams: %s" % (stream_item, stream_names))
                 continue
 
-        channel_names.append(channel.channel_name)
+            if is_model_stream:
+                stream = Stream.from_pk(pk)
+            else:
+                stream = Stream()
 
-    signed_channel_names = [signer.sign(to_subscribable_name(s)) for s in channel_names]
-    return {"signed_channel_names": signed_channel_names}
+
+        stream_names.append(stream.stream_name)
+    signed_stream_names = [signer.sign(to_subscribable_name(s)) for s in stream_names]
+    return {"signed_channel_names": signed_stream_names}
 
 
 # deprecated - used in version 0.1.0

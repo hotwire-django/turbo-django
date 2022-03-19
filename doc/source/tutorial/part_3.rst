@@ -2,10 +2,10 @@
 Part 3 - Your First Turbo Frame
 ===============================
 
-Listen to Websockets
+Listen to Turbo Streams
 =========================
 
-It's time to start creating a dynamic, interactive application.  Start by getting Django to listen to websockets by modying ``asgi.py`` to the following:
+It's time to start creating a dynamic, interactive application.  Start by getting Django to listen to websockets by modifying ``asgi.py`` to the following:
 
 .. code-block:: python
     :caption: turbodjango/asgi.py
@@ -21,7 +21,7 @@ It's time to start creating a dynamic, interactive application.  Start by gettin
 
     application = ProtocolTypeRouter({
       "http": get_asgi_application(),
-      "websocket": TurboStreamsConsumer.as_asgi()  # Leave off .as_asgi() if using Channels 2.x
+      "websocket": TurboStreamsConsumer.as_asgi()
     })
 
 
@@ -65,7 +65,7 @@ With that in mind, let's make a directory for these templates and create our fir
 Introducing the ``turbo-frame`` tag
 ===================================
 
-**<turbo-frame>** Turbo Frames allow parts of the page to be updated on request.  Each turbo-frame must have a unique id so that new content knows where to position the incoming content.
+**<turbo-frame>** Turbo Frames allow parts of the page to be updated on request.  Each turbo-frame must have an id that is shared between the parent frame, and the elements that will be loaded into the frame.
 
 .. note::
     Be sure to read the `official documentation of Turbo Frames <https://turbo.hotwired.dev/handbook/frames>`_.
@@ -73,10 +73,10 @@ Introducing the ``turbo-frame`` tag
 
 Run the code and test.  When text is submitted in the text box, the box is cleared and ready for new entry.  Let's walk through what is happening:
 
-* In `room_detail.html`, the makes a page makes a new request to the url specified in the ``src`` attribute.
-* Turbo looks for a turbo-frame with the same id in the response and inserts the content into the parent frame.  The form is now display in the page.
+* In `room_detail.html`, the turbo-frame makes a new request to the url specified in the ``src`` attribute.
+* Turbo looks for a turbo-frame with the same id in the response and inserts the content into the parent frame.  The form is now displayed in the page.
 * The user types content into the form and hits submit.
-* The framed form is submitted without the page reloading.  The success url returns a new blank form which is inserted into the frame.
+* The framed form is submitted without the page reloading.  The ``get_success_url()`` method returns a response equivilent to the url ``{% url 'message_create' room.id %}`` -- the same ``src`` of the parent turbo frame - loading a new blank form which is inserted into the frame.
 
-Refreshing the page renders the submitted messages. But for a chat client, we need those messages to appear immediately on this page, and others.  For that, we use  :doc:`broadcasts </tutorial/part_4>`.
+Refreshing the page renders the submitted messages. But for a chat client to be useful, those messages need to appear immediately on the page, and other pages that have this url open.  For that, we use  :doc:`turbo streams </tutorial/part_4>`.
 

@@ -35,7 +35,7 @@ class classproperty:
         return self
 
 
-class Channel(metaclass=DeclarativeFieldsMetaclass):
+class Stream(metaclass=DeclarativeFieldsMetaclass):
     """
     A reference to a specific broadcast.
     """
@@ -44,7 +44,7 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
         app_name = ""
 
     @classproperty
-    def channel_name(self):
+    def stream_name(self):
         return f"{self._meta.app_name}:{self.__name__}"
 
     @property
@@ -104,8 +104,7 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
 
     def stream_raw(self, raw_text: str):
         channel_layer = get_channel_layer()
-        subscribable_stream_name = to_subscribable_name(self.channel_name)
-
+        subscribable_stream_name = to_subscribable_name(self.stream_name)
         async_to_sync(channel_layer.group_send)(
             subscribable_stream_name,
             {
@@ -124,7 +123,7 @@ class Channel(metaclass=DeclarativeFieldsMetaclass):
         return True
 
 
-class ModelChannel(Channel):
+class ModelStream(Stream):
     def __init__(self, pk, instance=None):
         super().__init__()
         self.pk = pk
@@ -144,8 +143,8 @@ class ModelChannel(Channel):
         return self._meta.model.objects.get(pk=self.pk)
 
     @property
-    def channel_name(self):
-        return f"{super().channel_name}-{self.pk}"
+    def stream_name(self):
+        return f"{super().stream_name}-{self.pk}"
 
     def user_passes_test(self, user):
         return True
@@ -250,5 +249,5 @@ class TurboRender:
         self._rendered_template = render_to_string("turbo/stream.html", template_context)
         return self
 
-    def stream_to(self, channel):
-        channel.stream(self.rendered_template)
+    def stream_to(self, stream_instance):
+        stream_instance.stream(self.rendered_template)
