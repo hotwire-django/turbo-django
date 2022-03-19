@@ -6,14 +6,13 @@ from turbo.shortcuts import render_frame
 
 class RoomListChannel(turbo.Stream):
     def add_room(self, room):
-        print(vars(room))
         self.append("chat/components/room_list_item.html", {"room": room}, id="room_list")
 
     def delete_all(self):
         self.remove(selector="#room_list li")
 
 
-class RoomChannel(turbo.ModelChannel):
+class RoomChannel(turbo.ModelStream):
     class Meta:
         model = Room
 
@@ -31,22 +30,22 @@ class RoomChannel(turbo.ModelChannel):
         return True
 
 
-class MessageChannel(turbo.ModelChannel):
+class MessageChannel(turbo.ModelStream):
     class Meta:
         model = Message
 
     def on_save(self, message, created, *args, **kwargs):
         if created:
-            message.room.channel.append(
+            message.room.stream.append(
                 "chat/components/message.html", {"message": message}, id="messages"
             )
         else:
-            message.room.channel.replace(
+            message.room.stream.replace(
                 "chat/components/message.html", {"message": message}, id=f"message-{message.id}"
             )
 
     def on_delete(self, message, *args, **kwargs):
-        message.room.channel.remove(id=f"message-{message.id}")
+        message.room.stream.remove(id=f"message-{message.id}")
 
     def user_passes_test(self, user, object_id):
         return True

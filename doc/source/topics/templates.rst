@@ -34,7 +34,7 @@ It is now possible to send and place html to the subscribed page using the follo
     )
 
 
-    # Send to a ModelChannel
+    # Send to a ModelStream
     room = Room.objects.first()
 
     room.channel.append(
