@@ -18,6 +18,8 @@ Topics
    tutorial/index
    topics/turbo.rst
    topics/model_integration.rst
+   topics/streams.rst
+   topics/model_stream.rst
    topics/templates.rst
 
 

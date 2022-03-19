@@ -47,10 +47,6 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
     def stream_name(self):
         return f"{self._meta.app_name}:{self.__name__}"
 
-    @property
-    def label(self):
-        return "%s.%s" % (self.app_label, self.object_name)
-
     def _get_frame(self, template=None, context=None, text=None):
         if text:
             return TurboRender(text)
@@ -119,7 +115,7 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
             raise ValueError("No action (append, update, remove...) assigned to Turbo Frame.")
         self.stream_raw(frame.rendered_template)
 
-    def user_passes_test(self, user):
+    def user_passes_test(self, user) -> bool:
         return True
 
 
