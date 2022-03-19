@@ -29,7 +29,10 @@ def turbo_subscribe(*stream_items):
 
             if not Stream:
                 stream_names = stream_registry.get_stream_names()
-                raise TemplateSyntaxError("Could not fetch stream with name: '%s'  Registered streams: %s" % (stream_item, stream_names))
+                raise TemplateSyntaxError(
+                    "Could not fetch stream with name: '%s'  Registered streams: %s" %
+                    (stream_item, stream_names)
+                )
                 continue
 
             if is_model_stream:
@@ -37,19 +40,6 @@ def turbo_subscribe(*stream_items):
             else:
                 stream = Stream()
 
-
         stream_names.append(stream.stream_name)
     signed_stream_names = [signer.sign(to_subscribable_name(s)) for s in stream_names]
     return {"signed_channel_names": signed_stream_names}
-
-
-# deprecated - used in version 0.1.0
-@register.simple_tag
-def stream_id(target):
-    if isinstance(target, Model):
-        model_instance: Model = target
-        model_name = model_instance._meta.verbose_name.lower()
-        pk = model_instance.pk
-        return f"{model_name}_{pk}"
-    else:
-        return f"{target.__str__().lower()}"

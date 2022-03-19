@@ -27,6 +27,7 @@ class StreamRegistry(dict):
                 stream_names.append(stream.stream_name)
         return stream_names
 
+
 def stream_for_stream_name(stream_name: str):
     """
     Parses a stream name and returns either the stream or
