@@ -23,15 +23,13 @@ def turbo_subscribe(*stream_items):
         if isinstance(stream_item, Model):
             stream = stream_item.stream
         else:
-            Stream, is_model_stream, pk = stream_for_stream_name(
-                to_subscribable_name(stream_item)
-            )
+            Stream, is_model_stream, pk = stream_for_stream_name(to_subscribable_name(stream_item))
 
             if not Stream:
                 stream_names = stream_registry.get_stream_names()
                 raise TemplateSyntaxError(
-                    "Could not fetch stream with name: '%s'  Registered streams: %s" %
-                    (stream_item, stream_names)
+                    "Could not fetch stream with name: '%s'  Registered streams: %s"
+                    % (stream_item, stream_names)
                 )
                 continue
 
