@@ -18,5 +18,5 @@ class TestChannel(turbo.Stream):
 
 def test_channel_name():
 
-    assert TestChannel.channel_name == "test:TestChannel"
+    assert TestChannel.stream_name == "test:TestChannel"
     pass
