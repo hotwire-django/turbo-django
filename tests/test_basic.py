@@ -9,7 +9,7 @@ def test_import():
     assert turbo.default_app_config == "turbo.apps.TurboDjangoConfig"
 
 
-class TestChannel(turbo.Channel):
+class TestChannel(turbo.Stream):
     class Meta:
         app_name = 'test'
 

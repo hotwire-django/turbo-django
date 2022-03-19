@@ -71,3 +71,7 @@ html_context = {
         {"name": "Stimulus Django"},
     ]
 }
+
+html_css_files = [
+    'css/custom.css',
+]

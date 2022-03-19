@@ -1,74 +1,49 @@
 =================
-Model Integration
+ModelStream
 =================
 
-TurboMixin
-==========
 
-Adding ``TurboMixin`` to Django model classes will assign the result of ``turbo.Turbo(instance)`` to the instance attribute ``.turbo``  This allows for logical broadcasting from the instance itself.
+A common reason to stream data is to send page updates when a model is created, modified, or deleted.  To organize these events in one place, Turbo Django uses ``ModelStream``.  These classes will trigger the code to run when a model instance is saved and deleted.  ``ModelStream`` objects are declared and automatically detected in ``streams.py``.
 
-Implementation
---------------
-
-.. code-block:: python
-
-    # models.py
-    from django.db import models
-
-    from turbo.mixins import TurboMixin
-
-    class Room(TurboMixin, models.Model):
-        name = models.CharField(max_length=255)
-
-
-Calling
---------------
-
-.. code-block:: python
-
-    room = Room.objects.first()
-    room.turbo.render('template.html', {'room': room}).append(id='element_id')
-
-    # is the same as calling...
-    from turbo import Turbo
-    Turbo(room).render('template.html', {'room': room}).append(id='element_id')
-
+When a ModelStream is registered to a model, the model instance will automatically gain a `.stream` attribute that references the stream.  For this reason, only one model stream can be attached to each model.
 
 .. admonition:: Primary Key Needed
 
     You can only broadcast to instances that have a primary key.  A ``ValueError`` is thrown when trying to broadcast to an object that does not have a primary key set.
 
 
-ModelChannel
-==============
-
-A common use-case for broadcasts is to send page updates when a model is created, modified, or deleted.  To organize these events in one place, Turbo Django uses ``ModelChannEl``.  When registered to a particular model, these classes will trigger the appropriate method on save and delete.  ``ModelChannel`` objects are automatically detected when place in  ``broadcasts.py``.
-
-Sample `broadcasts.py`
+Example
 ----------------------
 
+The following demonstrates a sample implementation of ModelStreams for a chat application.  In this examples, a user would subscribe to a Room, however, the messages are the items being added and removed.  A stream is created for both models - giving them both `.stream` attributes.  When the message is saved, the message then references it's parent room stream, and either appends or replaces the chat message if it was created or modified.  If the message is deleted, the parent room stream is notified to remove the message block with the provided id.
+
 .. code-block:: python
-    :caption: app/broadcasts.py
+    :caption: app/streams.py
 
     from .models import Message, Room
 
     import turbo
 
-    @turbo.register(Room)
-    class RoomBroadcast(turbo.ModelChannel):
+    class RoomStream(turbo.ModelStream):
 
-        def on_save(self, room, created, *args, **kwargs):
-            room.turbo.render("chat/room_name.html", {"room": room}).replace(id="update-room")
+        class Meta:
+            model = Room
 
 
-    @turbo.register(Message)
-    class MessageBroadcast(turbo.ModelChannel):
+
+    class MessageStream(turbo.ModelStream):
+
+        class Meta:
+            model = Message
 
         def on_save(self, message, created, *args, **kwargs):
             if created:
-                message.room.turbo.render("chat/message.html", {"message": message}).append(id="messages")
+                message.room.stream.append("chat/message.html", {"message": message}, id="messages")
             else:
-                message.room.turbo.render("chat/message.html", {"message": message}).replace(id=f"message-{message.id}")
+                message.room.stream.replace("chat/message.html", {"message": message}, id=f"message-{message.id}")
 
         def on_delete(self, message, *args, **kwargs):
-            message.room.turbo.remove(id=f"message-{message.id}")
+            message.room.stream.remove(id=f"message-{message.id}")
+
+        def user_passes_test(self, user, object_id):
+            return True

@@ -4,7 +4,7 @@ import turbo
 from turbo.shortcuts import render_frame
 
 
-class RoomListChannel(turbo.Channel):
+class RoomListChannel(turbo.Stream):
     def add_room(self, room):
         print(vars(room))
         self.append("chat/components/room_list_item.html", {"room": room}, id="room_list")
