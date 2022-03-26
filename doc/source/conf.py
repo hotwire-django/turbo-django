@@ -34,7 +34,7 @@ author = 'Hotwire-Django Team'
 extensions = [
     'sphinxcontrib.fulltoc',
     'sphinx.ext.autodoc',
-    'autoapi.extension',
+    # 'autoapi.extension',
     'sphinx_toolbox.code',
 ]
 

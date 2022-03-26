@@ -55,7 +55,7 @@ The typical use is to chain ``render`` and ``.<action>`` commands into one logic
         request, 'broadcast.html', {'content': "New message!"}
     ).update(".alert_box")
 
-Each of the following methods take either an ``selector`` or ``id`` keyword argument to specify which HTML element will receive the action.  ``selector``is the first argument, so no keyword specifier is needed.
+Each of the following methods take either an ``selector`` or ``id`` keyword argument to specify which HTML element will receive the action.  ``selector`` is the first argument, so no keyword specifier is needed.
 
 
 .. method:: append(selector=None, id=None)

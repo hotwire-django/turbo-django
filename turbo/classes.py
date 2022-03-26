@@ -263,7 +263,6 @@ class TurboResponse(HttpResponse):
         self.frames = frames
         self.update_content()
 
-
     def add_frame(self, frame):
         self.frames.append(frame)
         self.update_content()

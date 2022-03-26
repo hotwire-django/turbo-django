@@ -17,7 +17,6 @@ Topics
    topics/quickstart.rst
    tutorial/index
    topics/turbo.rst
-   topics/model_integration.rst
    topics/streams.rst
    topics/model_stream.rst
    topics/templates.rst
@@ -29,5 +28,4 @@ Reference
 .. toctree::
    :maxdepth: 1
 
-   ./autoapi/index.rst
    GitHub Repo <https://github.com/hotwire-django/turbo-django>

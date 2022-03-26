@@ -1,9 +1,9 @@
-=====================================
+========================================
 Part 4 - Pushing data with Turbo Streams
-=====================================
+========================================
 
 Turbo Streams
-==========
+=============
 
 Turbo Streams allow HTML to be pushed to the client page without a request from the client.  The client needs to subscribe to a stream and this is done with the :doc:`turbo_subscribe tag </topics/templates>`.
 

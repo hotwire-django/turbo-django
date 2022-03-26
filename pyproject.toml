@@ -42,6 +42,7 @@ sphinxcontrib-fulltoc = "^1.2.0"
 bump2version = "^1.0.1"
 pyproject-flake8 = "^0.0.1-alpha.2"
 pytest = "^6.2.5"
+pytest-django = "^4.5.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -57,3 +58,7 @@ line-length = 100
 target-version = ['py38']
 include = '\.pyi?$'
 extend-exclude = 'doc|migrations'
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = 'turbo.tests.test_settings'
