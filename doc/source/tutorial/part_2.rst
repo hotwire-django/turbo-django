@@ -69,11 +69,11 @@ This tutorial uses generic class-based views to keep the tutorial concise.  Add 
     class MessageCreate(CreateView):
         model = Message
         fields = ["text"]
-        template_name = "chat/components/create_message.html"
+        template_name = "chat/components/send_message_form.html"
 
         def get_success_url(self):
             # Redirect to the empty form
-            return reverse("send", kwargs={"pk": self.kwargs["pk"]})
+            return reverse("message_create", kwargs={"pk": self.kwargs["pk"]})
 
         def form_valid(self, form):
             room = get_object_or_404(Room, pk=self.kwargs["pk"])
@@ -89,6 +89,7 @@ This tutorial uses generic class-based views to keep the tutorial concise.  Add 
     urlpatterns = [
         path("", views.RoomList.as_view(), name="index"),
         path("<slug:pk>/", views.RoomDetail.as_view(), name="room_detail"),
+        path("<slug:pk>/message_create", views.MessageCreate.as_view(), name="message_create"),
     ]
 
 

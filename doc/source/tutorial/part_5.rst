@@ -7,9 +7,10 @@ Removing Chat Messages
 
 Let's continue to build on this basic chat application by allowing the user to remove messages. Let's walk through the steps to accomplish this:
 
-* Add links to the `message` component template to remove the message.  Add a message_id to each list item so Turbo knows which message to delete.
+* Add links to the `message` component template to remove the message.
+* Add a ``message_id`` to each list item so Turbo knows which message to delete.
 * Create a view that deletes the message.
-* Add an ``on_delete`` method to the ModelBroadcast.  Tell the room subscribers to remove the message div by ID.
+* Add an ``on_delete`` method to the ModelStream.  Tell the room subscribers to remove the message using the html id value.
 
 
 Start by adding a unique id to each ``<li>`` element.  Then add a link to remove that message in the template.
@@ -20,7 +21,7 @@ Start by adding a unique id to each ``<li>`` element.  Then add a link to remove
     <li id="message-{{message.id}}">{{message.created_at}}: {{message.text}} <a href="{% url 'message_delete' message.id %}">[Remove]</a></li>
 
 
-This new delete link with redirect the entire page.  To only send a request to the message_delete url, the links need to be inside a turbo frame.  Wrap the `<ul>` element in ``room_detail.html`` inside a turbo frame.
+As this link is outside a turbo-frame, this delete link will replace the contents of the entire page.  To only send a request to the ``message_delete`` url, the links need to be inside a turbo-frame.  Wrap the `<ul>` element in ``room_detail.html`` inside a turbo frame.
 
 .. code-block:: html
     :caption: templates/chat/room_detail.html
@@ -58,18 +59,17 @@ Add the `message_delete` url and view.
         message.delete()
         return HttpResponse()
 
-And finally, let your message broadcast tell clients subscribed to the message's room to remove any item on the page with the unique id specified in the template.
+And finally, broadcast to clients subscribed to the message's room to remove any item on the page with the unique id specified in the template.
 
 .. code-block:: python
     :caption: chat/broadcasts.py
 
-    @turbo.register(Message)
-    class MessageBroadcast(turbo.ModelBroadcast):
+    class MessageStream(turbo.ModelStream):
 
         ...
 
         def on_delete(self, message, *args, **kwargs):
-            message.room.turbo.remove(id=f"message-{message.id}")
+            message.room.stream.remove(id=f"message-{message.id}")
 
 
 .. note::

@@ -34,7 +34,7 @@ author = 'Hotwire-Django Team'
 extensions = [
     'sphinxcontrib.fulltoc',
     'sphinx.ext.autodoc',
-    'autoapi.extension',
+    # 'autoapi.extension',
     'sphinx_toolbox.code',
 ]
 
@@ -71,3 +71,7 @@ html_context = {
         {"name": "Stimulus Django"},
     ]
 }
+
+html_css_files = [
+    'css/custom.css',
+]

@@ -1,7 +1,7 @@
 Templates
 ==========
 
-Templates subscribe to streams using the ``turbo_subscribe`` template tag.  Import this tag by calling ``{% load turbo_streams %}``.  Pass a stream name as a string, or pass a Django instance to listen to messages sent to a particular object.  This tag can be called anywhere on the page and can be called multiple times if desired.
+Templates subscribe to streams using the ``turbo_subscribe`` template tag.  Import this tag by calling ``{% load turbo_streams %}``.  Pass a channel object, name-spaced channel name as a string, or pass a Django instance to listen to messages sent to a particular object.  This tag can be called anywhere on the page and can be called multiple times if desired.
 
 .. code-block:: html
     :caption: broadcast_example.html
@@ -10,44 +10,51 @@ Templates subscribe to streams using the ``turbo_subscribe`` template tag.  Impo
     {% load turbo_streams %}
 
     <!-- Listen to the following channels -->
-    {% turbo_subscribe 'broadcast_name' %}
+    {% turbo_subscribe RoomListChannel %}
+    {% turbo_subscribe 'chat:RoomListChannel' %}
     {% turbo_subscribe room %}
 
     <!-- or listen to a list of streams  -->
-    {% turbo_subscribe 'broadcast_name' room %}
+    {% turbo_subscribe 'chat:RoomListChannel' room %}
 
-    <!-- The page is now subscribed to the `room` object and the "broadcast_name" channels. -->
+    <!-- The page is now subscribed to the `room` instance and the RoomListChannel channels. -->
 
 
-One can now send html blocks to the subscribed page using the following:
+It is now possible to send and place html to the subscribed page using the following:
 
 .. code-block:: python
 
     from turbo import Turbo
 
+    # Send to a standard Channel
+    RoomListChannel.replace(
+        "alert.html",
+        {'message': 'Server restart in 1 minute.'},
+        id='alert_div'
+    )
+
+
+    # Send to a ModelStream
     room = Room.objects.first()
 
-    # Send to an instance channel
-    Turbo(room).render(
-        "new_message.html", {'message': 'New message'}
-    ).append(id='messages_container')
+    room.channel.append(
+        "new_message.html",
+        {'message': 'New message'}
+        id='messages_container'
+    )
 
-    # Send to a broadcast name
-    Turbo('broadcast_name').render(
-        "alert.html", {'message': 'Server restart in 1 minute.'}
-    ).replace(id='alert_div')
 
 
 
 ``turbo_subscribe tag``
 -----------------------
 
-Tells the page to subscribe to the listed name or instance.
+Tells the page to subscribe to the channel or instance.
 
 Example usage::
 
     {% load turbo_streams %} <!-- Place on top of template -->
-    {% turbo_subscribe 'broadcasts' %} <!-- Place anywhere in template -->
+    {% turbo_subscribe 'chat:BroadcastChannel' %} <!-- Place anywhere in template -->
 
 Stream names can be strings or generated from instances::
 
@@ -55,5 +62,5 @@ Stream names can be strings or generated from instances::
 
 Listen to multiple streams by adding additional arguments::
 
-    {% turbo_subscribe 'broadcasts' room %}
+    {% turbo_subscribe 'chat:BroadcastChannel' room %}
 

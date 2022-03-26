@@ -19,8 +19,6 @@ from django.views.generic import TemplateView
 from chat import views
 
 urlpatterns = [
-    path('quickstart/', TemplateView.as_view(template_name='broadcast_example.html')),
-    path('quickstart/send', views.send_broadcast),
     path("", views.RoomList.as_view(), name="room_list"),
     path("<slug:pk>/", views.RoomDetail.as_view(), name="room_detail"),
     path("<slug:pk>/message_create", views.MessageCreate.as_view(), name="message_create"),

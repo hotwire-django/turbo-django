@@ -1,0 +1,8 @@
+<turbo-frame id="add-reminder">
+     <form method="post" action="{% url 'reminder_list_form' %}" data-turbo-frame="add-reminder">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input name="action" type="submit" value="Add">
+        <input name="action" type="submit" value="Delete All" title="Delete All" data-turbo-confirm="Are you sure you want to delete?">
+    </form>
+</turbo-frame>
