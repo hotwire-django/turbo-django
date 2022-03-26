@@ -1,0 +1,7 @@
+channels
+asgiref
+django
+
+# Dev deps
+pytest
+pytest-django

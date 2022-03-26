@@ -2,29 +2,42 @@
 Quickstart
 ==========
 
-Want to see Hotwire in action?  Here's a simple broadcast that can be setup in less than a minute.
+Want to see Turbo in action?  Here's a simple broadcast that can be setup in less than a minute.
 
 **The basics:**
 
-* A web page subscribes to a specific broadcast name.
+* A Turbo Stream class is declared in python.
 
-* A view sends a rendered template to all subscribed pages telling the page where to position the new content.
+* A template subscribes to the Turbo Stream.
+
+* A command sends a content block to all subscribed pages and replaces html with the new content.
 
 
 Example
 =============
 
-First, create a view that takes a broadcast name.
-
+First, declare the Stream.
 
 .. code-block:: python
+    :caption: streams.py
+
+    import turbo
+
+
+Then, create a template that subscribes to the stream.
+
+.. code-block:: python
+    :caption: urls.py
 
     from django.urls import path
     from django.views.generic import TemplateView
 
     urlpatterns = [
-        path('quickstart/', TemplateView.as_view(template_name='broadcast_example.html'))
+        path('', TemplateView.as_view(template_name='broadcast_example.html'))
     ]
+    class BroadcastStream(turbo.Stream):
+        pass
+
 
 .. code-block:: html
     :caption: broadcast_example.html
@@ -46,16 +59,14 @@ First, create a view that takes a broadcast name.
     Broadcasts can target any HTML element on a page subscribed to its stream. Target elements do not need be wrapped in any ``turbo`` style tag.
 
 
-Now open ``./manage.py shell``.  Create a Turbo object that references the broadcast name.  Tell the object to render a ``TurboRender`` object from the string, and then broadcast a command to ``update`` the inside of the element with id `broadcast_box` on all subscribed pages.
+Now open ``./manage.py shell``.  Import the Turbo Stream and tell the stream to take the current timestamp and ``update`` the element with id `broadcast_box` on all subscribed pages.
 
 .. code-block:: python
 
-    from turbo import Turbo
+    from quickstart.streams import BroadcastStream
     from datetime import datetime
 
-    Turbo('broadcast_name').render_from_string(
-        f"{datetime.now()}: This is a broadcast."
-    ).update(id="broadcast_box")
+    BroadcastStream().update(text=f"{datetime.now()}: This is a broadcast.", id="broadcast_box")
 
 With the ``quickstart/`` path open in a browser window, watch as the broadcast pushes messages to the page.
 

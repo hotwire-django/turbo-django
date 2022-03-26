@@ -1,13 +1,11 @@
 from django.db import models
 
-from turbo.mixins import TurboMixin
 
-
-class Room(TurboMixin, models.Model):
+class Room(models.Model):
     name = models.CharField(max_length=255)
 
 
-class Message(TurboMixin, models.Model):
+class Message(models.Model):
 
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
     text = models.CharField(max_length=255)

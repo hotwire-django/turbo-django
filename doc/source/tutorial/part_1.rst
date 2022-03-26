@@ -13,7 +13,7 @@ Create a virtual environment using a tool of your choice and install ``turbo-dja
 
 .. code-block:: shell
 
-    $ pip install django turbo-django channels
+    $ pip install django turbo-django channels channels_redis
 
 
 Start a django project and create an app called ``chat``
@@ -69,10 +69,11 @@ Your ``settings.py`` file should now look like this.
 
     CHANNEL_LAYERS = {
         "default": {
-            # Don't use this backend in production
-            # See https://channels.readthedocs.io/en/latest/topics/channel_layers.html
-            "BACKEND": "channels.layers.InMemoryChannelLayer"
-        }
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [("127.0.0.1", 6379)],  # Set to your local redis host
+            },
+        },
     }
 
 

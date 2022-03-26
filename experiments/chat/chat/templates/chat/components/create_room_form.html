@@ -1,0 +1,9 @@
+<turbo-frame id="create-room-form">
+     <form method="post" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name="action" value="Add">
+        <input type="submit" name="action" value="Delete All">
+    </form>
+</turbo-frame>
+

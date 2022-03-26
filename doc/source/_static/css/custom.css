@@ -1,0 +1,7 @@
+div.document {
+    width: 75%;
+}
+div.body {
+    min-width: 450px;
+    max-width: 100%;
+}
