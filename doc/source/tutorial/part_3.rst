@@ -31,7 +31,7 @@ A Component-Based Mindset
 
 Like many modern JavaScript-based frameworks, it is helpful to start thinking of the webpage as constructed of components.  This means breaking down templates into sub-templates with one specific function that are used as the building blocks for each page.
 
-With that in mind, let's make a directory for these templates and create our first component - a form to create a message in the chat room.
+With that in mind, let's make a `components/` directory for these sub-templates and start work on our first component - a form to create a message in the chat room.
 
 
 .. code-block:: html
@@ -45,16 +45,16 @@ With that in mind, let's make a directory for these templates and create our fir
 
         ...
             <!-- Add this to the end of the page-->
-            <turbo-frame id="send-message" src="{% url 'message_create' room.id %}"></turbo-frame>
+            <turbo-frame id="send-message" src="{% url 'message_create_form' room.id %}"></turbo-frame>
         </body>
         </html>
 
 
 .. code-block:: html
-    :caption: chat/templates/components/send_message.html
+    :caption: chat/templates/components/send_message_form.html
 
     <turbo-frame id="send-message">
-         <form method="post" action="{% url 'send_message' room_id %}" data-turbo-frame="messages">
+         <form method="post" action="{% url 'send_message' room_id %}">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Send">
@@ -76,7 +76,7 @@ Run the code and test.  When text is submitted in the text box, the box is clear
 * In `room_detail.html`, the turbo-frame makes a new request to the url specified in the ``src`` attribute.
 * Turbo looks for a turbo-frame with the same id in the response and inserts the content into the parent frame.  The form is now displayed in the page.
 * The user types content into the form and hits submit.
-* The framed form is submitted without the page reloading.  The ``get_success_url()`` method returns a response equivilent to the url ``{% url 'message_create' room.id %}`` -- the same ``src`` of the parent turbo frame - loading a new blank form which is inserted into the frame.
+* The framed form is submitted without the page reloading.  The ``get_success_url()`` method returns a response equivilent to the url ``{% url 'message_create_form' room.id %}`` -- the same ``src`` of the parent turbo frame - loading a new blank form which is inserted into the frame.
 
 Refreshing the page renders the submitted messages. But for a chat client to be useful, those messages need to appear immediately on the page, and other pages that have this url open.  For that, we use  :doc:`turbo streams </tutorial/part_4>`.
 

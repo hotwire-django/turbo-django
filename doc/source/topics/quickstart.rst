@@ -6,7 +6,7 @@ Want to see Turbo in action?  Here's a simple broadcast that can be setup in les
 
 **The basics:**
 
-* A basic Turbo Stream is declared in python.
+* A Turbo Stream class is declared in python.
 
 * A template subscribes to the Turbo Stream.
 

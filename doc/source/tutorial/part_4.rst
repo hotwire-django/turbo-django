@@ -41,6 +41,7 @@ Create a new file in the chat application called ``streams.py``
 
 
 .. code-block:: python
+    :caption: chat/streams.py
 
     import turbo
     from .models import Message
@@ -62,9 +63,9 @@ Create a new file in the chat application called ``streams.py``
                 )
 
 
-The file ``streams.py`` is automatically detected by the Turbo Django library and is the recommended location for all stream-related code.  In this example, a ``ModelStream`` is created.  This is a type of stream that is attached to a model instance.  The model to tie the stream to is defined in the Meta class.  This attaches a ``.stream`` TurboStream attribute to the instance.  Now the instance can be subscribed to, and have data streamed to those subscribers.
+The file ``streams.py`` is automatically detected by the Turbo Django library and is the recommended location for all stream-related code.  In this example, a ``ModelStream`` is created, which is a type of stream attached to a model instance.  The model to tie the stream to is defined in the Meta class.  This attaches a ``.stream`` TurboStream attribute to the instance.  Now the instance can be subscribed to, and have data streamed to those subscribers.
 
-In this example, the chat room is what is being subscribed to, but the message is the model beign saved - so we create both ModelStreams, and in the Message's on_save signal, we call on the parent room's stream to append a new message component.
+In this example, the chat room is what is being subscribed to, but the message is the model being saved - so we create both ModelStreams, and in the Message's ``on_save`` signal, we call on the parent room's stream to append a new message component.
 
 Run this code and see it work in the browser.  Now open up a new window and see how the pages update each other.
 

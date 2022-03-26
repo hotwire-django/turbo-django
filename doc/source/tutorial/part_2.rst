@@ -69,7 +69,7 @@ This tutorial uses generic class-based views to keep the tutorial concise.  Add 
     class MessageCreate(CreateView):
         model = Message
         fields = ["text"]
-        template_name = "chat/components/create_message.html"
+        template_name = "chat/components/send_message_form.html"
 
         def get_success_url(self):
             # Redirect to the empty form

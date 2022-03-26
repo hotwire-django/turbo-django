@@ -85,3 +85,15 @@ Each of the following methods take either an ``selector`` or ``id`` keyword argu
 .. method:: after(selector=None, id=None)
 
     Insert the template after the specified HTML element.
+
+.. method:: response
+
+    Property.  Return this rendered template as an HttpResponse with a "text/vnd.turbo-stream.html" content type.  This allows for turbo-stream elements to be returned from a form submission.  See the Turbo documentation for more detail (https://turbo.hotwired.dev/handbook/drive#streaming-after-a-form-submission)
+
+    .. code-block:: python
+
+        frame = render_frame(
+                request, "reminders/reminder_list_item.html", {'reminder': reminder}
+        ).append(id='reminders')
+        return frame.response
+

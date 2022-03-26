@@ -4,7 +4,7 @@ import turbo
 from turbo.shortcuts import render_frame
 
 
-class RoomListChannel(turbo.Stream):
+class RoomListStream(turbo.Stream):
     def add_room(self, room):
         self.append("chat/components/room_list_item.html", {"room": room}, id="room_list")
 
@@ -12,7 +12,7 @@ class RoomListChannel(turbo.Stream):
         self.remove(selector="#room_list li")
 
 
-class RoomChannel(turbo.ModelStream):
+class RoomStream(turbo.ModelStream):
     class Meta:
         model = Room
 
@@ -20,7 +20,7 @@ class RoomChannel(turbo.ModelStream):
 
         if created:
             # room.turbo.render("chat/components/room_name.html", {"room": room}).append(id="room-list")
-            RoomListChannel().add_room(room)
+            RoomListStream().add_room(room)
         else:
             pass
         # room.turbo.render("chat/room_name.html", {"room": room}).replace(id="update-room")
@@ -30,7 +30,7 @@ class RoomChannel(turbo.ModelStream):
         return True
 
 
-class MessageChannel(turbo.ModelStream):
+class MessageStream(turbo.ModelStream):
     class Meta:
         model = Message
 

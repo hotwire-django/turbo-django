@@ -219,7 +219,7 @@ class TurboRender:
 
     @property
     def response(self):
-        return HttpResponse(self.rendered_template, "text/vnd.turbo-stream.html", 200)
+        return TurboResponse(self)
 
     @property
     def rendered_template(self):
@@ -247,3 +247,26 @@ class TurboRender:
 
     def stream_to(self, stream_instance):
         stream_instance.stream(self.rendered_template)
+
+
+class TurboResponse(HttpResponse):
+    """
+    An Trubo response class with TurboRendered frames as content"""
+
+    def __init__(self, *frames, **kwargs):
+
+        super().__init__(**kwargs)
+
+        self.headers['Content-Type'] = "text/vnd.turbo-stream.html"
+        self.status_code = 200
+
+        self.frames = frames
+        self.update_content()
+
+
+    def add_frame(self, frame):
+        self.frames.append(frame)
+        self.update_content()
+
+    def update_content(self):
+        self.content = "".join([frame.rendered_template for frame in self.frames])

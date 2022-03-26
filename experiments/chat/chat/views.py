@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.views.generic import CreateView, ListView, DetailView
 
 from chat.models import Room, Message
-from chat.channels import RoomListChannel
+from chat.streams import RoomListStream
 from chat.forms import RoomForm
 
 from turbo.shortcuts import render_frame, remove_frame
@@ -25,7 +25,7 @@ class RoomList(ListView):
         action = request.POST.get('action')
         if action == "Delete All":
             Room.objects.all().delete()
-            RoomListChannel().delete_all()
+            RoomListStream().delete_all()
             return HttpResponse()
 
         form = RoomForm(request.POST)
@@ -52,7 +52,7 @@ class RoomDetail(DetailView):
 class MessageCreate(CreateView):
     model = Message
     fields = ["text"]
-    template_name = "chat/components/create_message.html"
+    template_name = "chat/components/send_message_form.html"
 
     def get_success_url(self):
         # Redirect to the empty form

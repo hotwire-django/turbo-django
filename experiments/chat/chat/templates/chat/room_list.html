@@ -2,7 +2,7 @@
 {% load turbo_streams %}
 {% block body %}
 
-    {% turbo_subscribe "chat:RoomListChannel" %}
+    {% turbo_subscribe "chat:RoomListStream" %}
 
     <h1>Room List</h1>
     <ul id="room_list">
