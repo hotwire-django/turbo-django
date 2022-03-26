@@ -58,15 +58,26 @@ Want to see Hotwire in action? Here's a simple broadcast that can be setup in le
 
 **The basics:**
 
-* A web page subscribes to a specific broadcast name.
+* A Turbo Stream class is declared in python.
 
-* A view sends a rendered template to all subscribed pages telling the page where to position the new content.
+* A template subscribes to the Turbo Stream.
+
+* HTML is be pushed to all subscribed pages which replaces the content of specified HTML p tag.
 
 
 ### Example
 
-First, create a view that takes a broadcast name.
+First, in a django app called `quickstart`, declare `BroadcastStream` in a file named `streams.py`.
 
+```python
+# streams.py
+
+import turbo
+
+class BroadcastStream(turbo.Stream):
+    pass
+
+Then, create a template that subscribes to the stream.
 
 ```python
 from django.urls import path
@@ -87,27 +98,25 @@ urlpatterns = [
     {% include "turbo/head.html" %}
 </head>
 <body>
-    {% turbo_subscribe 'broadcast_name' %}
+    {% turbo_subscribe 'quickstart:BroadcastStream' %}
 
     <p class="broadcast_box_class" id="broadcast_box">Placeholder for broadcast</p>
 </body>
 </html>
 ```
 
-Now run ``./manage.py shell``.  Create a Turbo object that references the broadcast name.  Tell the object to render a ``TurboRender`` object from the string, and then broadcast a command to `update` the inside of the element with id `broadcast_box` on all subscribed pages.
+Now run ``./manage.py shell``.  Import the Turbo Stream and tell the stream to take the current timestamp and ``update`` the element with id `broadcast_box` on all subscribed pages.
 
 ```python
-from turbo import Turbo
+from quickstart.streams import BroadcastStream
 from datetime import datetime
 
-Turbo('broadcast_name').render_from_string(
-    f"{datetime.now()}: This is a broadcast."
-).update(id="broadcast_box")
+BroadcastStream().update(text=f"{datetime.now()}: This is a broadcast.", id="broadcast_box")
 ```
 
 With the `quickstart/` path open in a browser window, watch as the broadcast pushes messages to the page.
 
-Now change `.update()` to `.append()` and resend the broadcast a few times. Notice you do not have to reload the page to get this modified behavior.
+Now change `.update()` to `.append()` and resend the broadcast a few times.  Notice you do not have to reload the page to get this modified behavior.
 
 Excited to learn more?  Be sure to walk through the [tutorial](https://turbo-django.readthedocs.io/en/latest/index.html) and read more about what Turbo can do for you.
 

@@ -8,13 +8,32 @@ Want to see Hotwire in action?  Here's a simple broadcast that can be setup in l
 
 * A web page subscribes to a specific broadcast name.
 
+<<<<<<< Updated upstream
 * A view sends a rendered template to all subscribed pages telling the page where to position the new content.
+=======
+* A template subscribes to the Turbo Stream.
+
+* HTML is be pushed to all subscribed pages which replaces the content of specified HTML p tag.
+>>>>>>> Stashed changes
 
 
 Example
 =============
 
+<<<<<<< Updated upstream
 First, create a view that takes a broadcast name.
+=======
+First, declare the Stream.
+
+.. code-block:: python
+    :caption: streams.py
+
+    import turbo
+
+    class BroadcastStream(turbo.Stream):
+        pass
+
+>>>>>>> Stashed changes
 
 
 .. code-block:: python
@@ -25,6 +44,10 @@ First, create a view that takes a broadcast name.
     urlpatterns = [
         path('quickstart/', TemplateView.as_view(template_name='broadcast_example.html'))
     ]
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 .. code-block:: html
     :caption: broadcast_example.html
@@ -36,7 +59,7 @@ First, create a view that takes a broadcast name.
         {% include "turbo/head.html" %}
     </head>
     <body>
-        {% turbo_subscribe 'broadcast_name' %}
+        {% turbo_subscribe 'quickstart:BroadcastStream' %}
 
         <p class="broadcast_box_class" id="broadcast_box">Placeholder for broadcast</p>
     </body>
