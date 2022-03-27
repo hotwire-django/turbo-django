@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = 'turbo-django'
-copyright = '2021, Hotwire-Django Team'
+copyright = '2022, Hotwire-Django Team'
 author = 'Hotwire-Django Team'
 
 
