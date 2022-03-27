@@ -77,6 +77,8 @@ import turbo
 class BroadcastStream(turbo.Stream):
     pass
 
+```
+
 Then, create a template that subscribes to the stream.
 
 ```python
@@ -100,7 +102,7 @@ urlpatterns = [
 <body>
     {% turbo_subscribe 'quickstart:BroadcastStream' %}
 
-    <p class="broadcast_box_class" id="broadcast_box">Placeholder for broadcast</p>
+    <p id="broadcast_box">Placeholder for broadcast</p>
 </body>
 </html>
 ```
@@ -111,7 +113,7 @@ Now run ``./manage.py shell``.  Import the Turbo Stream and tell the stream to t
 from quickstart.streams import BroadcastStream
 from datetime import datetime
 
-BroadcastStream().update(text=f"{datetime.now()}: This is a broadcast.", id="broadcast_box")
+BroadcastStream().update(text=f"The date and time is now: {datetime.now()}", id="broadcast_box")
 ```
 
 With the `quickstart/` path open in a browser window, watch as the broadcast pushes messages to the page.
