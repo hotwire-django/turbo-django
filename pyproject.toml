@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "turbo-django"
-version = "0.2.5"
+version = "0.3.0"
 description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
 authors = [
     "Nikita Marchant <C4ptainCrunch@github-username.x>",
