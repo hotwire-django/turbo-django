@@ -7,7 +7,7 @@ from .classes import Stream, ModelStream
 
 logger = logging.getLogger("turbo.streams")
 
-model_stream_regex = re.compile(r"(?P<app_name>\w+)\.(?P<stream_name>\w+)(\-(?P<pk>[\w-]+))?")
+stream_regex = re.compile(r"(?P<app_name>\w+)\:(?P<stream_name>\w+)")
 
 
 class StreamRegistry(dict):
@@ -38,19 +38,16 @@ def stream_for_stream_name(stream_name: str):
     >>> stream_for_stream_name("app.ModelChanel-1")
     (Stream, is_model_stream, pk)
     """
-    model_stream_parts = model_stream_regex.match(stream_name)
-
-    if not model_stream_parts:
+    stream_parts = stream_regex.match(stream_name)
+    if not stream_parts:
         logger.warning("Stream '%s' could not be parsed.", stream_name)
         return None, {}, None
 
     StreamCls = stream_registry.get_stream(
-        model_stream_parts["app_name"], model_stream_parts["stream_name"]
+        stream_parts["app_name"], stream_parts["stream_name"]
     )
-    is_model_stream = False
-    if StreamCls:
-        is_model_stream = issubclass(StreamCls, ModelStream)
-    return (StreamCls, is_model_stream, model_stream_parts["pk"])
+
+    return StreamCls
 
 
 stream_registry = StreamRegistry()

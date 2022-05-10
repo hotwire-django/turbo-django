@@ -56,9 +56,27 @@
     get channelName() {
       return this.getAttribute("signed-channel-name");
     }
+    get args() {
+      let args = this.getAttribute("args")
+      if (args){
+        return JSON.parse(args);
+      }
+      return null
+    }
+    get kwargs() {
+      let kwargs = this.getAttribute("kwargs")
+      if (kwargs){
+        return JSON.parse(kwargs);
+      }
+      return null
+    }
 
     get subscription() {
-      return { signed_channel_name: this.channelName };
+      return {
+        signed_channel_name: this.channelName,
+        args: this.args,
+        kwargs: this.kwargs,
+      };
     }
 
     subscribe() {

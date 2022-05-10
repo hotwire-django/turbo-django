@@ -1,7 +1,5 @@
 {% spaceless %}
 <turbo-stream action="{{ action }}" {% if use_css_selector %}targets{% else %}target{% endif %}="{{ selector }}">
-  <template>
-      {{rendered_template}}
-  </template>
+  <template>{{rendered_template}}</template>
 </turbo-stream>
 {% endspaceless %}

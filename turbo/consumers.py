@@ -5,7 +5,6 @@ from django.core.signing import Signer, BadSignature
 import logging
 
 from .registry import stream_for_stream_name
-from .utils import to_subscribable_name
 
 logger = logging.getLogger("turbo.streams")
 
@@ -21,29 +20,26 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         self.accept()
 
     def notify(self, event):
-        signed_channel_name = signer.sign(event["channel_name"])
         self.send_json(
             {
-                "signed_channel_name": signed_channel_name,
+                "signed_channel_name": event["signed_channel_name"],
                 "data": event.get("rendered_template"),
             }
         )
 
     def receive_json(self, content, **kwargs):
         try:
-            stream_name = signer.unsign(content["signed_channel_name"])
+            stream_name, args, kwargs = signer.unsign_object(content["signed_channel_name"])
         except (BadSignature, KeyError):
             raise TurboStreamException(
                 "Signature is invalid or not present. This could be due to a misbehaving client."
             )
 
         message_type = content["type"]
+        Stream = stream_for_stream_name(stream_name)
 
-        Stream, is_model_stream, pk = stream_for_stream_name(stream_name)
-        if is_model_stream:
-            stream = Stream.from_pk(pk)
-        elif Stream:
-            stream = Stream()
+        if Stream:
+            stream = Stream(*args, **kwargs)
         else:
             logger.warning("Stream '%s' could not be located.", stream_name)
             return
@@ -51,7 +47,6 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
         self.subscribe_to_stream(message_type, stream, self.scope.get("user"))
 
     def subscribe_to_stream(self, message_type, stream, user):
-
         if not stream.user_passes_test(user):
             logger.warning(
                 "User `%s` does not have permission to access stream '%s'.",
@@ -60,7 +55,7 @@ class TurboStreamsConsumer(JsonWebsocketConsumer):
             )
             return False
 
-        stream_name = to_subscribable_name(stream.stream_name)
+        stream_name = stream.broadcastable_stream_name
         if message_type == "subscribe":
             async_to_sync(self.channel_layer.group_add)(stream_name, self.channel_name)
         elif message_type == "unsubscribe":
