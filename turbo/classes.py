@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from .metaclass import DeclarativeFieldsMetaclass
 
 import json
-from django.core.signing import Signer, BadSignature
+from django.core.signing import Signer
 
 # Turbo Streams CRUD operations
 APPEND = "append"
@@ -25,6 +25,7 @@ SELECTOR_ID = "id"
 SELECTOR_TYPES = (SELECTOR_ID, SELECTOR_CSS)
 
 signer = Signer()
+
 
 class classproperty:
     def __init__(self, method=None):
@@ -61,7 +62,6 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
         """ A unique string that can be used by channels.  A-Z, hyphens and dashes only."""
         return self.signed_stream_name.replace(':', '...')
 
-
     def get_init_args(self):
         return []
 
@@ -73,7 +73,6 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
 
     def get_init_kwargs_json(self) -> str:
         return json.dumps(self.get_init_kwargs())
-
 
     def _get_frame(self, template=None, context=None, text=None):
         if text:

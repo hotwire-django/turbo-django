@@ -2,7 +2,7 @@ from collections import defaultdict
 import re
 import logging
 
-from .classes import Stream, ModelStream
+from .classes import Stream
 
 
 logger = logging.getLogger("turbo.streams")

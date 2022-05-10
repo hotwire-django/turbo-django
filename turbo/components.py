@@ -1,14 +1,12 @@
 from turbo.classes import Stream
-from turbo.templatetags.turbo_streams import turbo_subscribe
-from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 
+
 class BaseComponent(Stream):
 
     template_name = None
-
 
     def get_context(self):
         """
@@ -33,13 +31,13 @@ class BaseComponent(Stream):
         """
         pass
 
-
     def initial_render(self, context):
         """
         Returns the html origially rendered on the page.
         """
         context = self.compute_context(context)
         return render_to_string(self.template_name, context)
+
 
 class BroadcastComponent(BaseComponent):
     """
@@ -49,7 +47,6 @@ class BroadcastComponent(BaseComponent):
     def render(self, context={}, **context_kwargs):
         context = self.compute_context(context, **context_kwargs)
         self.update(self.template_name, context, selector="."+self.stream_name)
-
 
 
 class UserBroadcastComponent(BaseComponent):
@@ -71,7 +68,6 @@ class UserBroadcastComponent(BaseComponent):
 
         self.user = user
         super().__init__()
-
 
     def get_init_args(self):
         return [self.user.pk]
