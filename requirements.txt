@@ -1,7 +1,8 @@
-pytest==6.2.1
+pytest==7.1.2
 Django==3.1.4
 channels==3.0.3
 asgiref==3.3.1
 black==22.3.0
 flake8==3.8.4
 pyproject-flake8==0.0.1a2
+pytest-django = "^4.5.2"
