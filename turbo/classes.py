@@ -49,17 +49,17 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
 
     @classproperty
     def stream_name(self):
-        """ A unique string that will identify this Stream """
+        """A unique string that will identify this Stream"""
         return f"{self._meta.app_name}:{self.__name__}"
 
     @property
     def signed_stream_name(self):
-        """ A unique string that will identify this Stream """
+        """A unique string that will identify this Stream"""
         return signer.sign_object((self.stream_name, self.get_init_args(), self.get_init_kwargs()))
 
     @property
     def broadcastable_stream_name(self):
-        """ A unique string that can be used by channels.  A-Z, hyphens and dashes only."""
+        """A unique string that can be used by channels.  A-Z, hyphens and dashes only."""
         return self.signed_stream_name.replace(':', '...')
 
     def get_init_args(self):
@@ -166,7 +166,7 @@ class ModelStream(Stream):
         return self._meta.model.objects.get(pk=self.pk)
 
     def get_init_args(self):
-        """ A JSON serializable list that can rebuild the Stream instance """
+        """A JSON serializable list that can rebuild the Stream instance"""
         return [self.pk]
 
     def user_passes_test(self, user):

@@ -43,9 +43,7 @@ def stream_for_stream_name(stream_name: str):
         logger.warning("Stream '%s' could not be parsed.", stream_name)
         return None, {}, None
 
-    StreamCls = stream_registry.get_stream(
-        stream_parts["app_name"], stream_parts["stream_name"]
-    )
+    StreamCls = stream_registry.get_stream(stream_parts["app_name"], stream_parts["stream_name"])
 
     return StreamCls
 

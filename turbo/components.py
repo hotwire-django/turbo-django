@@ -46,13 +46,14 @@ class BroadcastComponent(BaseComponent):
 
     def render(self, context={}, **context_kwargs):
         context = self.compute_context(context, **context_kwargs)
-        self.update(self.template_name, context, selector="."+self.stream_name)
+        self.update(self.template_name, context, selector="." + self.stream_name)
 
 
 class UserBroadcastComponent(BaseComponent):
     """
     A component that broadcasts the same content to all subscribed users.
     """
+
     template_name = None
 
     def __init__(self, user):
