@@ -60,7 +60,10 @@ To stream updated content to the view, open a python terminal, instanciate the c
 
     from app_name.streams import AlertBroadcastComponent
     alert_component = AlertBroadcastComponent()
-    alert_component.render(alert_class='warning', alert_content='The server will restart in 10 minutes')
+    alert_component.render(
+        alert_class='warning',
+        alert_content='The server will restart in 10 minutes'
+    )
 
 
 .. admonition:: Multiple identical components
@@ -145,7 +148,10 @@ To stream an updated template to the component:
     from .streams import AlertBroadcastComponent
 
     component = AlertBroadcastComponent()
-    component.render(alert_class='warning', alert_content='The server will restart in 10 minutes')
+    component.render(
+        alert_class='warning',
+        alert_content='The server will restart in 10 minutes'
+    )
 
 
 UserBroadcastComponent
