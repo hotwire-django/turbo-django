@@ -46,7 +46,7 @@ class BroadcastComponent(BaseComponent):
 
     def render(self, context={}, **context_kwargs):
         context = self.compute_context(context, **context_kwargs)
-        self.update(self.template_name, context, selector="." + self.stream_name)
+        self.update(self.template_name, context, id=self.stream_name)
 
 
 class UserBroadcastComponent(BaseComponent):
@@ -78,5 +78,5 @@ class UserBroadcastComponent(BaseComponent):
         self.update(self.template_name, context, id=self.stream_name)
 
     def user_passes_test(self, user):
-        if user.is_authenticated:
+        if user and user.is_authenticated:
             return True
