@@ -3,8 +3,10 @@ import turbo
 from turbo.classes import Stream
 from turbo.registry import stream_for_stream_name, stream_registry
 
+
 class TestStream(turbo.Stream):
     pass
+
 
 def test_registry_invalid_names():
 
@@ -23,4 +25,3 @@ def test_registry_add_stream():
     assert stream_for_stream_name('test_app:TestStream') is TestStream
 
     assert stream_registry.get_stream_names() == [":TestStream"]
-
