@@ -34,14 +34,14 @@ def stream_for_stream_name(stream_name: str):
     all streams that are associated with the instance.
 
 
-    >>> stream_for_stream_name("app.RegularStream")
-    >>> stream_for_stream_name("app.ModelChanel-1")
+    >>> stream_for_stream_name("app:RegularStream")
+    >>> stream_for_stream_name("app:ModelChanel")
     (Stream, is_model_stream, pk)
     """
     stream_parts = stream_regex.match(stream_name)
     if not stream_parts:
         logger.warning("Stream '%s' could not be parsed.", stream_name)
-        return None, {}, None
+        return None
 
     StreamCls = stream_registry.get_stream(stream_parts["app_name"], stream_parts["stream_name"])
 

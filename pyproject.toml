@@ -44,6 +44,7 @@ pyproject-flake8 = "^0.0.1-alpha.2"
 pytest = "^7.1.2"
 pytest-django = "^4.5.2"
 black = "^22.3.0"
+coverage = "^6.3.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
