@@ -21,7 +21,7 @@ def autodiscover_streams(register_to):
     broadcast_modules = [v for k, v in sys.modules.items() if k.endswith(".streams")]
 
     for broadcast_module in broadcast_modules:
-        app_name = broadcast_module.__package__
+        app_name = broadcast_module.__package__.rsplit('.', 1)[-1]
 
         streams = [x for x in getmembers(broadcast_module, isclass) if issubclass(x[1], Stream)]
         # wrap model streams with signals and assign _meta attribute
