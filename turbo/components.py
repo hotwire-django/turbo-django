@@ -25,11 +25,10 @@ class BaseComponent(Stream):
 
         return new_context
 
-    def render(context):
-        """
-        Default behavior to update the content.
-        """
-        pass
+    def render(self, context={}, **context_kwargs):
+        context = self.compute_context(context, **context_kwargs)
+        self.update(self.template_name, context, id=self.stream_name)
+
 
     def initial_render(self, context):
         """
@@ -44,10 +43,7 @@ class BroadcastComponent(BaseComponent):
     A component that broadcasts the same content to all subscribed users.
     """
 
-    def render(self, context={}, **context_kwargs):
-        context = self.compute_context(context, **context_kwargs)
-        self.update(self.template_name, context, id=self.stream_name)
-
+    pass
 
 class UserBroadcastComponent(BaseComponent):
     """
