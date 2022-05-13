@@ -1,0 +1,11 @@
+<button type="button" class="btn btn-primary position-relative">
+  Cart
+
+  {% if count %}
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    {{count}}
+    <span class="visually-hidden">Items in cart</span>
+  </span>
+  {% endif %}
+
+</button>

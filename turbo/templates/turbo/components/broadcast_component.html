@@ -1,0 +1,3 @@
+{% load turbo_streams %}
+{% turbo_subscribe component %}
+<div class="{{component.stream_name}}" id="{{component.stream_name}}">{{initial_render}}</div>
