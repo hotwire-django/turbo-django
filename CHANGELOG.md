@@ -1,6 +1,9 @@
 # Turbo-Django Changelog
 
 0.4.0 - 2022-05-12
+    * Moves correct render() method to BaseComponent
+
+0.4.0 - 2022-05-12
     * Adds Turbo Components, easy to add turbo-frames with an associated stream and template.
 
 0.3.0 - 2021-12-05

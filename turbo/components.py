@@ -29,7 +29,6 @@ class BaseComponent(Stream):
         context = self.compute_context(context, **context_kwargs)
         self.update(self.template_name, context, id=self.stream_name)
 
-
     def initial_render(self, context):
         """
         Returns the html origially rendered on the page.
@@ -44,6 +43,7 @@ class BroadcastComponent(BaseComponent):
     """
 
     pass
+
 
 class UserBroadcastComponent(BaseComponent):
     """
