@@ -96,11 +96,7 @@ Full example
             Only allow access to the component stream if the user passes
             this test.
             """
-            if user.is_authenticated:
-                return True
-
-            return False
-
+            return user.is_authenticated
 
 
 .. module:: turbo.components
