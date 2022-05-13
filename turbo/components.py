@@ -69,10 +69,6 @@ class UserBroadcastComponent(BaseComponent):
     def get_init_args(self):
         return [self.user.pk]
 
-    def render(self, context, **context_kwargs):
-        context = self.get_context(context, **context_kwargs)
-        self.update(self.template_name, context, id=self.stream_name)
-
     def user_passes_test(self, user):
         if user and user.is_authenticated:
             return True

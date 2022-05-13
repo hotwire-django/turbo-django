@@ -1,6 +1,9 @@
 # Turbo-Django Changelog
 
-0.4.0 - 2022-05-12
+0.4.2 - 2022-05-13
+    * Removes duplicate and incorrect render method from UserBroadcastComponent.
+
+0.4.1 - 2022-05-13
     * Moves correct render() method to BaseComponent
 
 0.4.0 - 2022-05-12
