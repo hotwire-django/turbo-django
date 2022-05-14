@@ -170,7 +170,7 @@ Example
 
         def get_context(self):
             return {
-                "count": user.cart.items_in_cart
+                "count": self.user.cart.items_in_cart
             }
 
 
