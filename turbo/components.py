@@ -69,6 +69,6 @@ class UserBroadcastComponent(BaseComponent):
     def get_init_args(self):
         return [self.user.pk]
 
-    def user_passes_test(self, user):
-        if user and user.is_authenticated:
+    def user_passes_test(self, request_user):
+        if request_user and request_user.is_authenticated:
             return True
