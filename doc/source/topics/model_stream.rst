@@ -45,5 +45,7 @@ The following demonstrates a sample implementation of ModelStreams for a chat ap
         def on_delete(self, message, *args, **kwargs):
             message.room.stream.remove(id=f"message-{message.id}")
 
-        def user_passes_test(self, user, object_id):
+        def user_passes_test(self, user):
+            # if user.can_access_message(self.pk):
+            #    return True
             return True
