@@ -47,7 +47,7 @@ class BroadcastComponent(BaseComponent):
 
 class UserBroadcastComponent(BaseComponent):
     """
-    A component that broadcasts the same content to all subscribed users.
+    A user broadcast component will stream a template to a specific user.
     """
 
     template_name = None
