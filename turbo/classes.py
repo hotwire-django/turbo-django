@@ -28,11 +28,13 @@ SELECTOR_TYPES = (SELECTOR_ID, SELECTOR_CSS)
 
 signer = Signer()
 
+
 class DjangoJSONSerializer:
     """
     Simple wrapper around json to be used in signing.dumps and
     signing.loads.
     """
+
     def dumps(self, obj):
         return json.dumps(obj, cls=DjangoJSONEncoder, separators=(',', ':')).encode('latin-1')
 
@@ -70,7 +72,7 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
         """A unique string that will identify this Stream"""
         return signer.sign_object(
             (self.stream_name, self.get_init_args(), self.get_init_kwargs()),
-            serializer=DjangoJSONSerializer
+            serializer=DjangoJSONSerializer,
         )
 
     @property
