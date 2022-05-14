@@ -18,7 +18,10 @@ Start by adding a unique id to each ``<li>`` element.  Then add a link to remove
 .. code-block:: html
     :caption: templates/chat/components/message.html
 
-    <li id="message-{{message.id}}">{{message.created_at}}: {{message.text}} <a href="{% url 'message_delete' message.id %}">[Remove]</a></li>
+    <li id="message-{{message.id}}">
+      {{message.created_at}}: {{message.text}} 
+      <a href="{% url 'message_delete' message.id %}">[Remove]</a>
+    </li>
 
 
 As this link is outside a turbo-frame, this delete link will replace the contents of the entire page.  To only send a request to the ``message_delete`` url, the links need to be inside a turbo-frame.  Wrap the `<ul>` element in ``room_detail.html`` inside a turbo frame.
