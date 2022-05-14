@@ -47,7 +47,7 @@ class BroadcastComponent(BaseComponent):
 
 class UserBroadcastComponent(BaseComponent):
     """
-    A component that broadcasts the same content to all subscribed users.
+    A component that broadcasts user-specific content to a subscribed user.
     """
 
     template_name = None
@@ -69,6 +69,6 @@ class UserBroadcastComponent(BaseComponent):
     def get_init_args(self):
         return [self.user.pk]
 
-    def user_passes_test(self, user):
-        if user and user.is_authenticated:
+    def user_passes_test(self, request_user):
+        if request_user and request_user.is_authenticated:
             return True

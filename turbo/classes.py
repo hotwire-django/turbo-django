@@ -9,6 +9,8 @@ from .metaclass import DeclarativeFieldsMetaclass
 
 import json
 from django.core.signing import Signer
+from django.core.serializers.json import DjangoJSONEncoder
+import hashlib
 
 # Turbo Streams CRUD operations
 APPEND = "append"
@@ -25,6 +27,17 @@ SELECTOR_ID = "id"
 SELECTOR_TYPES = (SELECTOR_ID, SELECTOR_CSS)
 
 signer = Signer()
+
+class DjangoJSONSerializer:
+    """
+    Simple wrapper around json to be used in signing.dumps and
+    signing.loads.
+    """
+    def dumps(self, obj):
+        return json.dumps(obj, cls=DjangoJSONEncoder, separators=(',', ':')).encode('latin-1')
+
+    def loads(self, data):
+        return json.loads(data.decode('latin-1'), cls=DjangoJSONEncoder)
 
 
 class classproperty:
@@ -55,12 +68,18 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
     @property
     def signed_stream_name(self):
         """A unique string that will identify this Stream"""
-        return signer.sign_object((self.stream_name, self.get_init_args(), self.get_init_kwargs()))
+        return signer.sign_object(
+            (self.stream_name, self.get_init_args(), self.get_init_kwargs()),
+            serializer=DjangoJSONSerializer
+        )
 
     @property
     def broadcastable_stream_name(self):
-        """A unique string that can be used by channels.  A-Z, hyphens and dashes only."""
-        return self.signed_stream_name.replace(':', '...')
+        """
+        A unique string that can be used by channels.
+        A-Z, hyphens and dashes only. Less than 99 characters
+        """
+        return hashlib.md5(self.signed_stream_name.encode('utf-8')).hexdigest()
 
     def get_init_args(self):
         return []
@@ -69,10 +88,10 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
         return {}
 
     def get_init_args_json(self) -> str:
-        return json.dumps(self.get_init_args())
+        return json.dumps(self.get_init_args(), cls=DjangoJSONEncoder)
 
     def get_init_kwargs_json(self) -> str:
-        return json.dumps(self.get_init_kwargs())
+        return json.dumps(self.get_init_kwargs(), cls=DjangoJSONEncoder)
 
     def _get_frame(self, template=None, context=None, text=None):
         if text:
