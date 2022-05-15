@@ -34,8 +34,7 @@ Since we want message lines to be dynamic, every message line must now be turned
     <li>{{message.created_at}}: {{message.text}}</li>
 
 
-The model now needs to send a rendered message to stream subscribers on each save.  Turbo-django makes this a breeze
-
+The model now needs to send a rendered message to stream subscribers on each save.  Turbo-django makes this a breeze.
 
 Create a new file in the chat application called ``streams.py``
 
