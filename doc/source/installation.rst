@@ -61,6 +61,7 @@ Then, adjust your project's ``asgi.py`` to wrap the Django ASGI application::
 
     from django.core.asgi import get_asgi_application
     from channels.routing import ProtocolTypeRouter
+    from channels.auth import AuthMiddlewareStack
     from turbo.consumers import TurboStreamsConsumer
 
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
@@ -68,7 +69,7 @@ Then, adjust your project's ``asgi.py`` to wrap the Django ASGI application::
 
     application = ProtocolTypeRouter({
       "http": get_asgi_application(),
-      "websocket": TurboStreamsConsumer.as_asgi()
+      "websocket": AuthMiddlewareStack(TurboStreamsConsumer.as_asgi()),
     })
 
 And finally, set your ``ASGI_APPLICATION`` setting to point to that routing
