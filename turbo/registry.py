@@ -2,12 +2,13 @@ from collections import defaultdict
 import re
 import logging
 
-from .classes import Stream, ModelStream
+from .classes import Stream
 
 
 logger = logging.getLogger("turbo.streams")
 
 model_stream_regex = re.compile(r"(?P<app_name>\w+)\.(?P<app_name2>\w+)\.(?P<stream_name>\w+)(\-(?P<pk>[\w-]+))?")
+# stream_regex = re.compile(r"(?P<app_name>\w+)\:(?P<stream_name>\w+)")
 
 
 class StreamRegistry(dict):
@@ -34,14 +35,14 @@ def stream_for_stream_name(stream_name: str):
     all streams that are associated with the instance.
 
 
-    >>> stream_for_stream_name("app.RegularStream")
-    >>> stream_for_stream_name("app.ModelChanel-1")
+    >>> stream_for_stream_name("app:RegularStream")
+    >>> stream_for_stream_name("app:ModelChanel")
     (Stream, is_model_stream, pk)
     """
-    model_stream_parts = model_stream_regex.match(stream_name)
-
-    if not model_stream_parts:
+    stream_parts = stream_regex.match(stream_name)
+    if not stream_parts:
         logger.warning("Stream '%s' could not be parsed.", stream_name)
+        # changed
         return None, {}, None
 
     StreamCls = stream_registry.get_stream(
@@ -51,6 +52,11 @@ def stream_for_stream_name(stream_name: str):
     if StreamCls:
         is_model_stream = issubclass(StreamCls, ModelStream)
     return (StreamCls, is_model_stream, model_stream_parts["pk"])
+    #     return None
+
+    # StreamCls = stream_registry.get_stream(stream_parts["app_name"], stream_parts["stream_name"])
+
+    # return StreamCls
 
 
 stream_registry = StreamRegistry()

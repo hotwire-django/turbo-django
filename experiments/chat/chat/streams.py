@@ -47,5 +47,5 @@ class MessageStream(turbo.ModelStream):
     def on_delete(self, message, *args, **kwargs):
         message.room.stream.remove(id=f"message-{message.id}")
 
-    def user_passes_test(self, user, object_id):
+    def user_passes_test(self, user):
         return True

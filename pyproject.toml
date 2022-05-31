@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "turbo-django"
-version = "0.3.0"
+version = "0.4.3"
 description = "Integrate Hotwire Turbo with Django allowing for a Python-driven dynamic web experience."
 authors = [
     "Nikita Marchant <C4ptainCrunch@github-username.x>",
@@ -31,7 +31,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = ">=3.0.0"
+Django = ">=3.2.0"
 channels = ">=2.0.0"
 
 
@@ -41,8 +41,10 @@ alabaster-hotwire = {git = "https://github.com/hotwire-django/sphinx-hotwire-the
 sphinxcontrib-fulltoc = "^1.2.0"
 bump2version = "^1.0.1"
 pyproject-flake8 = "^0.0.1-alpha.2"
-pytest = "^6.2.5"
+pytest = "^7.1.2"
 pytest-django = "^4.5.2"
+black = "^22.3.0"
+coverage = "^6.3.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -61,4 +63,9 @@ extend-exclude = 'doc|migrations'
 
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = 'turbo.tests.test_settings'
+addopts=["--tb=short", "--strict", "-ra", "--ignore-glob=experiments"]
+pythonpath = ["turbo", "tests"]
+DJANGO_SETTINGS_MODULE = 'test_settings'
+testpaths = [
+    "tests"
+]

@@ -19,6 +19,7 @@ Topics
    topics/turbo.rst
    topics/streams.rst
    topics/model_stream.rst
+   topics/components.rst
    topics/templates.rst
 
 

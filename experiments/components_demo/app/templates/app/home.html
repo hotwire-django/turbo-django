@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load turbo_streams %}
+
+
+{% block body %}
+    <h1>Components Demo</h1>
+    <p class="lead">This application demonstrates a use of Turbo Components.</p>
+
+   <div>
+      <h2>BroadcastComponent</h2>
+      <pre>
+# From `./manage.py shell` execute the following commands:
+from app.streams import AlertBroadcastComponent
+a = AlertBroadcastComponent()
+a.render(alert_class='warning', alert_content="sasdasd")</pre>
+      {% turbo_component "app:AlertBroadcastComponent" %}
+   </div>
+
+   <div>
+      <h2>UserBroadcastComponent</h2>
+      <pre>
+A user must be created and logged in to test this component.
+## From `./manage.py shell` execute the following commands:
+from app.streams importCartCountComponent
+c = CartCountComponent(user)
+c.render(count=25)</pre>
+      {% turbo_component "app:CartCountComponent" request.user %}
+   </div>
+
+{% endblock body %}
+

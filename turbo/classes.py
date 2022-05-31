@@ -5,8 +5,12 @@ from functools import cached_property
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-from .utils import to_subscribable_name
 from .metaclass import DeclarativeFieldsMetaclass
+
+import json
+from django.core.signing import Signer
+from django.core.serializers.json import DjangoJSONEncoder
+import hashlib
 
 # Turbo Streams CRUD operations
 APPEND = "append"
@@ -21,6 +25,21 @@ AFTER = "after"
 SELECTOR_CSS = "css"
 SELECTOR_ID = "id"
 SELECTOR_TYPES = (SELECTOR_ID, SELECTOR_CSS)
+
+signer = Signer()
+
+
+class DjangoJSONSerializer:
+    """
+    Simple wrapper around json to be used in signing.dumps and
+    signing.loads.
+    """
+
+    def dumps(self, obj):
+        return json.dumps(obj, cls=DjangoJSONEncoder, separators=(',', ':')).encode('latin-1')
+
+    def loads(self, data):
+        return json.loads(data.decode('latin-1'), cls=DjangoJSONEncoder)
 
 
 class classproperty:
@@ -45,7 +64,36 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
 
     @classproperty
     def stream_name(self):
+        """A unique string that will identify this Stream"""
         return f"{self._meta.app_name}:{self.__name__}"
+
+    @property
+    def signed_stream_name(self):
+        """A unique string that will identify this Stream"""
+        return signer.sign_object(
+            (self.stream_name, self.get_init_args(), self.get_init_kwargs()),
+            serializer=DjangoJSONSerializer,
+        )
+
+    @property
+    def broadcastable_stream_name(self):
+        """
+        A unique string that can be used by channels.
+        A-Z, hyphens and dashes only. Less than 99 characters
+        """
+        return hashlib.md5(self.signed_stream_name.encode('utf-8')).hexdigest()
+
+    def get_init_args(self):
+        return []
+
+    def get_init_kwargs(self):
+        return {}
+
+    def get_init_args_json(self) -> str:
+        return json.dumps(self.get_init_args(), cls=DjangoJSONEncoder)
+
+    def get_init_kwargs_json(self) -> str:
+        return json.dumps(self.get_init_kwargs(), cls=DjangoJSONEncoder)
 
     def _get_frame(self, template=None, context=None, text=None):
         if text:
@@ -100,12 +148,12 @@ class Stream(metaclass=DeclarativeFieldsMetaclass):
 
     def stream_raw(self, raw_text: str):
         channel_layer = get_channel_layer()
-        subscribable_stream_name = to_subscribable_name(self.stream_name)
+
         async_to_sync(channel_layer.group_send)(
-            subscribable_stream_name,
+            self.broadcastable_stream_name,
             {
                 "type": "notify",
-                "channel_name": subscribable_stream_name,
+                "signed_channel_name": self.signed_stream_name,
                 "rendered_template": raw_text,
             },
         )
@@ -138,9 +186,9 @@ class ModelStream(Stream):
     def instance(self):
         return self._meta.model.objects.get(pk=self.pk)
 
-    @property
-    def stream_name(self):
-        return f"{super().stream_name}-{self.pk}"
+    def get_init_args(self):
+        """A JSON serializable list that can rebuild the Stream instance"""
+        return [self.pk]
 
     def user_passes_test(self, user):
         return True
