@@ -8,13 +8,13 @@ Components are a subclass of `Stream` that simplifies implementation of streams.
 
 
 Creating a Component
---------------------
+====================
 
 Components are a type of stream with a template.  As components are a type of stream, components must be either be created in or imported to `streams.py` to be registered.
 
 
 Quick example
-=============
+-------------
 
 .. code-block:: python
     :caption: app/streams.py
@@ -74,7 +74,7 @@ To stream updated content to the view, open a python terminal, instanciate the c
 
 
 Full example
-=============
+------------
 
 .. code-block:: python
     :caption: app/streams.py
