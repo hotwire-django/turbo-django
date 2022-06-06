@@ -2,6 +2,13 @@
 Turbo Frames
 =============
 
+**<turbo-frame>** Turbo Frames allow parts of the page to be updated on request. Each turbo-frame must have an id that is shared between the parent frame, and the elements that will be loaded into the frame.
+
+.. note::
+    Be sure to read the `official documentation of Turbo Frames <https://turbo.hotwired.dev/handbook/frames>`_.
+
+
+
 .. module:: turbo.Turbo
 
 Turbo Frames can be rendered in python using convience methods.
