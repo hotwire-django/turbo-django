@@ -3,7 +3,11 @@
 This repository contains a demonstration of [Hotwire](https://hotwired.dev), and
 how a site can be built using turbo-frames.
 
-To run this demo, after cloning the repository:
+To run this demo, you'll need to have [a redis server](https://redis.io/docs/getting-started/) running along side. 
+
+For Mac and Linux this is trival, but on windows this will require installing [an ubuntu virtual machine](https://learn.microsoft.com/en-us/windows/wsl/install). See redis docs for details.
+
+Once your redis server is up and running along side, then you can clone the repository and get started:
 
 ```bash
 cd experiments/reminders
