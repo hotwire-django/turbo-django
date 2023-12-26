@@ -1,5 +1,13 @@
+.. warning::
+   This library is unmaintained. Integrating Hotwire and Django is so easy
+   that you are probably better served by writing a little bit of Python in your code
+   than using a full blown library that adds another level of abstraction.
+   It also seems that the Django community is leaning more towards HTMX than Hotwire
+   so you might want to look over there if you want more "support"
+   (but we still think that Hotwire is very well suited to be used with Django)
+
 ==========
-Quickstart
+Unmaintained//Quickstart
 ==========
 
 Want to see Turbo in action?  Here's a simple broadcast that can be setup in less than a minute.

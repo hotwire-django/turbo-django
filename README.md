@@ -3,8 +3,15 @@
 [![Issues](https://img.shields.io/github/issues/hotwire-django/turbo-django)](https://img.shields.io/github/issues/hotwire-django/turbo-django)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FDjangoHotwire)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fhotwire-django%2Fturbo-django)
 
-# Turbo for Django
+# Unmaintained // Turbo for Django
 
+> [!WARNING]  
+> This library is unmaintained. Integrating Hotwire and Django is so easy
+> that you are probably better served by writing a little bit of Python in your code
+> than using a full-blown library that adds another level of abstraction.
+> It also seems that the Django community is leaning more towards HTMX than Hotwire
+> so you might want to look over there if you want more "support"
+> (but we still think that Hotwire is very well suited to be used with Django)
 
 Integrate [Hotwire Turbo](https://turbo.hotwired.dev/) with Django with ease.
 
